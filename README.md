@@ -1,40 +1,40 @@
-# nouns-monorepo
+# sports-manager-monorepo
 
-Nouns DAO is a generative avatar art collective run by a group of crypto misfits.
+SportsManager DAO is a generative avatar art collective run by a group of crypto misfits.
 
 ## Contributing
 
-If you're interested in contributing to Nouns DAO repos we're excited to have you. Please discuss any changes in `#developers` in [discord.gg/nouns](https://discord.gg/nouns) prior to contributing to reduce duplication of effort and in case there is any prior art that may be useful to you.
+If you're interested in contributing to SportsManager DAO repos we're excited to have you. Please discuss any changes in `#developers` in [discord.gg/sports-manager](https://discord.gg/sports-manager) prior to contributing to reduce duplication of effort and in case there is any prior art that may be useful to you.
 
 ## Packages
 
-### nouns-api
+### sports-manager-api
 
-The [nouns api](packages/sports-manager-api) is an HTTP webserver that hosts token metadata. This is currently unused because on-chain, data URIs are enabled.
+The [sports-manager api](packages/sports-manager-api) is an HTTP webserver that hosts token metadata. This is currently unused because on-chain, data URIs are enabled.
 
-### nouns-assets
+### sports-manager-assets
 
-The [nouns assets](packages/sports-manager-assets) package holds the Noun PNG and run-length encoded image data.
+The [sports-manager assets](packages/sports-manager-assets) package holds the Noun PNG and run-length encoded image data.
 
-### nouns-bots
+### sports-manager-bots
 
-The [nouns bots](packages/sports-manager-bots) package contains a bot that monitors for changes in Noun auction state and notifies everyone via Twitter and Discord.
+The [sports-manager bots](packages/sports-manager-bots) package contains a bot that monitors for changes in Noun auction state and notifies everyone via Twitter and Discord.
 
-### nouns-contracts
+### sports-manager-contracts
 
-The [nouns contracts](packages/sports-manager-contracts) is the suite of Solidity contracts powering Nouns DAO.
+The [sports-manager contracts](packages/sports-manager-contracts) is the suite of Solidity contracts powering SportsManager DAO.
 
-### nouns-sdk
+### sports-manager-sdk
 
-The [nouns sdk](packages/sports-manager-sdk) exposes the Nouns contract addresses, ABIs, and instances as well as image encoding and SVG building utilities.
+The [sports-manager sdk](packages/sports-manager-sdk) exposes the SportsManager contract addresses, ABIs, and instances as well as image encoding and SVG building utilities.
 
-### nouns-subgraph
+### sports-manager-subgraph
 
-In order to make retrieving more complex data from the auction history, [nouns subgraph](packages/sports-manager-subgraph) contains subgraph manifests that are deployed onto [The Graph](https://thegraph.com).
+In order to make retrieving more complex data from the auction history, [sports-manager subgraph](packages/sports-manager-subgraph) contains subgraph manifests that are deployed onto [The Graph](https://thegraph.com).
 
-### nouns-webapp
+### sports-manager-webapp
 
-The [nouns webapp](packages/sports-manager-webapp) is the frontend for interacting with Noun auctions as hosted at [nouns.wtf](https://nouns.wtf).
+The [sports-manager webapp](packages/sports-manager-webapp) is the frontend for interacting with Noun auctions as hosted at [sports-manager.wtf](https://sports-manager.wtf).
 
 ## Quickstart
 
