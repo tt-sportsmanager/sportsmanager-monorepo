@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 
-/// @title The Nouns DAO auction house
+/// @title The SportsManager DAO auction house
 
 /*********************************
  * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
@@ -16,7 +16,7 @@
  *********************************/
 
 // LICENSE
-// NounsAuctionHouse.sol is a modified version of Zora's AuctionHouse.sol:
+// SportsManagerAuctionHouse.sol is a modified version of Zora's AuctionHouse.sol:
 // https://github.com/ourzora/auction-house/blob/54a12ec1a6cf562e49f0a4917990474b11350a2d/contracts/AuctionHouse.sol
 //
 // AuctionHouse.sol source code Copyright Zora licensed under the GPL-3.0 license.
@@ -29,12 +29,12 @@ import { ReentrancyGuardUpgradeable } from '@openzeppelin/contracts-upgradeable/
 import { OwnableUpgradeable } from '@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol';
 import { IERC20 } from '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 import { ISportsManagerAuctionHouse } from './interfaces/ISportsManagerAuctionHouse.sol';
-import { INounsToken } from './interfaces/INounsToken.sol';
+import { ISportsManagerToken } from './interfaces/ISportsManagerToken.sol';
 import { IWETH } from './interfaces/IWETH.sol';
 
 contract SportsManagerAuctionHouse is ISportsManagerAuctionHouse, PausableUpgradeable, ReentrancyGuardUpgradeable, OwnableUpgradeable {
-    // The Nouns ERC721 token contract
-    INounsToken public cards;
+    // The SportsManager ERC721 token contract
+    ISportsManagerToken public cards;
 
     // The address of the WETH contract
     address public weth;
@@ -60,7 +60,7 @@ contract SportsManagerAuctionHouse is ISportsManagerAuctionHouse, PausableUpgrad
      * @dev This function can only be called once.
      */
     function initialize(
-        INounsToken _cards,
+        ISportsManagerToken _cards,
         address _weth,
         uint256 _timeBuffer,
         uint256 _reservePrice,
@@ -136,7 +136,7 @@ contract SportsManagerAuctionHouse is ISportsManagerAuctionHouse, PausableUpgrad
     }
 
     /**
-     * @notice Pause the Nouns auction house.
+     * @notice Pause the SportsManager auction house.
      * @dev This function can only be called by the owner when the
      * contract is unpaused. While no new auctions can be started when paused,
      * anyone can settle an ongoing auction.
@@ -146,7 +146,7 @@ contract SportsManagerAuctionHouse is ISportsManagerAuctionHouse, PausableUpgrad
     }
 
     /**
-     * @notice Unpause the Nouns auction house.
+     * @notice Unpause the SportsManager auction house.
      * @dev This function can only be called by the owner when the
      * contract is paused. If required, this function will start a new auction.
      */
