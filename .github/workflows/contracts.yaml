@@ -6,8 +6,8 @@ on:
       - master
   pull_request:
     paths:
-      - "packages/nouns-contracts/**"
-      - "packages/nouns-subgraph/**"
+      - "packages/sports-manager-contracts/**"
+      - "packages/sports-manager-subgraph/**"
     branches:
       - "**"
 
@@ -27,11 +27,11 @@ jobs:
       - run: yarn build
       - name: Run contract tests
         run: |
-          cd packages/nouns-contracts
+          cd packages/sports-manager-contracts
           yarn test
       - name: Run contract coverage
         run: |
-          cd packages/nouns-contracts
+          cd packages/sports-manager-contracts
           yarn coverage
       - name: Uninstall Yarn
         if: always()

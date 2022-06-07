@@ -1,11 +1,11 @@
 {
     "references": [
-        { "path": "packages/nouns-api" },
-        { "path": "packages/nouns-assets" },
-        { "path": "packages/nouns-bots" },
-        { "path": "packages/nouns-contracts" },
-        { "path": "packages/nouns-sdk" },
-        { "path": "packages/nouns-subgraph" },
-        { "path": "packages/nouns-webapp" },
+        { "path": "packages/sports-manager-api" },
+        { "path": "packages/sports-manager-assets" },
+        { "path": "packages/sports-manager-bots" },
+        { "path": "packages/sports-manager-contracts" },
+        { "path": "packages/sports-manager-sdk" },
+        { "path": "packages/sports-manager-subgraph" },
+        { "path": "packages/sports-manager-webapp" },
     ]
 }

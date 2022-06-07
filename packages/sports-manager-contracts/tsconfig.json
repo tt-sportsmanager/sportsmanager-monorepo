@@ -12,7 +12,7 @@
   "files": ["./hardhat.config.ts"],
   "references": [
     {
-      "path": "../nouns-assets/tsconfig.build.json"
+      "path": "../sports-manager-assets/tsconfig.build.json"
     }
   ]
 }

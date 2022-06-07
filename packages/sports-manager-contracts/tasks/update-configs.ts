@@ -11,7 +11,7 @@ task('update-configs', 'Write the deployed addresses to the SDK and subgraph con
       const { name: network, chainId } = await ethers.provider.getNetwork();
 
       // Update SDK addresses
-      const sdkPath = join(__dirname, '../../nouns-sdk');
+      const sdkPath = join(__dirname, '../../sports-manager-sdk');
       const addressesPath = join(sdkPath, 'src/contract/addresses.json');
       const addresses = JSON.parse(readFileSync(addressesPath, 'utf8'));
       addresses[chainId] = {
@@ -38,7 +38,7 @@ task('update-configs', 'Write the deployed addresses to the SDK and subgraph con
 
       // Generate subgraph config
       const configName = `${network}-fork`;
-      const subgraphConfigPath = join(__dirname, `../../nouns-subgraph/config/${configName}.json`);
+      const subgraphConfigPath = join(__dirname, `../../sports-manager-subgraph/config/${configName}.json`);
       const subgraphConfig = {
         network,
         nounsToken: {

@@ -12,7 +12,7 @@ In the first shell:
 # Install all dependencies and build contract artifacts
 yarn
 # Switch to nouns-contracts
-cd packages/nouns-contracts
+cd packages/sports-manager-contracts
 # Start local simnet
 yarn task:run-local
 ```
@@ -21,7 +21,7 @@ In the second shell:
 
 ```sh
 # Switch to nouns-webapp
-cd packages/nouns-webapp
+cd packages/sports-manager-webapp
 # Copy local example environment file
 cp .env.example.local .env
 # Start local development

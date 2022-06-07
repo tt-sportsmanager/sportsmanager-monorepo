@@ -7,7 +7,7 @@
   "include": ["src/**/*.ts", "src/**/*.json"],
   "references": [
     {
-      "path": "../nouns-contracts/tsconfig.build.json"
+      "path": "../sports-manager-contracts/tsconfig.build.json"
     }
   ]
 }
