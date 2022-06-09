@@ -1,9 +1,9 @@
 {
   "name": "@sports-manager/sdk",
-  "version": "0.1.6",
-  "description": "Useful tooling for interacting with the Nouns protocol",
-  "author": "Nounders",
-  "homepage": "https://nouns.wtf",
+  "version": "0.0.1",
+  "description": "Useful tooling for interacting with the SportsManager protocol",
+  "author": "SportsManagers",
+  "homepage": "https://www.sportsmanager.wtf/",
   "license": "GPL-3.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,7 +14,7 @@
     "test": "mocha -r ts-node/register \"test/**/*.test.ts\""
   },
   "dependencies": {
-    "@sports-manager/contracts": "^0.1.3",
+    "@sports-manager/contracts": "^0.0.1",
     "ethers": "^5.6.8"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 {
   "name": "@sports-manager/assets",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "SportsManager run-length encoded image data",
   "author": "SportsManagers",
   "homepage": "https://www.sportsmanager.wtf/",
@@ -15,7 +15,7 @@
     "test": "mocha -r ts-node/register \"test/**/*.test.ts\""
   },
   "devDependencies": {
-    "@sports-manager/sdk": "^0.1.4",
+    "@sports-manager/sdk": "^0.0.1",
     "@types/pngjs": "^6.0.1",
     "chai": "^4.2.0",
     "mocha": "^8.4.0",

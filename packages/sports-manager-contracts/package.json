@@ -1,9 +1,9 @@
 {
   "name": "@sports-manager/contracts",
-  "version": "0.1.3",
-  "description": "Nouns solidity contracts & artifacts",
-  "author": "Nounders",
-  "homepage": "https://nouns.wtf",
+  "version": "0.0.1",
+  "description": "SportsManager solidity contracts & artifacts",
+  "author": "SportsManagers",
+  "homepage": "https://www.sportsmanager.wtf/",
   "license": "GPL-3.0",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",

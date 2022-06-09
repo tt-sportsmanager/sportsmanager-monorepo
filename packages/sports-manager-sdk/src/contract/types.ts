@@ -1,30 +1,30 @@
 import {
-  NounsTokenFactory,
-  NounsAuctionHouseFactory,
-  NounsDescriptorFactory,
-  NounsSeederFactory,
-  NounsDaoLogicV1Factory,
+  SportsManagerTokenFactory,
+  SportsManagerAuctionHouseFactory,
+  SportsManagerDescriptorFactory,
+  SportsManagerSeederFactory,
+  SportsManagerDaoLogicV1Factory,
 } from '@sports-manager/contracts';
 
 export interface ContractAddresses {
-  nounsToken: string;
-  nounsSeeder: string;
-  nounsDescriptor: string;
+  sportsManagerToken: string;
+  sportsManagerSeeder: string;
+  sportsManagerDescriptor: string;
   nftDescriptor: string;
-  nounsAuctionHouse: string;
-  nounsAuctionHouseProxy: string;
-  nounsAuctionHouseProxyAdmin: string;
-  nounsDaoExecutor: string;
-  nounsDAOProxy: string;
-  nounsDAOLogicV1: string;
+  sportsManagerAuctionHouse: string;
+  sportsManagerAuctionHouseProxy: string;
+  sportsManagerAuctionHouseProxyAdmin: string;
+  sportsManagerDaoExecutor: string;
+  sportsManagerDAOProxy: string;
+  sportsManagerDAOLogicV1: string;
 }
 
 export interface Contracts {
-  nounsTokenContract: ReturnType<typeof NounsTokenFactory.connect>;
-  nounsAuctionHouseContract: ReturnType<typeof NounsAuctionHouseFactory.connect>;
-  nounsDescriptorContract: ReturnType<typeof NounsDescriptorFactory.connect>;
-  nounsSeederContract: ReturnType<typeof NounsSeederFactory.connect>;
-  nounsDaoContract: ReturnType<typeof NounsDaoLogicV1Factory.connect>;
+  sportsManagerTokenContract: ReturnType<typeof SportsManagerTokenFactory.connect>;
+  sportsManagerAuctionHouseContract: ReturnType<typeof SportsManagerAuctionHouseFactory.connect>;
+  sportsManagerDescriptorContract: ReturnType<typeof SportsManagerDescriptorFactory.connect>;
+  sportsManagerSeederContract: ReturnType<typeof SportsManagerSeederFactory.connect>;
+  sportsManagerDaoContract: ReturnType<typeof SportsManagerDaoLogicV1Factory.connect>;
 }
 
 export enum ChainId {

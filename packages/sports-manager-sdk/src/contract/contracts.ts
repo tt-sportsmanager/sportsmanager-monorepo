@@ -1,9 +1,9 @@
 import {
-  NounsTokenFactory,
-  NounsAuctionHouseFactory,
-  NounsDescriptorFactory,
-  NounsSeederFactory,
-  NounsDaoLogicV1Factory,
+  SportsManagerTokenFactory,
+  SportsManagerAuctionHouseFactory,
+  SportsManagerDescriptorFactory,
+  SportsManagerSeederFactory,
+  SportsManagerDaoLogicV1Factory,
 } from '@sports-manager/contracts';
 import type { Signer } from 'ethers';
 import type { Provider } from '@ethersproject/providers';
@@ -24,24 +24,24 @@ export const getContractsForChainOrThrow = (
   const addresses = getContractAddressesForChainOrThrow(chainId);
 
   return {
-    nounsTokenContract: NounsTokenFactory.connect(
-      addresses.nounsToken,
+    sportsManagerTokenContract: SportsManagerTokenFactory.connect(
+      addresses.sportsManagerToken,
       signerOrProvider as Signer | Provider,
     ),
-    nounsAuctionHouseContract: NounsAuctionHouseFactory.connect(
-      addresses.nounsAuctionHouseProxy,
+    sportsManagerAuctionHouseContract: SportsManagerAuctionHouseFactory.connect(
+      addresses.sportsManagerAuctionHouseProxy,
       signerOrProvider as Signer | Provider,
     ),
-    nounsDescriptorContract: NounsDescriptorFactory.connect(
-      addresses.nounsDescriptor,
+    sportsManagerDescriptorContract: SportsManagerDescriptorFactory.connect(
+      addresses.sportsManagerDescriptor,
       signerOrProvider as Signer | Provider,
     ),
-    nounsSeederContract: NounsSeederFactory.connect(
-      addresses.nounsSeeder,
+    sportsManagerSeederContract: SportsManagerSeederFactory.connect(
+      addresses.sportsManagerSeeder,
       signerOrProvider as Signer | Provider,
     ),
-    nounsDaoContract: NounsDaoLogicV1Factory.connect(
-      addresses.nounsDAOProxy,
+    sportsManagerDaoContract: SportsManagerDaoLogicV1Factory.connect(
+      addresses.sportsManagerDAOProxy,
       signerOrProvider as Signer | Provider,
     ),
   };

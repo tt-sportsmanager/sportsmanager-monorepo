@@ -16,7 +16,7 @@ yarn test
 
 ## Usage
 
-The Nouns SDK contains useful tooling for interacting with the Nouns protocol.
+The SportsManager SDK contains useful tooling for interacting with the SportsManager protocol.
 
 ### Contracts
 
@@ -25,7 +25,7 @@ The Nouns SDK contains useful tooling for interacting with the Nouns protocol.
 ```ts
 import { ChainId, getContractAddressesForChainOrThrow } from '@sports-manager/sdk';
 
-const { nounsToken } = getContractAddressesForChainOrThrow(ChainId.Mainnet);
+const { sportsManagerToken } = getContractAddressesForChainOrThrow(ChainId.Mainnet);
 ```
 
 **Get Contract Instances**
@@ -35,13 +35,13 @@ import { ChainId, getContractsForChainOrThrow } from '@sports-manager/sdk';
 
 const provider = new providers.JsonRpcProvider(RPC_URL);
 
-const { nounsTokenContract } = getContractsForChainOrThrow(ChainId.Mainnet, provider);
+const { sportsManagerTokenContract } = getContractsForChainOrThrow(ChainId.Mainnet, provider);
 ```
 
 **Get Contract ABIs**
 
 ```ts
-import { NounsTokenABI } from '@sports-manager/sdk';
+import { SportsManagerTokenABI } from '@sports-manager/sdk';
 ```
 
 ### Images
