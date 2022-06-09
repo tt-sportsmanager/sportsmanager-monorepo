@@ -1,17 +1,17 @@
 # @sports-manager/webapp
 
-This package contains the source for the Nouns webapp at [nouns.wtf](https://nouns.wtf).
+This package contains the source for the SportsManager webapp at [sportsmanager.wtf](https://www.sportsmanager.wtf).
 
 ## Quickstart
 
-_From the base of the `nouns-monorepo`_
+_From the base of the `sports-manager-monorepo`_
 
 In the first shell:
 
 ```sh
 # Install all dependencies and build contract artifacts
 yarn
-# Switch to nouns-contracts
+# Switch to sports-manager-contracts
 cd packages/sports-manager-contracts
 # Start local simnet
 yarn task:run-local
@@ -20,7 +20,7 @@ yarn task:run-local
 In the second shell:
 
 ```sh
-# Switch to nouns-webapp
+# Switch to sports-manager-webapp
 cd packages/sports-manager-webapp
 # Copy local example environment file
 cp .env.example.local .env
@@ -48,4 +48,4 @@ Then add an RPC provider to MetaMask to point to your local simnet.
          New RPC URL: http://localhost:8545
          Chain ID: 31337
 
-Select the network and connect to your local Nouns webapp to interact with simnet
+Select the network and connect to your local SportsManager webapp to interact with simnet

@@ -1,14 +1,14 @@
-# Nouns Serverless API
+# SportsManager Serverless API
 
-`nouns.wtf` provides a serverless API to make fetching data about the Nouns ecosystem easier. [An Insomnia manifest is provided for example.](./docs/insomnia.json)
+`sportsmanager.wtf` provides a serverless API to make fetching data about the SportsManager ecosystem easier. [An Insomnia manifest is provided for example.](./docs/insomnia.json)
 
 ## Keeping Up To Date
 
-Nouns is a new project and these API endpoints may change, be sure to join [`#developers` in the Nouns Discord](https://discord.gg/nouns) to keep informed.
+SportsManager is a new project and these API endpoints may change, be sure to join [`#developers` in the SportsManager Discord](https://discord.gg/sportsmanager) to keep informed.
 
 ## API Convention
 
-`https://nouns.wtf/.netlify/functions/<version>/<function name>`
+`https://www.sportsmanager.wtf/.netlify/functions/<version>/<function name>`
 
 ## `V0`
 

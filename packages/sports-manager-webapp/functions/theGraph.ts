@@ -16,7 +16,7 @@ export interface Seed {
   glasses: number;
 }
 
-export interface NormalizedNoun {
+export interface NormalizedSportsManager {
   id: number;
   owner: string;
   delegatedTo: null | string;
@@ -24,9 +24,9 @@ export interface NormalizedNoun {
   seed: Seed;
 }
 
-const nounsGql = `
+const sportsManagerGql = `
 {
-  nouns {
+  sportsManager {
     id
     owner {
       id
@@ -64,31 +64,31 @@ export const normalizeSeed = (seed: any): Seed => ({
   head: Number(seed.head),
 });
 
-export const normalizeNoun = (noun: any): NormalizedNoun => ({
-  id: Number(noun.id),
-  owner: noun.owner.id,
-  delegatedTo: noun.owner.delegate?.id,
-  votes: normalizeVotes(noun.votes),
-  seed: normalizeSeed(noun.seed),
+export const normalizeSportsManager = (sportsManager: any): NormalizedSportsManager => ({
+  id: Number(sportsManager.id),
+  owner: sportsManager.owner.id,
+  delegatedTo: sportsManager.owner.delegate?.id,
+  votes: normalizeVotes(sportsManager.votes),
+  seed: normalizeSeed(sportsManager.seed),
 });
 
-export const normalizeNouns = R.map(normalizeNoun);
+export const normalizeSportsManagerMap = R.map(normalizeSportsManager);
 
 export const normalizeVotes = R.map(normalizeVote);
 
 export const ownerFilterFactory = (address: string) =>
-  R.filter((noun: any) => bigNumbersEqual(address, noun.owner));
+  R.filter((sportsManager: any) => bigNumbersEqual(address, sportsManager.owner));
 
-export const isNounOwner = (address: string, nouns: NormalizedNoun[]) =>
-  ownerFilterFactory(address)(nouns).length > 0;
+export const isSportsManagerOwner = (address: string, sportsManager: NormalizedSportsManager[]) =>
+  ownerFilterFactory(address)(sportsManager).length > 0;
 
 export const delegateFilterFactory = (address: string) =>
-  R.filter((noun: any) => noun.delegatedTo && bigNumbersEqual(address, noun.delegatedTo));
+  R.filter((sportsManager: any) => sportsManager.delegatedTo && bigNumbersEqual(address, sportsManager.delegatedTo));
 
-export const isNounDelegate = (address: string, nouns: NormalizedNoun[]) =>
-  delegateFilterFactory(address)(nouns).length > 0;
+export const isSportsManagerDelegate = (address: string, sportsManager: NormalizedSportsManager[]) =>
+  delegateFilterFactory(address)(sportsManager).length > 0;
 
-export const nounsQuery = async () =>
-  normalizeNouns(
-    (await axios.post(config.app.subgraphApiUri, { query: nounsGql })).data.data.nouns,
+export const sportsManagerQuery = async () =>
+  normalizeSportsManagerMap(
+    (await axios.post(config.app.subgraphApiUri, { query: sportsManagerGql })).data.data.sportsManager,
   );

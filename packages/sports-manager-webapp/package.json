@@ -1,6 +1,6 @@
 {
   "name": "@sports-manager/webapp",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "private": true,
   "dependencies": {
     "@lingui/detect-locale": "^3.13.2",
@@ -16,8 +16,8 @@
     "@fortawesome/free-solid-svg-icons": "5.15.3",
     "@fortawesome/react-fontawesome": "0.1.14",
     "@netlify/functions": "^0.7.2",
-    "@sports-manager/assets": "^0.2.0",
-    "@sports-manager/sdk": "^0.1.4",
+    "@sports-manager/assets": "^0.0.1",
+    "@sports-manager/sdk": "^0.0.1",
     "@reduxjs/toolkit": "^1.6.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",

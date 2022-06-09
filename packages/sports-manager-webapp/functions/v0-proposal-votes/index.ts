@@ -1,9 +1,9 @@
 import { Handler } from '@netlify/functions';
-import { NormalizedNoun, NormalizedVote, nounsQuery } from '../theGraph';
+import { NormalizedSportsManager, NormalizedVote, sportsManagerQuery } from '../theGraph';
 import { sharedResponseHeaders } from '../utils';
 
 interface ProposalVote {
-  nounId: number;
+  sportsManagerId: number;
   owner: string;
   delegatedTo: null | string;
   supportDetailed: number;
@@ -13,32 +13,32 @@ interface ProposalVotes {
   [key: number]: ProposalVote[];
 }
 
-const builtProposalVote = (noun: NormalizedNoun, vote: NormalizedVote): ProposalVote => ({
-  nounId: noun.id,
-  owner: noun.owner,
-  delegatedTo: noun.delegatedTo,
+const builtProposalVote = (sportsManager: NormalizedSportsManager, vote: NormalizedVote): ProposalVote => ({
+  sportsManagerId: sportsManager.id,
+  owner: sportsManager.owner,
+  delegatedTo: sportsManager.delegatedTo,
   supportDetailed: vote.supportDetailed,
 });
 
-const reduceProposalVotes = (nouns: NormalizedNoun[]) =>
-  nouns.reduce((acc: ProposalVotes, noun: NormalizedNoun) => {
-    for (let i in noun.votes) {
-      const vote = noun.votes[i];
+const reduceProposalVotes = (sportsManager: NormalizedSportsManager[]) =>
+  sportsManager.reduce((acc: ProposalVotes, sportsManager: NormalizedSportsManager) => {
+    for (let i in sportsManager.votes) {
+      const vote = sportsManager.votes[i];
       if (!acc[vote.proposalId]) acc[vote.proposalId] = [];
-      acc[vote.proposalId].push(builtProposalVote(noun, vote));
+      acc[vote.proposalId].push(builtProposalVote(sportsManager, vote));
     }
     return acc;
   }, {});
 
 const handler: Handler = async (event, context) => {
-  const nouns = await nounsQuery();
+  const sportsManager = await sportsManagerQuery();
   return {
     statusCode: 200,
     headers: {
       'Content-Type': 'application/json',
       ...sharedResponseHeaders,
     },
-    body: JSON.stringify(reduceProposalVotes(nouns)),
+    body: JSON.stringify(reduceProposalVotes(sportsManager)),
   };
 };
 

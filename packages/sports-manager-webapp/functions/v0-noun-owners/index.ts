@@ -1,28 +1,28 @@
 import { Handler } from '@netlify/functions';
-import { nounsQuery } from '../theGraph';
+import { sportsManagerQuery } from '../theGraph';
 import * as R from 'ramda';
 import { sharedResponseHeaders } from '../utils';
 
-export interface LiteNoun {
+export interface LiteSportsManager {
   id: number;
   owner: string;
   delegatedTo: null | string;
 }
 
-const lightenNoun = R.pick(['id', 'owner', 'delegatedTo']);
+const lightenSportsManager = R.pick(['id', 'owner', 'delegatedTo']);
 
-const lightenNouns = R.map(lightenNoun);
+const lightenSportsManagerMap = R.map(lightenSportsManager);
 
 const handler: Handler = async (event, context) => {
-  const nouns = await nounsQuery();
-  const liteNouns: LiteNoun[] = lightenNouns(nouns);
+  const sportsManager = await sportsManagerQuery();
+  const liteSportsManagerArray: LiteSportsManager[] = lightenSportsManagerMap(sportsManager);
   return {
     statusCode: 200,
     headers: {
       'Content-Type': 'application/json',
       ...sharedResponseHeaders,
     },
-    body: JSON.stringify(liteNouns),
+    body: JSON.stringify(liteSportsManagerArray),
   };
 };
 
