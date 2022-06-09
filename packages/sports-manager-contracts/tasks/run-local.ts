@@ -13,17 +13,17 @@ task(
 
   await run('populate-descriptor', {
     nftDescriptor: contracts.NFTDescriptor.instance.address,
-    nounsDescriptor: contracts.NounsDescriptor.instance.address,
+    sportsManagerDescriptor: contracts.SportsManagerDescriptor.instance.address,
   });
 
-  await contracts.NounsAuctionHouse.instance
-    .attach(contracts.NounsAuctionHouseProxy.instance.address)
+  await contracts.SportsManagerAuctionHouse.instance
+    .attach(contracts.SportsManagerAuctionHouseProxy.instance.address)
     .unpause({
       gasLimit: 1_000_000,
     });
 
   await run('create-proposal', {
-    nounsDaoProxy: contracts.NounsDAOProxy.instance.address,
+    sportsManagerDaoProxy: contracts.SportsManagerDAOProxy.instance.address,
   });
 
   const { chainId } = await ethers.provider.getNetwork();
@@ -43,10 +43,10 @@ task(
   console.log(
     `Noun contracts deployed to local node at http://localhost:8545 (Chain ID: ${chainId})`,
   );
-  console.log(`Auction House Proxy address: ${contracts.NounsAuctionHouseProxy.instance.address}`);
-  console.log(`Nouns ERC721 address: ${contracts.NounsToken.instance.address}`);
-  console.log(`Nouns DAO Executor address: ${contracts.NounsDAOExecutor.instance.address}`);
-  console.log(`Nouns DAO Proxy address: ${contracts.NounsDAOProxy.instance.address}`);
+  console.log(`Auction House Proxy address: ${contracts.SportsManagerAuctionHouseProxy.instance.address}`);
+  console.log(`SportsManager ERC721 address: ${contracts.SportsManagerToken.instance.address}`);
+  console.log(`SportsManager DAO Executor address: ${contracts.SportsManagerDAOExecutor.instance.address}`);
+  console.log(`SportsManager DAO Proxy address: ${contracts.SportsManagerDAOProxy.instance.address}`);
 
   await ethers.provider.send('evm_setIntervalMining', [12_000]);
 
