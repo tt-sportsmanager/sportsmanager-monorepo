@@ -1,15 +1,15 @@
 import { keccak256 as solidityKeccak256 } from '@ethersproject/solidity';
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
-import { NounSeed, NounData } from './types';
+import { SportsManagerSeed, SportsManagerData } from './types';
 import { images, bgcolors } from './image-data.json';
 
 const { bodies, accessories, heads, glasses } = images;
 
 /**
- * Get encoded part and background information using a Noun seed
- * @param seed The Noun seed
+ * Get encoded part and background information using a SportsManager seed
+ * @param seed The SportsManager seed
  */
-export const getNounData = (seed: NounSeed): NounData => {
+export const getSportsManagerData = (seed: SportsManagerSeed): SportsManagerData => {
   return {
     parts: [
       bodies[seed.body],
@@ -22,10 +22,10 @@ export const getNounData = (seed: NounSeed): NounData => {
 };
 
 /**
- * Generate a random Noun seed
- * @param seed The Noun seed
+ * Generate a random SportsManager seed
+ * @param seed The SportsManager seed
  */
-export const getRandomNounSeed = (): NounSeed => {
+export const getRandomSportsManagerSeed = (): SportsManagerSeed => {
   return {
     background: Math.floor(Math.random() * bgcolors.length),
     body: Math.floor(Math.random() * bodies.length),
@@ -51,7 +51,7 @@ export const shiftRightAndCast = (
 };
 
 /**
- * Emulates the NounsSeeder.sol methodology for pseudorandomly selecting a part
+ * Emulates the SportsManagerSeeder.sol methodology for pseudorandomly selecting a part
  * @param pseudorandomness Hex representation of a number
  * @param partCount The number of parts to pseudorandomly choose from
  * @param shiftAmount The amount to right shift
@@ -68,11 +68,11 @@ export const getPseudorandomPart = (
 };
 
 /**
- * Emulates the NounsSeeder.sol methodology for generating a Noun seed
- * @param nounId The Noun tokenId used to create pseudorandomness
+ * Emulates the SportsManagerSeeder.sol methodology for generating a SportsManager seed
+ * @param nounId The SportsManager tokenId used to create pseudorandomness
  * @param blockHash The block hash use to create pseudorandomness
  */
-export const getNounSeedFromBlockHash = (nounId: BigNumberish, blockHash: string): NounSeed => {
+export const getSportsManagerSeedFromBlockHash = (nounId: BigNumberish, blockHash: string): SportsManagerSeed => {
   const pseudorandomness = solidityKeccak256(['bytes32', 'uint256'], [blockHash, nounId]);
   return {
     background: getPseudorandomPart(pseudorandomness, bgcolors.length, 0),

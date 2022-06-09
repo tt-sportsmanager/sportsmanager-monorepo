@@ -1,8 +1,8 @@
 export { default as ImageData } from './image-data.json';
 export {
-  getNounData,
-  getRandomNounSeed,
+  getSportsManagerData,
+  getRandomSportsManagerSeed,
   shiftRightAndCast,
   getPseudorandomPart,
-  getNounSeedFromBlockHash,
+  getSportsManagerSeedFromBlockHash,
 } from './utils';

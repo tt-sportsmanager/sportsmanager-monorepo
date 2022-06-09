@@ -1,9 +1,9 @@
 {
   "name": "@sports-manager/assets",
-  "version": "0.2.0",
-  "description": "Nouns run-length encoded image data",
-  "author": "Nounders",
-  "homepage": "https://nouns.wtf",
+  "version": "0.1.0",
+  "description": "SportsManager run-length encoded image data",
+  "author": "SportsManagers",
+  "homepage": "https://www.sportsmanager.wtf/",
   "license": "GPL-3.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

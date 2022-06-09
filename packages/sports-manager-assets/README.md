@@ -10,7 +10,7 @@ yarn
 
 ## Usage
 
-**Access Noun RLE Image Data**
+**Access SportsManager RLE Image Data**
 
 ```ts
 import { ImageData } from '@sports-manager/assets';
@@ -19,10 +19,10 @@ const { bgcolors, palette, images } = ImageData;
 const { bodies, accessories, heads, glasses } = images;
 ```
 
-**Get Noun Part & Background Data**
+**Get SportsManager Part & Background Data**
 
 ```ts
-import { getNounData } from '@sports-manager/assets';
+import { getSportsManagerData } from '@sports-manager/assets';
 
 const seed = {
   background: 0,
@@ -31,13 +31,13 @@ const seed = {
   head: 71,
   glasses: 2,
 };
-const { parts, background } = getNounData(seed);
+const { parts, background } = getSportsManagerData(seed);
 ```
 
-**Emulate `NounSeeder.sol` Pseudorandom seed generation**
+**Emulate `SportsManagerSeeder.sol` Pseudorandom seed generation**
 
 ```ts
-import { getNounSeedFromBlockHash } from '@sports-manager/assets';
+import { getSportsManagerSeedFromBlockHash } from '@sports-manager/assets';
 
 const blockHash = '0x5014101691e81d79a2eba711e698118e1a90c9be7acb2f40d7f200134ee53e01';
 const nounId = 116;
@@ -51,24 +51,24 @@ const nounId = 116;
     glasses: 15
   }
 */
-const seed = getNounSeedFromBlockHash(nounId, blockHash);
+const seed = getSportsManagerSeedFromBlockHash(nounId, blockHash);
 ```
 
 ## Examples
 
-**Almost off-chain Noun Crystal Ball**
-Generate a Noun using only a block hash, which saves calls to `NounSeeder` and `NounDescriptor` contracts. This can be used for a faster crystal ball.
+**Almost off-chain SportsManager Crystal Ball**
+Generate a SportsManager using only a block hash, which saves calls to `SportsManagerSeeder` and `SportsManagerDescriptor` contracts. This can be used for a faster crystal ball.
 
 ```ts
 /**
  * For you to implement:
    - hook up providers with ether/web3.js
-   - get currently auctioned Noun Id from the NounsAuctionHouse contract
-   - add 1 to the current Noun Id to get the next Noun Id (named `nextNounId` below)
+   - get currently auctioned SportsManager Id from the SportsManagersAuctionHouse contract
+   - add 1 to the current SportsManager Id to get the next SportsManager Id (named `nextSportsManagerId` below)
    - get the latest block hash from your provider (named `latestBlockHash` below)
 */
 
-import { ImageData, getNounSeedFromBlockHash, getNounData } from '@sports-manager/assets';
+import { ImageData, getSportsManagerSeedFromBlockHash, getSportsManagerData } from '@sports-manager/assets';
 import { buildSVG } from '@sports-manager/sdk';
 const { palette } = ImageData; // Used with `buildSVG``
 
@@ -82,7 +82,7 @@ const { palette } = ImageData; // Used with `buildSVG``
       glasses: 15
     }
 */
-const seed = getNounSeedFromBlockHash(nextNounId, latestBlockHash);
+const seed = getSportsManagerSeedFromBlockHash(nextSportsManagerId, latestBlockHash);
 
 /** 
  * OUTPUT:
@@ -108,13 +108,13 @@ const seed = getNounSeedFromBlockHash(nextNounId, latestBlockHash);
      background: 'e1d7d5'
    }
 */
-const { parts, background } = getNounData(seed);
+const { parts, background } = getSportsManagerData(seed);
 
 const svgBinary = buildSVG(parts, palette, background);
 const svgBase64 = btoa(svgBinary);
 ```
 
-The Noun SVG can then be displayed. Here's a dummy example using React
+The SportsManager SVG can then be displayed. Here's a dummy example using React
 
 ```ts
 function SVG({ svgBase64 }) {

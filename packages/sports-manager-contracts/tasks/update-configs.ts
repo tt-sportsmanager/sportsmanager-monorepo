@@ -15,16 +15,16 @@ task('update-configs', 'Write the deployed addresses to the SDK and subgraph con
       const addressesPath = join(sdkPath, 'src/contract/addresses.json');
       const addresses = JSON.parse(readFileSync(addressesPath, 'utf8'));
       addresses[chainId] = {
-        nounsToken: contracts.SportsManagerToken.address,
-        nounsSeeder: contracts.SportsManagerSeeder.address,
-        nounsDescriptor: contracts.SportsManagerDescriptor.address,
+        sportsManagerToken: contracts.SportsManagerToken.address,
+        sportsManagerSeeder: contracts.SportsManagerSeeder.address,
+        sportsManagerDescriptor: contracts.SportsManagerDescriptor.address,
         nftDescriptor: contracts.NFTDescriptor.address,
-        nounsAuctionHouse: contracts.SportsManagerAuctionHouse.address,
-        nounsAuctionHouseProxy: contracts.SportsManagerAuctionHouseProxy.address,
-        nounsAuctionHouseProxyAdmin: contracts.SportsManagerAuctionHouseProxyAdmin.address,
-        nounsDaoExecutor: contracts.SportsManagerDAOExecutor.address,
-        nounsDAOProxy: contracts.SportsManagerDAOProxy.address,
-        nounsDAOLogicV1: contracts.SportsManagerDAOLogicV1.address,
+        sportsManagerAuctionHouse: contracts.SportsManagerAuctionHouse.address,
+        sportsManagerAuctionHouseProxy: contracts.SportsManagerAuctionHouseProxy.address,
+        sportsManagerAuctionHouseProxyAdmin: contracts.SportsManagerAuctionHouseProxyAdmin.address,
+        sportsManagerDaoExecutor: contracts.SportsManagerDAOExecutor.address,
+        sportsManagerDAOProxy: contracts.SportsManagerDAOProxy.address,
+        sportsManagerDAOLogicV1: contracts.SportsManagerDAOLogicV1.address,
       };
       writeFileSync(addressesPath, JSON.stringify(addresses, null, 2));
       try {
@@ -41,15 +41,15 @@ task('update-configs', 'Write the deployed addresses to the SDK and subgraph con
       const subgraphConfigPath = join(__dirname, `../../sports-manager-subgraph/config/${configName}.json`);
       const subgraphConfig = {
         network,
-        nounsToken: {
+        sportsManagerToken: {
           address: contracts.SportsManagerToken.address,
           startBlock: contracts.SportsManagerToken.instance.deployTransaction.blockNumber,
         },
-        nounsAuctionHouse: {
+        sportsManagerAuctionHouse: {
           address: contracts.SportsManagerAuctionHouseProxy.address,
           startBlock: contracts.SportsManagerAuctionHouseProxy.instance.deployTransaction.blockNumber,
         },
-        nounsDAO: {
+        sportsManagerDAO: {
           address: contracts.SportsManagerDAOProxy.address,
           startBlock: contracts.SportsManagerDAOProxy.instance.deployTransaction.blockNumber,
         },
