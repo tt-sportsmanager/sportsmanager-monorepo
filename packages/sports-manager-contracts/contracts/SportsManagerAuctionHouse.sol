@@ -34,7 +34,7 @@ import { IWETH } from './interfaces/IWETH.sol';
 
 contract SportsManagerAuctionHouse is ISportsManagerAuctionHouse, PausableUpgradeable, ReentrancyGuardUpgradeable, OwnableUpgradeable {
     // The SportsManager ERC721 token contract
-    ISportsManagerToken public cards;
+    ISportsManagerToken public sportsManagers;
 
     // The address of the WETH contract
     address public weth;
@@ -60,7 +60,7 @@ contract SportsManagerAuctionHouse is ISportsManagerAuctionHouse, PausableUpgrad
      * @dev This function can only be called once.
      */
     function initialize(
-        ISportsManagerToken _cards,
+        ISportsManagerToken _sportsManagers,
         address _weth,
         uint256 _timeBuffer,
         uint256 _reservePrice,
@@ -73,7 +73,7 @@ contract SportsManagerAuctionHouse is ISportsManagerAuctionHouse, PausableUpgrad
 
         _pause();
 
-        cards = _cards;
+        sportsManagers = _sportsManagers;
         weth = _weth;
         timeBuffer = _timeBuffer;
         reservePrice = _reservePrice;
@@ -101,10 +101,10 @@ contract SportsManagerAuctionHouse is ISportsManagerAuctionHouse, PausableUpgrad
      * @notice Create a bid for a Noun, with a given amount.
      * @dev This contract only accepts payment in ETH.
      */
-    function createBid(uint256 cardId) external payable override nonReentrant {
+    function createBid(uint256 sportsManagerId) external payable override nonReentrant {
         ISportsManagerAuctionHouse.Auction memory _auction = auction;
 
-        require(_auction.cardId == cardId, 'Noun not up for auction');
+        require(_auction.sportsManagerId == sportsManagerId, 'Noun not up for auction');
         require(block.timestamp < _auction.endTime, 'Auction expired');
         require(msg.value >= reservePrice, 'Must send at least reservePrice');
         require(
@@ -128,10 +128,10 @@ contract SportsManagerAuctionHouse is ISportsManagerAuctionHouse, PausableUpgrad
             auction.endTime = _auction.endTime = block.timestamp + timeBuffer;
         }
 
-        emit AuctionBid(_auction.cardId, msg.sender, msg.value, extended);
+        emit AuctionBid(_auction.sportsManagerId, msg.sender, msg.value, extended);
 
         if (extended) {
-            emit AuctionExtended(_auction.cardId, _auction.endTime);
+            emit AuctionExtended(_auction.sportsManagerId, _auction.endTime);
         }
     }
 
@@ -195,12 +195,12 @@ contract SportsManagerAuctionHouse is ISportsManagerAuctionHouse, PausableUpgrad
      * catch the revert and pause this contract.
      */
     function _createAuction() internal {
-        try cards.mint() returns (uint256 cardId) {
+        try sportsManagers.mint() returns (uint256 sportsManagerId) {
             uint256 startTime = block.timestamp;
             uint256 endTime = startTime + duration;
 
             auction = Auction({
-                cardId: cardId,
+                sportsManagerId: sportsManagerId,
                 amount: 0,
                 startTime: startTime,
                 endTime: endTime,
@@ -208,7 +208,7 @@ contract SportsManagerAuctionHouse is ISportsManagerAuctionHouse, PausableUpgrad
                 settled: false
             });
 
-            emit AuctionCreated(cardId, startTime, endTime);
+            emit AuctionCreated(sportsManagerId, startTime, endTime);
         } catch Error(string memory) {
             _pause();
         }
@@ -228,16 +228,16 @@ contract SportsManagerAuctionHouse is ISportsManagerAuctionHouse, PausableUpgrad
         auction.settled = true;
 
         if (_auction.bidder == address(0)) {
-            cards.burn(_auction.cardId);
+            sportsManagers.burn(_auction.sportsManagerId);
         } else {
-            cards.transferFrom(address(this), _auction.bidder, _auction.cardId);
+            sportsManagers.transferFrom(address(this), _auction.bidder, _auction.sportsManagerId);
         }
 
         if (_auction.amount > 0) {
             _safeTransferETHWithFallback(owner(), _auction.amount);
         }
 
-        emit AuctionSettled(_auction.cardId, _auction.bidder, _auction.amount);
+        emit AuctionSettled(_auction.sportsManagerId, _auction.bidder, _auction.amount);
     }
 
     /**

@@ -20,7 +20,7 @@ pragma solidity ^0.8.6;
 interface ISportsManagerAuctionHouse {
     struct Auction {
         // ID for the Card (ERC721 token ID)
-        uint256 cardId;
+        uint256 sportsManagerId;
         // The current highest bid amount
         uint256 amount;
         // The time that the auction started
