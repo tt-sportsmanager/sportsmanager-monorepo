@@ -1,4 +1,4 @@
-import { default as NounsAuctionHouseABI } from '../abi/contracts/NounsAuctionHouse.sol/NounsAuctionHouse.json';
+import { default as SportsManagerAuctionHouseABI } from '../abi/contracts/SportsManagerAuctionHouse.sol/SportsManagerAuctionHouse.json';
 import { task, types } from 'hardhat/config';
 import { Interface } from 'ethers/lib/utils';
 import { Contract as EthersContract } from 'ethers';
@@ -14,7 +14,7 @@ interface Contract {
 }
 
 task('deploy-local', 'Deploy contracts to hardhat')
-  .addOptionalParam('noundersdao', 'The nounders DAO contract address')
+  .addOptionalParam('sportsManagerdao', 'The sportsManager DAO contract address')
   .addOptionalParam('auctionTimeBuffer', 'The auction time buffer (seconds)', 30, types.int) // Default: 30 seconds
   .addOptionalParam('auctionReservePrice', 'The auction reserve price (wei)', 1, types.int) // Default: 1 wei
   .addOptionalParam(
@@ -43,7 +43,7 @@ task('deploy-local', 'Deploy contracts to hardhat')
 
     const [deployer] = await ethers.getSigners();
     const nonce = await deployer.getTransactionCount();
-    const expectedNounsDAOProxyAddress = ethers.utils.getContractAddress({
+    const expectedSportsManagerDAOProxyAddress = ethers.utils.getContractAddress({
       from: deployer.address,
       nonce: nonce + GOVERNOR_N_DELEGATOR_NONCE_OFFSET,
     });
@@ -54,32 +54,32 @@ task('deploy-local', 'Deploy contracts to hardhat')
     const contracts: Record<LocalContractName, Contract> = {
       WETH: {},
       NFTDescriptor: {},
-      NounsDescriptor: {
+      SportsManagerDescriptor: {
         libraries: () => ({
           NFTDescriptor: contracts.NFTDescriptor.instance?.address as string,
         }),
       },
-      NounsSeeder: {},
-      NounsToken: {
+      SportsManagerSeeder: {},
+      SportsManagerToken: {
         args: [
-          args.noundersdao || deployer.address,
+          args.sportsManagerdao || deployer.address,
           expectedAuctionHouseProxyAddress,
-          () => contracts.NounsDescriptor.instance?.address,
-          () => contracts.NounsSeeder.instance?.address,
+          () => contracts.SportsManagerDescriptor.instance?.address,
+          () => contracts.SportsManagerSeeder.instance?.address,
           proxyRegistryAddress,
         ],
       },
-      NounsAuctionHouse: {
+      SportsManagerAuctionHouse: {
         waitForConfirmation: true,
       },
-      NounsAuctionHouseProxyAdmin: {},
-      NounsAuctionHouseProxy: {
+      SportsManagerAuctionHouseProxyAdmin: {},
+      SportsManagerAuctionHouseProxy: {
         args: [
-          () => contracts.NounsAuctionHouse.instance?.address,
-          () => contracts.NounsAuctionHouseProxyAdmin.instance?.address,
+          () => contracts.SportsManagerAuctionHouse.instance?.address,
+          () => contracts.SportsManagerAuctionHouseProxyAdmin.instance?.address,
           () =>
-            new Interface(NounsAuctionHouseABI).encodeFunctionData('initialize', [
-              contracts.NounsToken.instance?.address,
+            new Interface(SportsManagerAuctionHouseABI.abi).encodeFunctionData('initialize', [
+              contracts.SportsManagerToken.instance?.address,
               contracts.WETH.instance?.address,
               args.auctionTimeBuffer,
               args.auctionReservePrice,
@@ -88,19 +88,19 @@ task('deploy-local', 'Deploy contracts to hardhat')
             ]),
         ],
       },
-      NounsDAOExecutor: {
-        args: [expectedNounsDAOProxyAddress, args.timelockDelay],
+      SportsManagerDAOExecutor: {
+        args: [expectedSportsManagerDAOProxyAddress, args.timelockDelay],
       },
-      NounsDAOLogicV1: {
+      SportsManagerDAOLogicV1: {
         waitForConfirmation: true,
       },
-      NounsDAOProxy: {
+      SportsManagerDAOProxy: {
         args: [
-          () => contracts.NounsDAOExecutor.instance?.address,
-          () => contracts.NounsToken.instance?.address,
-          args.noundersdao || deployer.address,
-          () => contracts.NounsDAOExecutor.instance?.address,
-          () => contracts.NounsDAOLogicV1.instance?.address,
+          () => contracts.SportsManagerDAOExecutor.instance?.address,
+          () => contracts.SportsManagerToken.instance?.address,
+          args.sportsManagerdao || deployer.address,
+          () => contracts.SportsManagerDAOExecutor.instance?.address,
+          () => contracts.SportsManagerDAOLogicV1.instance?.address,
           args.votingPeriod,
           args.votingDelay,
           args.proposalThresholdBps,

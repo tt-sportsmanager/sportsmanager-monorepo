@@ -1,4 +1,4 @@
-import { default as NounsAuctionHouseABI } from '../abi/contracts/NounsAuctionHouse.sol/NounsAuctionHouse.json';
+import { default as SportsManagerAuctionHouseABI } from '../abi/contracts/SportsManagerAuctionHouse.sol/SportsManagerAuctionHouse.json';
 import { ChainId, ContractDeployment, ContractName, DeployedContract } from './types';
 import { Interface } from 'ethers/lib/utils';
 import { task, types } from 'hardhat/config';
@@ -22,10 +22,10 @@ const wethContracts: Record<number, string> = {
 const AUCTION_HOUSE_PROXY_NONCE_OFFSET = 6;
 const GOVERNOR_N_DELEGATOR_NONCE_OFFSET = 9;
 
-task('deploy', 'Deploys NFTDescriptor, NounsDescriptor, NounsSeeder, and NounsToken')
+task('deploy', 'Deploys NFTDescriptor, SportsManagerDescriptor, SportsManagerSeeder, and SportsManagerToken')
   .addFlag('autoDeploy', 'Deploy all contracts without user interaction')
   .addOptionalParam('weth', 'The WETH contract address', undefined, types.string)
-  .addOptionalParam('noundersdao', 'The nounders DAO contract address', undefined, types.string)
+  .addOptionalParam('sportsManagerdao', 'The sportsManager DAO contract address', undefined, types.string)
   .addOptionalParam(
     'auctionTimeBuffer',
     'The auction time buffer (seconds)',
@@ -87,11 +87,11 @@ task('deploy', 'Deploys NFTDescriptor, NounsDescriptor, NounsSeeder, and NounsTo
     // prettier-ignore
     const proxyRegistryAddress = proxyRegistries[network.chainId] ?? proxyRegistries[ChainId.Rinkeby];
 
-    if (!args.noundersdao) {
+    if (!args.sportsManagerdao) {
       console.log(
-        `Nounders DAO address not provided. Setting to deployer (${deployer.address})...`,
+        `SportsManager DAO address not provided. Setting to deployer (${deployer.address})...`,
       );
-      args.noundersdao = deployer.address;
+      args.sportsManagerdao = deployer.address;
     }
     if (!args.weth) {
       const deployedWETHContract = wethContracts[network.chainId];
@@ -108,7 +108,7 @@ task('deploy', 'Deploys NFTDescriptor, NounsDescriptor, NounsSeeder, and NounsTo
       from: deployer.address,
       nonce: nonce + AUCTION_HOUSE_PROXY_NONCE_OFFSET,
     });
-    const expectedNounsDAOProxyAddress = ethers.utils.getContractAddress({
+    const expectedSportsManagerDAOProxyAddress = ethers.utils.getContractAddress({
       from: deployer.address,
       nonce: nonce + GOVERNOR_N_DELEGATOR_NONCE_OFFSET,
     });
@@ -118,32 +118,32 @@ task('deploy', 'Deploys NFTDescriptor, NounsDescriptor, NounsSeeder, and NounsTo
     >;
     const contracts: Record<ContractName, ContractDeployment> = {
       NFTDescriptor: {},
-      NounsDescriptor: {
+      SportsManagerDescriptor: {
         libraries: () => ({
           NFTDescriptor: deployment.NFTDescriptor.address,
         }),
       },
-      NounsSeeder: {},
-      NounsToken: {
+      SportsManagerSeeder: {},
+      SportsManagerToken: {
         args: [
-          args.noundersdao,
+          args.sportsManagerdao,
           expectedAuctionHouseProxyAddress,
-          () => deployment.NounsDescriptor.address,
-          () => deployment.NounsSeeder.address,
+          () => deployment.SportsManagerDescriptor.address,
+          () => deployment.SportsManagerSeeder.address,
           proxyRegistryAddress,
         ],
       },
-      NounsAuctionHouse: {
+      SportsManagerAuctionHouse: {
         waitForConfirmation: true,
       },
-      NounsAuctionHouseProxyAdmin: {},
-      NounsAuctionHouseProxy: {
+      SportsManagerAuctionHouseProxyAdmin: {},
+      SportsManagerAuctionHouseProxy: {
         args: [
-          () => deployment.NounsAuctionHouse.address,
-          () => deployment.NounsAuctionHouseProxyAdmin.address,
+          () => deployment.SportsManagerAuctionHouse.address,
+          () => deployment.SportsManagerAuctionHouseProxyAdmin.address,
           () =>
-            new Interface(NounsAuctionHouseABI).encodeFunctionData('initialize', [
-              deployment.NounsToken.address,
+            new Interface(SportsManagerAuctionHouseABI.abi).encodeFunctionData('initialize', [
+              deployment.SportsManagerToken.address,
               args.weth,
               args.auctionTimeBuffer,
               args.auctionReservePrice,
@@ -154,7 +154,7 @@ task('deploy', 'Deploys NFTDescriptor, NounsDescriptor, NounsSeeder, and NounsTo
         waitForConfirmation: true,
         validateDeployment: () => {
           const expected = expectedAuctionHouseProxyAddress.toLowerCase();
-          const actual = deployment.NounsAuctionHouseProxy.address.toLowerCase();
+          const actual = deployment.SportsManagerAuctionHouseProxy.address.toLowerCase();
           if (expected !== actual) {
             throw new Error(
               `Unexpected auction house proxy address. Expected: ${expected}. Actual: ${actual}.`,
@@ -162,19 +162,19 @@ task('deploy', 'Deploys NFTDescriptor, NounsDescriptor, NounsSeeder, and NounsTo
           }
         },
       },
-      NounsDAOExecutor: {
-        args: [expectedNounsDAOProxyAddress, args.timelockDelay],
+      SportsManagerDAOExecutor: {
+        args: [expectedSportsManagerDAOProxyAddress, args.timelockDelay],
       },
-      NounsDAOLogicV1: {
+      SportsManagerDAOLogicV1: {
         waitForConfirmation: true,
       },
-      NounsDAOProxy: {
+      SportsManagerDAOProxy: {
         args: [
-          () => deployment.NounsDAOExecutor.address,
-          () => deployment.NounsToken.address,
-          args.noundersdao,
-          () => deployment.NounsDAOExecutor.address,
-          () => deployment.NounsDAOLogicV1.address,
+          () => deployment.SportsManagerDAOExecutor.address,
+          () => deployment.SportsManagerToken.address,
+          args.sportsManagerdao,
+          () => deployment.SportsManagerDAOExecutor.address,
+          () => deployment.SportsManagerDAOLogicV1.address,
           args.votingPeriod,
           args.votingDelay,
           args.proposalThresholdBps,
@@ -182,11 +182,11 @@ task('deploy', 'Deploys NFTDescriptor, NounsDescriptor, NounsSeeder, and NounsTo
         ],
         waitForConfirmation: true,
         validateDeployment: () => {
-          const expected = expectedNounsDAOProxyAddress.toLowerCase();
-          const actual = deployment.NounsDAOProxy.address.toLowerCase();
+          const expected = expectedSportsManagerDAOProxyAddress.toLowerCase();
+          const actual = deployment.SportsManagerDAOProxy.address.toLowerCase();
           if (expected !== actual) {
             throw new Error(
-              `Unexpected Nouns DAO proxy address. Expected: ${expected}. Actual: ${actual}.`,
+              `Unexpected SportsManager DAO proxy address. Expected: ${expected}. Actual: ${actual}.`,
             );
           }
         },

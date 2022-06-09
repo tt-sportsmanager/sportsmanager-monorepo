@@ -15,16 +15,16 @@ task('update-configs', 'Write the deployed addresses to the SDK and subgraph con
       const addressesPath = join(sdkPath, 'src/contract/addresses.json');
       const addresses = JSON.parse(readFileSync(addressesPath, 'utf8'));
       addresses[chainId] = {
-        nounsToken: contracts.NounsToken.address,
-        nounsSeeder: contracts.NounsSeeder.address,
-        nounsDescriptor: contracts.NounsDescriptor.address,
+        nounsToken: contracts.SportsManagerToken.address,
+        nounsSeeder: contracts.SportsManagerSeeder.address,
+        nounsDescriptor: contracts.SportsManagerDescriptor.address,
         nftDescriptor: contracts.NFTDescriptor.address,
-        nounsAuctionHouse: contracts.NounsAuctionHouse.address,
-        nounsAuctionHouseProxy: contracts.NounsAuctionHouseProxy.address,
-        nounsAuctionHouseProxyAdmin: contracts.NounsAuctionHouseProxyAdmin.address,
-        nounsDaoExecutor: contracts.NounsDAOExecutor.address,
-        nounsDAOProxy: contracts.NounsDAOProxy.address,
-        nounsDAOLogicV1: contracts.NounsDAOLogicV1.address,
+        nounsAuctionHouse: contracts.SportsManagerAuctionHouse.address,
+        nounsAuctionHouseProxy: contracts.SportsManagerAuctionHouseProxy.address,
+        nounsAuctionHouseProxyAdmin: contracts.SportsManagerAuctionHouseProxyAdmin.address,
+        nounsDaoExecutor: contracts.SportsManagerDAOExecutor.address,
+        nounsDAOProxy: contracts.SportsManagerDAOProxy.address,
+        nounsDAOLogicV1: contracts.SportsManagerDAOLogicV1.address,
       };
       writeFileSync(addressesPath, JSON.stringify(addresses, null, 2));
       try {
@@ -34,7 +34,7 @@ task('update-configs', 'Write the deployed addresses to the SDK and subgraph con
       } catch {
         console.log('Failed to re-build `@sports-manager/sdk`. Please rebuild manually.');
       }
-      console.log('Addresses written to the Nouns SDK.');
+      console.log('Addresses written to the SportsManager SDK.');
 
       // Generate subgraph config
       const configName = `${network}-fork`;
@@ -42,16 +42,16 @@ task('update-configs', 'Write the deployed addresses to the SDK and subgraph con
       const subgraphConfig = {
         network,
         nounsToken: {
-          address: contracts.NounsToken.address,
-          startBlock: contracts.NounsToken.instance.deployTransaction.blockNumber,
+          address: contracts.SportsManagerToken.address,
+          startBlock: contracts.SportsManagerToken.instance.deployTransaction.blockNumber,
         },
         nounsAuctionHouse: {
-          address: contracts.NounsAuctionHouseProxy.address,
-          startBlock: contracts.NounsAuctionHouseProxy.instance.deployTransaction.blockNumber,
+          address: contracts.SportsManagerAuctionHouseProxy.address,
+          startBlock: contracts.SportsManagerAuctionHouseProxy.instance.deployTransaction.blockNumber,
         },
         nounsDAO: {
-          address: contracts.NounsDAOProxy.address,
-          startBlock: contracts.NounsDAOProxy.instance.deployTransaction.blockNumber,
+          address: contracts.SportsManagerDAOProxy.address,
+          startBlock: contracts.SportsManagerDAOProxy.instance.deployTransaction.blockNumber,
         },
       };
       writeFileSync(subgraphConfigPath, JSON.stringify(subgraphConfig, null, 2));
