@@ -1,4 +1,4 @@
-import { Auction } from '../../wrappers/nounsAuction';
+import { Auction } from '../../wrappers/sportsManagerAuction';
 import React, { useState, useEffect } from 'react';
 import BigNumber from 'bignumber.js';
 import { Row, Col } from 'react-bootstrap';
@@ -26,7 +26,7 @@ import { Trans } from '@lingui/macro';
 import Holder from '../Holder';
 
 const openEtherscanBidHistory = () => {
-  const url = buildEtherscanAddressLink(config.addresses.nounsAuctionHouseProxy);
+  const url = buildEtherscanAddressLink(config.addresses.sportsManagerAuctionHouseProxy);
   window.open(url);
 };
 
@@ -108,7 +108,7 @@ const AuctionActivity: React.FC<AuctionActivityProps> = (props: AuctionActivityP
               <AuctionActivityDateHeadline startTime={auction.startTime} />
             </AuctionTitleAndNavWrapper>
             <Col lg={12}>
-              <AuctionActivityNounTitle isCool={isCool} nounId={auction.nounId} />
+              <AuctionActivityNounTitle isCool={isCool} sportsManagerId={auction.sportsManagerId} />
             </Col>
           </Row>
           <Row className={classes.activityRow}>
@@ -123,7 +123,7 @@ const AuctionActivity: React.FC<AuctionActivityProps> = (props: AuctionActivityP
                 isLastAuction ? (
                   <Winner winner={auction.bidder} />
                 ) : (
-                  <Holder nounId={auction.nounId.toNumber()} />
+                  <Holder sportsManagerId={auction.sportsManagerId.toNumber()} />
                 )
               ) : (
                 <AuctionTimer auction={auction} auctionEnded={auctionEnded} />
@@ -154,13 +154,13 @@ const AuctionActivity: React.FC<AuctionActivityProps> = (props: AuctionActivityP
           <Col lg={12}>
             {!isLastAuction ? (
               <NounInfoCard
-                nounId={auction.nounId.toNumber()}
+                sportsManagerId={auction.sportsManagerId.toNumber()}
                 bidHistoryOnClickHandler={showBidModalHandler}
               />
             ) : (
               displayGraphDepComps && (
                 <BidHistory
-                  auctionId={auction.nounId.toString()}
+                  auctionId={auction.sportsManagerId.toString()}
                   max={3}
                   classes={bidHistoryClasses}
                 />

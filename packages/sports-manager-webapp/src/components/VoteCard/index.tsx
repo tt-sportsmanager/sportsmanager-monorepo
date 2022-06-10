@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
 import { isMobileScreen } from '../../utils/isMobile';
-import { Proposal } from '../../wrappers/nounsDao';
+import { Proposal } from '../../wrappers/sportsManagerDao';
 import NounImageVoteTable from '../NounImageVoteTable';
 import VoteProgressBar from '../VoteProgressBar';
 import classes from './VoteCard.module.css';
@@ -17,12 +17,12 @@ export enum VoteCardVariant {
 interface VoteCardProps {
   proposal: Proposal;
   percentage: number;
-  nounIds: Array<string>;
+  sportsManagerIdArray: Array<string>;
   variant: VoteCardVariant;
 }
 
 const VoteCard: React.FC<VoteCardProps> = props => {
-  const { proposal, percentage, nounIds, variant } = props;
+  const { proposal, percentage, sportsManagerIdArray, variant } = props;
   const isMobile = isMobileScreen();
 
   let titleClass;
@@ -64,7 +64,7 @@ const VoteCard: React.FC<VoteCardProps> = props => {
           <VoteProgressBar variant={variant} percentage={percentage} />
           {!isMobile && (
             <Row className={classes.nounProfilePics}>
-              <NounImageVoteTable nounIds={nounIds} propId={parseInt(proposal.id || '0')} />
+              <NounImageVoteTable sportsManagerIdArray={sportsManagerIdArray} propId={parseInt(proposal.id || '0')} />
             </Row>
           )}
         </Card.Body>

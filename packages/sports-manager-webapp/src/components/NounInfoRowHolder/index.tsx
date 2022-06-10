@@ -14,13 +14,13 @@ import { useAppSelector } from '../../hooks';
 import { Trans } from '@lingui/macro';
 
 interface NounInfoRowHolderProps {
-  nounId: number;
+  sportsManagerId: number;
 }
 
 const NounInfoRowHolder: React.FC<NounInfoRowHolderProps> = props => {
-  const { nounId } = props;
+  const { sportsManagerId } = props;
   const isCool = useAppSelector(state => state.application.isCoolBackground);
-  const { loading, error, data } = useQuery(auctionQuery(nounId));
+  const { loading, error, data } = useQuery(auctionQuery(sportsManagerId));
 
   const winner = data && data.auction.bidder.id;
 
@@ -60,7 +60,7 @@ const NounInfoRowHolder: React.FC<NounInfoRowHolderProps> = props => {
           target={'_blank'}
           rel="noreferrer"
         >
-          {winner.toLowerCase() === config.addresses.nounsAuctionHouseProxy.toLowerCase() ? (
+          {winner.toLowerCase() === config.addresses.sportsManagerAuctionHouseProxy.toLowerCase() ? (
             <Trans>Nouns Auction House</Trans>
           ) : (
             shortAddressComponent

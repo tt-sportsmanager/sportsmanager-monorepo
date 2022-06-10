@@ -1,6 +1,6 @@
 import { useContractCall, useEthers } from '@usedapp/core';
 import { BigNumber as EthersBN, utils } from 'ethers';
-import { NounsTokenABI } from '@sports-manager/contracts';
+import { SportsManagerTokenABI } from '@sports-manager/contracts';
 import config, { cache, cacheKey, CHAIN_ID } from '../config';
 import { useQuery } from '@apollo/client';
 import { seedsQuery } from './subgraph';
@@ -20,8 +20,8 @@ export interface INounSeed {
   head: number;
 }
 
-const abi = new utils.Interface(NounsTokenABI);
-const seedCacheKey = cacheKey(cache.seed, CHAIN_ID, config.addresses.nounsToken);
+const abi = new utils.Interface(SportsManagerTokenABI.abi);
+const seedCacheKey = cacheKey(cache.seed, CHAIN_ID, config.addresses.sportsManagerToken);
 
 const isSeedValid = (seed: Record<string, any> | undefined) => {
   const expectedKeys = ['background', 'body', 'accessory', 'head', 'glasses'];
@@ -34,7 +34,7 @@ export const useNounToken = (nounId: EthersBN) => {
   const [noun] =
     useContractCall<[string]>({
       abi,
-      address: config.addresses.nounsToken,
+      address: config.addresses.sportsManagerToken,
       method: 'dataURI',
       args: [nounId],
     }) || [];
@@ -84,7 +84,7 @@ export const useNounSeed = (nounId: EthersBN) => {
   // prettier-ignore
   const request = seed ? false : {
     abi,
-    address: config.addresses.nounsToken,
+    address: config.addresses.sportsManagerToken,
     method: 'seeds',
     args: [nounId],
   };
@@ -114,7 +114,7 @@ export const useUserVotes = (): number | undefined => {
   const [votes] =
     useContractCall<[EthersBN]>({
       abi,
-      address: config.addresses.nounsToken,
+      address: config.addresses.sportsManagerToken,
       method: 'getCurrentVotes',
       args: [account],
     }) || [];
@@ -126,7 +126,7 @@ export const useUserDelegatee = (): string | undefined => {
   const [delegate] =
     useContractCall<[string]>({
       abi,
-      address: config.addresses.nounsToken,
+      address: config.addresses.sportsManagerToken,
       method: 'delegates',
       args: [account],
     }) || [];
@@ -140,7 +140,7 @@ export const useUserVotesAsOfBlock = (block: number | undefined): number | undef
   const [votes] =
     useContractCall<[EthersBN]>({
       abi,
-      address: config.addresses.nounsToken,
+      address: config.addresses.sportsManagerToken,
       method: 'getPriorVotes',
       args: [account, block],
     }) || [];

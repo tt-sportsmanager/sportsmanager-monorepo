@@ -1,4 +1,4 @@
-import { Auction } from '../wrappers/nounsAuction';
+import { Auction } from '../wrappers/sportsManagerAuction';
 import { AuctionState } from '../state/slices/auction';
 import { BigNumber } from '@ethersproject/bignumber';
 
@@ -12,14 +12,14 @@ const emptyNounderAuction = (onDisplayAuctionId: number): Auction => {
     bidder: '',
     startTime: BigNumber.from(0).toJSON(),
     endTime: BigNumber.from(0).toJSON(),
-    nounId: BigNumber.from(onDisplayAuctionId).toJSON(),
+    sportsManagerId: BigNumber.from(onDisplayAuctionId).toJSON(),
     settled: false,
   };
 };
 
 const findAuction = (id: BigNumber, auctions: AuctionState[]): Auction | undefined => {
   return auctions.find(auction => {
-    return BigNumber.from(auction.activeAuction?.nounId).eq(id);
+    return BigNumber.from(auction.activeAuction?.sportsManagerId).eq(id);
   })?.activeAuction;
 };
 

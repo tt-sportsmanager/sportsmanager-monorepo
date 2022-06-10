@@ -5,7 +5,7 @@ import { GrayCircle } from '../GrayCircle';
 import { pseudoRandomPredictableShuffle } from '../../utils/pseudoRandomPredictableShuffle';
 
 interface NounImageVoteTableProps {
-  nounIds: string[];
+  sportsManagerIdArray: string[];
   propId: number;
 }
 const NOUNS_PER_VOTE_CARD_DESKTOP = 15;
@@ -13,12 +13,12 @@ const NOUNS_PER_VOTE_CARD_DESKTOP = 15;
 const isXLScreen = window.innerWidth > 1200;
 
 const NounImageVoteTable: React.FC<NounImageVoteTableProps> = props => {
-  const { nounIds, propId } = props;
+  const { sportsManagerIdArray, propId } = props;
 
-  const shuffledNounIds = pseudoRandomPredictableShuffle(nounIds, propId);
+  const shuffledNounIds = pseudoRandomPredictableShuffle(sportsManagerIdArray, propId);
   const paddedNounIds = shuffledNounIds
-    .map((nounId: string) => {
-      return <StandaloneNounCircular nounId={EthersBN.from(nounId)} />;
+    .map((sportsManagerId: string) => {
+      return <StandaloneNounCircular sportsManagerId={EthersBN.from(sportsManagerId)} />;
     })
     .concat(Array(NOUNS_PER_VOTE_CARD_DESKTOP).fill(<GrayCircle />))
     .slice(0, NOUNS_PER_VOTE_CARD_DESKTOP);

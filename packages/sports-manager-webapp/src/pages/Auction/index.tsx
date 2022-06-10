@@ -17,7 +17,7 @@ const AuctionPage: React.FC<AuctionPageProps> = props => {
   const { initialAuctionId } = props;
   const onDisplayAuction = useOnDisplayAuction();
   const lastAuctionNounId = useAppSelector(state => state.onDisplayAuction.lastAuctionNounId);
-  const onDisplayAuctionNounId = onDisplayAuction?.nounId.toNumber();
+  const onDisplayAuctionNounId = onDisplayAuction?.sportsManagerId.toNumber();
 
   const dispatch = useAppDispatch();
 
@@ -47,7 +47,7 @@ const AuctionPage: React.FC<AuctionPageProps> = props => {
     <>
       <Auction auction={onDisplayAuction} />
       {onDisplayAuctionNounId !== undefined && onDisplayAuctionNounId !== lastAuctionNounId ? (
-        <ProfileActivityFeed nounId={onDisplayAuctionNounId} />
+        <ProfileActivityFeed sportsManagerId={onDisplayAuctionNounId} />
       ) : (
         <Banner />
       )}

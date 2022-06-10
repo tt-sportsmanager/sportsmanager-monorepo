@@ -2,7 +2,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { useAppSelector } from '../hooks';
 import { generateEmptyNounderAuction, isNounderNoun } from '../utils/nounderNoun';
 import { Bid, BidEvent } from '../utils/types';
-import { Auction } from './nounsAuction';
+import { Auction } from './sportsManagerAuction';
 
 const deserializeAuction = (reduxSafeAuction: Auction): Auction => {
   return {
@@ -10,14 +10,14 @@ const deserializeAuction = (reduxSafeAuction: Auction): Auction => {
     bidder: reduxSafeAuction.bidder,
     startTime: BigNumber.from(reduxSafeAuction.startTime),
     endTime: BigNumber.from(reduxSafeAuction.endTime),
-    nounId: BigNumber.from(reduxSafeAuction.nounId),
+    sportsManagerId: BigNumber.from(reduxSafeAuction.sportsManagerId),
     settled: false,
   };
 };
 
 const deserializeBid = (reduxSafeBid: BidEvent): Bid => {
   return {
-    nounId: BigNumber.from(reduxSafeBid.nounId),
+    sportsManagerId: BigNumber.from(reduxSafeBid.sportsManagerId),
     sender: reduxSafeBid.sender,
     value: BigNumber.from(reduxSafeBid.value),
     extended: reduxSafeBid.extended,
@@ -34,7 +34,7 @@ const deserializeBids = (reduxSafeBids: BidEvent[]): Bid[] => {
 };
 
 const useOnDisplayAuction = (): Auction | undefined => {
-  const lastAuctionNounId = useAppSelector(state => state.auction.activeAuction?.nounId);
+  const lastAuctionNounId = useAppSelector(state => state.auction.activeAuction?.sportsManagerId);
   const onDisplayAuctionNounId = useAppSelector(
     state => state.onDisplayAuction.onDisplayAuctionNounId,
   );
@@ -66,8 +66,8 @@ const useOnDisplayAuction = (): Auction | undefined => {
 
   // past auction
   const reduxSafeAuction: Auction | undefined = pastAuctions.find(auction => {
-    const nounId = auction.activeAuction && BigNumber.from(auction.activeAuction.nounId);
-    return nounId && nounId.toNumber() === onDisplayAuctionNounId;
+    const sportsManagerId = auction.activeAuction && BigNumber.from(auction.activeAuction.sportsManagerId);
+    return sportsManagerId && sportsManagerId.toNumber() === onDisplayAuctionNounId;
   })?.activeAuction;
 
   return reduxSafeAuction ? deserializeAuction(reduxSafeAuction) : undefined;
@@ -84,8 +84,8 @@ export const useAuctionBids = (auctionNounId: BigNumber): Bid[] | undefined => {
   } else {
     // find bids for past auction requested
     const bidEvents: BidEvent[] | undefined = pastAuctions.find(auction => {
-      const nounId = auction.activeAuction && BigNumber.from(auction.activeAuction.nounId);
-      return nounId && nounId.eq(auctionNounId);
+      const sportsManagerId = auction.activeAuction && BigNumber.from(auction.activeAuction.sportsManagerId);
+      return sportsManagerId && sportsManagerId.eq(auctionNounId);
     })?.bids;
 
     return bidEvents && deserializeBids(bidEvents);

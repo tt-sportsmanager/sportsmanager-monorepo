@@ -1,4 +1,4 @@
-import { NounsDAOABI, NounsDaoLogicV1Factory } from '@sports-manager/sdk';
+import { SportsManagerDAOABI, SportsManagerDaoLogicV1Factory } from '@sports-manager/sdk';
 import {
   ChainId,
   useBlockMeta,
@@ -116,8 +116,8 @@ export interface ProposalTransaction {
   calldata: string;
 }
 
-const abi = new utils.Interface(NounsDAOABI);
-const nounsDaoContract = new NounsDaoLogicV1Factory().attach(config.addresses.nounsDAOProxy);
+const abi = new utils.Interface(SportsManagerDAOABI.abi);
+const nounsDaoContract = new SportsManagerDaoLogicV1Factory().attach(config.addresses.sportsManagerDAOProxy);
 
 // Start the log search at the mainnet deployment block to speed up log queries
 const fromBlock = CHAIN_ID === ChainId.Mainnet ? 12985453 : 0;

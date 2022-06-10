@@ -1,4 +1,4 @@
-import { Proposal, ProposalState } from '../../wrappers/nounsDao';
+import { Proposal, ProposalState } from '../../wrappers/sportsManagerDao';
 import { Alert, Button } from 'react-bootstrap';
 import ProposalStatus from '../ProposalStatus';
 import classes from './Proposals.module.css';
@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 import { useBlockNumber, useEthers } from '@usedapp/core';
 import { isMobileScreen } from '../../utils/isMobile';
 import clsx from 'clsx';
-import { useUserVotes } from '../../wrappers/nounToken';
+import { useUserVotes } from '../../wrappers/sportsManagerToken';
 import { Trans } from '@lingui/macro';
 import { ClockIcon } from '@heroicons/react/solid';
 import proposalStatusClasses from '../ProposalStatus/ProposalStatus.module.css';

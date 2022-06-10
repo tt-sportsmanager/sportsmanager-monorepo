@@ -5,8 +5,8 @@ import {
   useExecuteProposal,
   useProposal,
   useQueueProposal,
-} from '../../wrappers/nounsDao';
-import { useUserVotesAsOfBlock } from '../../wrappers/nounToken';
+} from '../../wrappers/sportsManagerDao';
+import { useUserVotesAsOfBlock } from '../../wrappers/sportsManagerToken';
 import classes from './Vote.module.css';
 import { RouteComponentProps } from 'react-router-dom';
 import { TransactionStatus, useBlockNumber } from '@usedapp/core';
@@ -297,19 +297,19 @@ const VotePage = ({
           <VoteCard
             proposal={proposal}
             percentage={forPercentage}
-            nounIds={forNouns}
+            sportsManagerIdArray={forNouns}
             variant={VoteCardVariant.FOR}
           />
           <VoteCard
             proposal={proposal}
             percentage={againstPercentage}
-            nounIds={againstNouns}
+            sportsManagerIdArray={againstNouns}
             variant={VoteCardVariant.AGAINST}
           />
           <VoteCard
             proposal={proposal}
             percentage={abstainPercentage}
-            nounIds={abstainNouns}
+            sportsManagerIdArray={abstainNouns}
             variant={VoteCardVariant.ABSTAIN}
           />
         </Row>

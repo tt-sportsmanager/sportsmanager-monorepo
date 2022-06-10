@@ -18,7 +18,7 @@ import { useAppSelector } from '../../hooks';
 
 const NounderNounContent: React.FC<{
   mintTimestamp: BigNumber;
-  nounId: BigNumber;
+  sportsManagerId: BigNumber;
   isFirstAuction: boolean;
   isLastAuction: boolean;
   onPrevAuctionClick: () => void;
@@ -26,7 +26,7 @@ const NounderNounContent: React.FC<{
 }> = props => {
   const {
     mintTimestamp,
-    nounId,
+    sportsManagerId,
     isFirstAuction,
     isLastAuction,
     onPrevAuctionClick,
@@ -49,7 +49,7 @@ const NounderNounContent: React.FC<{
             <AuctionActivityDateHeadline startTime={mintTimestamp} />
           </AuctionTitleAndNavWrapper>
           <Col lg={12}>
-            <AuctionActivityNounTitle nounId={nounId} />
+            <AuctionActivityNounTitle sportsManagerId={sportsManagerId} />
           </Col>
         </Row>
         <Row className={auctionActivityClasses.activityRow}>

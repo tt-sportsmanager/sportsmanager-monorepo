@@ -239,7 +239,7 @@ const Documentation = () => {
                   generation:
                 </Trans>
               </p>
-              <code>keccak256(abi.encodePacked(blockhash(block.number - 1), nounId))</code>
+              <code>keccak256(abi.encodePacked(blockhash(block.number - 1), sportsManagerId))</code>
               <br />
               <br />
               <p>

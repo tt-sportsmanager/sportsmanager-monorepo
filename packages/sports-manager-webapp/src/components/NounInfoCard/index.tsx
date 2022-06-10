@@ -16,31 +16,31 @@ import { buildEtherscanAddressLink } from '../../utils/etherscan';
 import { Trans } from '@lingui/macro';
 
 interface NounInfoCardProps {
-  nounId: number;
+  sportsManagerId: number;
   bidHistoryOnClickHandler: () => void;
 }
 
 const NounInfoCard: React.FC<NounInfoCardProps> = props => {
-  const { nounId, bidHistoryOnClickHandler } = props;
+  const { sportsManagerId, bidHistoryOnClickHandler } = props;
 
-  const etherscanBaseURL = buildEtherscanAddressLink(config.addresses.nounsToken);
+  const etherscanBaseURL = buildEtherscanAddressLink(config.addresses.sportsManagerToken);
 
-  const etherscanButtonClickHandler = () => window.open(`${etherscanBaseURL}/${nounId}`, '_blank');
+  const etherscanButtonClickHandler = () => window.open(`${etherscanBaseURL}/${sportsManagerId}`, '_blank');
 
   const lastAuctionNounId = useAppSelector(state => state.onDisplayAuction.lastAuctionNounId);
 
   return (
     <>
       <Col lg={12} className={classes.nounInfoRow}>
-        <NounInfoRowBirthday nounId={nounId} />
+        <NounInfoRowBirthday sportsManagerId={sportsManagerId} />
       </Col>
       <Col lg={12} className={classes.nounInfoRow}>
-        <NounInfoRowHolder nounId={nounId} />
+        <NounInfoRowHolder sportsManagerId={sportsManagerId} />
       </Col>
       <Col lg={12} className={classes.nounInfoRow}>
         <NounInfoRowButton
           iconImgSource={_BidsIcon}
-          btnText={lastAuctionNounId === nounId ? <Trans>Bids</Trans> : <Trans>Bid history</Trans>}
+          btnText={lastAuctionNounId === sportsManagerId ? <Trans>Bids</Trans> : <Trans>Bid history</Trans>}
           onClickHandler={bidHistoryOnClickHandler}
         />
         <NounInfoRowButton

@@ -30,7 +30,7 @@ import LogsUpdater from './state/updaters/logs';
 import config, { CHAIN_ID, createNetworkHttpUrl } from './config';
 import { WebSocketProvider } from '@ethersproject/providers';
 import { BigNumber, BigNumberish } from 'ethers';
-import { NounsAuctionHouseFactory } from '@sports-manager/sdk';
+import { SportsManagerAuctionHouseFactory } from '@sports-manager/sdk';
 import dotenv from 'dotenv';
 import { useAppDispatch, useAppSelector } from './hooks';
 import { appendBid } from './state/slices/auction';
@@ -110,17 +110,17 @@ const ChainSubscriber: React.FC = () => {
 
   const loadState = async () => {
     const wsProvider = new WebSocketProvider(config.app.wsRpcUri);
-    const nounsAuctionHouseContract = NounsAuctionHouseFactory.connect(
-      config.addresses.nounsAuctionHouseProxy,
+    const sportsManagerAuctionHouseContract = SportsManagerAuctionHouseFactory.connect(
+      config.addresses.sportsManagerAuctionHouseProxy,
       wsProvider,
     );
 
-    const bidFilter = nounsAuctionHouseContract.filters.AuctionBid(null, null, null, null);
-    const extendedFilter = nounsAuctionHouseContract.filters.AuctionExtended(null, null);
-    const createdFilter = nounsAuctionHouseContract.filters.AuctionCreated(null, null, null);
-    const settledFilter = nounsAuctionHouseContract.filters.AuctionSettled(null, null, null);
+    const bidFilter = sportsManagerAuctionHouseContract.filters.AuctionBid(null, null, null, null);
+    const extendedFilter = sportsManagerAuctionHouseContract.filters.AuctionExtended(null, null);
+    const createdFilter = sportsManagerAuctionHouseContract.filters.AuctionCreated(null, null, null);
+    const settledFilter = sportsManagerAuctionHouseContract.filters.AuctionSettled(null, null, null);
     const processBidFilter = async (
-      nounId: BigNumberish,
+      sportsManagerId: BigNumberish,
       sender: string,
       value: BigNumberish,
       extended: boolean,
@@ -129,52 +129,52 @@ const ChainSubscriber: React.FC = () => {
       const timestamp = (await event.getBlock()).timestamp;
       const transactionHash = event.transactionHash;
       dispatch(
-        appendBid(reduxSafeBid({ nounId, sender, value, extended, transactionHash, timestamp })),
+        appendBid(reduxSafeBid({ sportsManagerId, sender, value, extended, transactionHash, timestamp })),
       );
     };
     const processAuctionCreated = (
-      nounId: BigNumberish,
+      sportsManagerId: BigNumberish,
       startTime: BigNumberish,
       endTime: BigNumberish,
     ) => {
       dispatch(
-        setActiveAuction(reduxSafeNewAuction({ nounId, startTime, endTime, settled: false })),
+        setActiveAuction(reduxSafeNewAuction({ sportsManagerId, startTime, endTime, settled: false })),
       );
-      const nounIdNumber = BigNumber.from(nounId).toNumber();
-      dispatch(push(nounPath(nounIdNumber)));
-      dispatch(setOnDisplayAuctionNounId(nounIdNumber));
-      dispatch(setLastAuctionNounId(nounIdNumber));
+      const sportsManagerIdNumber = BigNumber.from(sportsManagerId).toNumber();
+      dispatch(push(nounPath(sportsManagerIdNumber)));
+      dispatch(setOnDisplayAuctionNounId(sportsManagerIdNumber));
+      dispatch(setLastAuctionNounId(sportsManagerIdNumber));
     };
-    const processAuctionExtended = (nounId: BigNumberish, endTime: BigNumberish) => {
-      dispatch(setAuctionExtended({ nounId, endTime }));
+    const processAuctionExtended = (sportsManagerId: BigNumberish, endTime: BigNumberish) => {
+      dispatch(setAuctionExtended({ sportsManagerId, endTime }));
     };
-    const processAuctionSettled = (nounId: BigNumberish, winner: string, amount: BigNumberish) => {
-      dispatch(setAuctionSettled({ nounId, amount, winner }));
+    const processAuctionSettled = (sportsManagerId: BigNumberish, winner: string, amount: BigNumberish) => {
+      dispatch(setAuctionSettled({ sportsManagerId, amount, winner }));
     };
 
     // Fetch the current auction
-    const currentAuction = await nounsAuctionHouseContract.auction();
+    const currentAuction = await sportsManagerAuctionHouseContract.auction();
     dispatch(setFullAuction(reduxSafeAuction(currentAuction)));
-    dispatch(setLastAuctionNounId(currentAuction.nounId.toNumber()));
+    dispatch(setLastAuctionNounId(currentAuction.sportsManagerId.toNumber()));
 
     // Fetch the previous 24hours of  bids
-    const previousBids = await nounsAuctionHouseContract.queryFilter(bidFilter, 0 - BLOCKS_PER_DAY);
+    const previousBids = await sportsManagerAuctionHouseContract.queryFilter(bidFilter, 0 - BLOCKS_PER_DAY);
     for (let event of previousBids) {
       if (event.args === undefined) return;
       processBidFilter(...(event.args as [BigNumber, string, BigNumber, boolean]), event);
     }
 
-    nounsAuctionHouseContract.on(bidFilter, (nounId, sender, value, extended, event) =>
-      processBidFilter(nounId, sender, value, extended, event),
+    sportsManagerAuctionHouseContract.on(bidFilter, (sportsManagerId, sender, value, extended, event) =>
+      processBidFilter(sportsManagerId, sender, value, extended, event),
     );
-    nounsAuctionHouseContract.on(createdFilter, (nounId, startTime, endTime) =>
-      processAuctionCreated(nounId, startTime, endTime),
+    sportsManagerAuctionHouseContract.on(createdFilter, (sportsManagerId, startTime, endTime) =>
+      processAuctionCreated(sportsManagerId, startTime, endTime),
     );
-    nounsAuctionHouseContract.on(extendedFilter, (nounId, endTime) =>
-      processAuctionExtended(nounId, endTime),
+    sportsManagerAuctionHouseContract.on(extendedFilter, (sportsManagerId, endTime) =>
+      processAuctionExtended(sportsManagerId, endTime),
     );
-    nounsAuctionHouseContract.on(settledFilter, (nounId, winner, amount) =>
-      processAuctionSettled(nounId, winner, amount),
+    sportsManagerAuctionHouseContract.on(settledFilter, (sportsManagerId, winner, amount) =>
+      processAuctionSettled(sportsManagerId, winner, amount),
     );
   };
   loadState();

@@ -7,8 +7,8 @@ import {
   useProposalCount,
   useProposalThreshold,
   usePropose,
-} from '../../wrappers/nounsDao';
-import { useUserVotes } from '../../wrappers/nounToken';
+} from '../../wrappers/sportsManagerDao';
+import { useUserVotes } from '../../wrappers/sportsManagerToken';
 import classes from './CreateProposal.module.css';
 import { Link } from 'react-router-dom';
 import { useEthers } from '@usedapp/core';

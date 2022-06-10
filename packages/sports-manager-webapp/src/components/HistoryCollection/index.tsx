@@ -19,8 +19,8 @@ const HistoryCollection: React.FC<HistoryCollectionProps> = (props: HistoryColle
 
   const startAtZero = BigNumber.from(latestNounId).sub(historyCount).lt(0);
 
-  let nounIds: Array<BigNumber | null> = new Array(historyCount);
-  nounIds = nounIds.fill(null).map((_, i) => {
+  let sportsManagerIdArray: Array<BigNumber | null> = new Array(historyCount);
+  sportsManagerIdArray = sportsManagerIdArray.fill(null).map((_, i) => {
     if (BigNumber.from(i).lt(latestNounId)) {
       const index = startAtZero
         ? BigNumber.from(0)
@@ -31,8 +31,8 @@ const HistoryCollection: React.FC<HistoryCollectionProps> = (props: HistoryColle
     }
   });
 
-  const nounsContent = nounIds.map((nounId, i) => {
-    return !nounId ? <LoadingNoun key={i} /> : <StandaloneNoun key={i} nounId={nounId} />;
+  const nounsContent = sportsManagerIdArray.map((sportsManagerId, i) => {
+    return !sportsManagerId ? <LoadingNoun key={i} /> : <StandaloneNoun key={i} sportsManagerId={sportsManagerId} />;
   });
 
   return (

@@ -1,7 +1,7 @@
 import { ImageData as data, getNounData } from '@sports-manager/assets';
 import { buildSVG } from '@sports-manager/sdk';
 import { BigNumber as EthersBN } from 'ethers';
-import { INounSeed, useNounSeed } from '../../wrappers/nounToken';
+import { INounSeed, useNounSeed } from '../../wrappers/sportsManagerToken';
 import Noun from '../Noun';
 import { Link } from 'react-router-dom';
 import classes from './StandaloneNoun.module.css';
@@ -10,20 +10,20 @@ import { setOnDisplayAuctionNounId } from '../../state/slices/onDisplayAuction';
 import nounClasses from '../Noun/Noun.module.css';
 
 interface StandaloneNounProps {
-  nounId: EthersBN;
+  sportsManagerId: EthersBN;
 }
 interface StandaloneCircularNounProps {
-  nounId: EthersBN;
+  sportsManagerId: EthersBN;
 }
 
 interface StandaloneNounWithSeedProps {
-  nounId: EthersBN;
+  sportsManagerId: EthersBN;
   onLoadSeed?: (seed: INounSeed) => void;
   shouldLinkToProfile: boolean;
 }
 
-const getNoun = (nounId: string | EthersBN, seed: INounSeed) => {
-  const id = nounId.toString();
+const getNoun = (sportsManagerId: string | EthersBN, seed: INounSeed) => {
+  const id = sportsManagerId.toString();
   const name = `Noun ${id}`;
   const description = `Noun ${id} is a member of the Nouns DAO`;
   const { parts, background } = getNounData(seed);
@@ -37,19 +37,19 @@ const getNoun = (nounId: string | EthersBN, seed: INounSeed) => {
 };
 
 const StandaloneNoun: React.FC<StandaloneNounProps> = (props: StandaloneNounProps) => {
-  const { nounId } = props;
-  const seed = useNounSeed(nounId);
-  const noun = seed && getNoun(nounId, seed);
+  const { sportsManagerId } = props;
+  const seed = useNounSeed(sportsManagerId);
+  const noun = seed && getNoun(sportsManagerId, seed);
 
   const dispatch = useDispatch();
 
   const onClickHandler = () => {
-    dispatch(setOnDisplayAuctionNounId(nounId.toNumber()));
+    dispatch(setOnDisplayAuctionNounId(sportsManagerId.toNumber()));
   };
 
   return (
     <Link
-      to={'/noun/' + nounId.toString()}
+      to={'/noun/' + sportsManagerId.toString()}
       className={classes.clickableNoun}
       onClick={onClickHandler}
     >
@@ -61,18 +61,18 @@ const StandaloneNoun: React.FC<StandaloneNounProps> = (props: StandaloneNounProp
 export const StandaloneNounCircular: React.FC<StandaloneCircularNounProps> = (
   props: StandaloneCircularNounProps,
 ) => {
-  const { nounId } = props;
-  const seed = useNounSeed(nounId);
-  const noun = seed && getNoun(nounId, seed);
+  const { sportsManagerId } = props;
+  const seed = useNounSeed(sportsManagerId);
+  const noun = seed && getNoun(sportsManagerId, seed);
 
   const dispatch = useDispatch();
   const onClickHandler = () => {
-    dispatch(setOnDisplayAuctionNounId(nounId.toNumber()));
+    dispatch(setOnDisplayAuctionNounId(sportsManagerId.toNumber()));
   };
 
   return (
     <Link
-      to={'/noun/' + nounId.toString()}
+      to={'/noun/' + sportsManagerId.toString()}
       className={classes.clickableNoun}
       onClick={onClickHandler}
     >
@@ -89,18 +89,18 @@ export const StandaloneNounCircular: React.FC<StandaloneCircularNounProps> = (
 export const StandaloneNounRoundedCorners: React.FC<StandaloneNounProps> = (
   props: StandaloneNounProps,
 ) => {
-  const { nounId } = props;
-  const seed = useNounSeed(nounId);
-  const noun = seed && getNoun(nounId, seed);
+  const { sportsManagerId } = props;
+  const seed = useNounSeed(sportsManagerId);
+  const noun = seed && getNoun(sportsManagerId, seed);
 
   const dispatch = useDispatch();
   const onClickHandler = () => {
-    dispatch(setOnDisplayAuctionNounId(nounId.toNumber()));
+    dispatch(setOnDisplayAuctionNounId(sportsManagerId.toNumber()));
   };
 
   return (
     <Link
-      to={'/noun/' + nounId.toString()}
+      to={'/noun/' + sportsManagerId.toString()}
       className={classes.clickableNoun}
       onClick={onClickHandler}
     >
@@ -116,26 +116,26 @@ export const StandaloneNounRoundedCorners: React.FC<StandaloneNounProps> = (
 export const StandaloneNounWithSeed: React.FC<StandaloneNounWithSeedProps> = (
   props: StandaloneNounWithSeedProps,
 ) => {
-  const { nounId, onLoadSeed, shouldLinkToProfile } = props;
+  const { sportsManagerId, onLoadSeed, shouldLinkToProfile } = props;
 
   const dispatch = useDispatch();
-  const seed = useNounSeed(nounId);
+  const seed = useNounSeed(sportsManagerId);
   const seedIsInvalid = Object.values(seed || {}).every(v => v === 0);
 
-  if (!seed || seedIsInvalid || !nounId || !onLoadSeed) return <Noun imgPath="" alt="Noun" />;
+  if (!seed || seedIsInvalid || !sportsManagerId || !onLoadSeed) return <Noun imgPath="" alt="Noun" />;
 
   onLoadSeed(seed);
 
   const onClickHandler = () => {
-    dispatch(setOnDisplayAuctionNounId(nounId.toNumber()));
+    dispatch(setOnDisplayAuctionNounId(sportsManagerId.toNumber()));
   };
 
-  const { image, description } = getNoun(nounId, seed);
+  const { image, description } = getNoun(sportsManagerId, seed);
 
   const noun = <Noun imgPath={image} alt={description} />;
   const nounWithLink = (
     <Link
-      to={'/noun/' + nounId.toString()}
+      to={'/noun/' + sportsManagerId.toString()}
       className={classes.clickableNoun}
       onClick={onClickHandler}
     >

@@ -4,9 +4,9 @@ import AuctionActivity from '../AuctionActivity';
 import { Row, Container } from 'react-bootstrap';
 import { setStateBackgroundColor } from '../../state/slices/application';
 import { LoadingNoun } from '../Noun';
-import { Auction as IAuction } from '../../wrappers/nounsAuction';
+import { Auction as IAuction } from '../../wrappers/sportsManagerAuction';
 import classes from './Auction.module.css';
-import { INounSeed } from '../../wrappers/nounToken';
+import { INounSeed } from '../../wrappers/sportsManagerToken';
 import NounderNounContent from '../NounderNounContent';
 import { useHistory } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -35,17 +35,17 @@ const Auction: React.FC<AuctionProps> = props => {
 
   const prevAuctionHandler = () => {
     dispatch(setPrevOnDisplayAuctionNounId());
-    currentAuction && history.push(`/noun/${currentAuction.nounId.toNumber() - 1}`);
+    currentAuction && history.push(`/noun/${currentAuction.sportsManagerId.toNumber() - 1}`);
   };
   const nextAuctionHandler = () => {
     dispatch(setNextOnDisplayAuctionNounId());
-    currentAuction && history.push(`/noun/${currentAuction.nounId.toNumber() + 1}`);
+    currentAuction && history.push(`/noun/${currentAuction.sportsManagerId.toNumber() + 1}`);
   };
 
   const nounContent = currentAuction && (
     <div className={classes.nounWrapper}>
       <StandaloneNounWithSeed
-        nounId={currentAuction.nounId}
+        sportsManagerId={currentAuction.sportsManagerId}
         onLoadSeed={loadedNounHandler}
         shouldLinkToProfile={false}
       />
@@ -61,8 +61,8 @@ const Auction: React.FC<AuctionProps> = props => {
   const currentAuctionActivityContent = currentAuction && lastNounId && (
     <AuctionActivity
       auction={currentAuction}
-      isFirstAuction={currentAuction.nounId.eq(0)}
-      isLastAuction={currentAuction.nounId.eq(lastNounId)}
+      isFirstAuction={currentAuction.sportsManagerId.eq(0)}
+      isLastAuction={currentAuction.sportsManagerId.eq(lastNounId)}
       onPrevAuctionClick={prevAuctionHandler}
       onNextAuctionClick={nextAuctionHandler}
       displayGraphDepComps={true}
@@ -71,9 +71,9 @@ const Auction: React.FC<AuctionProps> = props => {
   const nounderNounContent = currentAuction && lastNounId && (
     <NounderNounContent
       mintTimestamp={currentAuction.startTime}
-      nounId={currentAuction.nounId}
-      isFirstAuction={currentAuction.nounId.eq(0)}
-      isLastAuction={currentAuction.nounId.eq(lastNounId)}
+      sportsManagerId={currentAuction.sportsManagerId}
+      isFirstAuction={currentAuction.sportsManagerId.eq(0)}
+      isLastAuction={currentAuction.sportsManagerId.eq(lastNounId)}
       onPrevAuctionClick={prevAuctionHandler}
       onNextAuctionClick={nextAuctionHandler}
     />
@@ -88,7 +88,7 @@ const Auction: React.FC<AuctionProps> = props => {
           </Col>
           <Col lg={{ span: 6 }} className={classes.auctionActivityCol}>
             {currentAuction &&
-              (isNounderNoun(currentAuction.nounId)
+              (isNounderNoun(currentAuction.sportsManagerId)
                 ? nounderNounContent
                 : currentAuctionActivityContent)}
           </Col>

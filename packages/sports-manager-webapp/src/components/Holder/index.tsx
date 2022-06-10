@@ -8,16 +8,16 @@ import { useQuery } from '@apollo/client';
 import { nounQuery } from '../../wrappers/subgraph';
 
 interface HolderProps {
-  nounId: number;
+  sportsManagerId: number;
   isNounders?: boolean;
 }
 
 const Holder: React.FC<HolderProps> = props => {
-  const { nounId, isNounders } = props;
+  const { sportsManagerId, isNounders } = props;
 
   const isCool = useAppSelector(state => state.application.isCoolBackground);
 
-  const { loading, error, data } = useQuery(nounQuery(nounId.toString()));
+  const { loading, error, data } = useQuery(nounQuery(sportsManagerId.toString()));
 
   if (loading) {
     return <></>;

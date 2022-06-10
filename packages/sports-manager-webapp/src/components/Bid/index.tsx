@@ -1,4 +1,4 @@
-import { Auction, AuctionHouseContractFunction } from '../../wrappers/nounsAuction';
+import { Auction, AuctionHouseContractFunction } from '../../wrappers/sportsManagerAuction';
 import { useEthers, useContractFunction } from '@usedapp/core';
 import { connectContractToSigner } from '@usedapp/core/dist/cjs/src/hooks';
 import { useAppSelector } from '../../hooks';
@@ -7,10 +7,10 @@ import { utils, BigNumber as EthersBN } from 'ethers';
 import BigNumber from 'bignumber.js';
 import classes from './Bid.module.css';
 import { Spinner, InputGroup, FormControl, Button, Col } from 'react-bootstrap';
-import { useAuctionMinBidIncPercentage } from '../../wrappers/nounsAuction';
+import { useAuctionMinBidIncPercentage } from '../../wrappers/sportsManagerAuction';
 import { useAppDispatch } from '../../hooks';
 import { AlertModal, setAlertModal } from '../../state/slices/application';
-import { NounsAuctionHouseFactory } from '@sports-manager/sdk';
+import { SportsManagerAuctionHouseFactory } from '@sports-manager/sdk';
 import config from '../../config';
 import WalletConnectModal from '../WalletConnectModal';
 import SettleManuallyBtn from '../SettleManuallyBtn';
@@ -54,8 +54,8 @@ const Bid: React.FC<{
   const { library } = useEthers();
   let { auction, auctionEnded } = props;
   const activeLocale = useActiveLocale();
-  const nounsAuctionHouseContract = new NounsAuctionHouseFactory().attach(
-    config.addresses.nounsAuctionHouseProxy,
+  const nounsAuctionHouseContract = new SportsManagerAuctionHouseFactory().attach(
+    config.addresses.sportsManagerAuctionHouseProxy,
   );
 
   const account = useAppSelector(state => state.account.activeAccount);
@@ -126,10 +126,10 @@ const Bid: React.FC<{
 
     const value = utils.parseEther(bidInputRef.current.value.toString());
     const contract = connectContractToSigner(nounsAuctionHouseContract, undefined, library);
-    const gasLimit = await contract.estimateGas.createBid(auction.nounId, {
+    const gasLimit = await contract.estimateGas.createBid(auction.sportsManagerId, {
       value,
     });
-    placeBid(auction.nounId, {
+    placeBid(auction.sportsManagerId, {
       value,
       gasLimit: gasLimit.add(10_000), // A 10,000 gas pad is used to avoid 'Out of gas' errors
     });

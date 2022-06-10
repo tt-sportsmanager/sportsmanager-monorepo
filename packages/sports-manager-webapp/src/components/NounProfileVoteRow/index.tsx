@@ -1,10 +1,10 @@
-import { Proposal } from '../../wrappers/nounsDao';
+import { Proposal } from '../../wrappers/sportsManagerDao';
 import { Image } from 'react-bootstrap';
 import _YesVoteIcon from '../../assets/icons/YesVote.svg';
 import _NoVoteIcon from '../../assets/icons/NoVote.svg';
 import _AbsentVoteIcon from '../../assets/icons/AbsentVote.svg';
 import _AbstainVoteIcon from '../../assets/icons/Abstain.svg';
-import { ProposalState } from '../../wrappers/nounsDao';
+import { ProposalState } from '../../wrappers/sportsManagerDao';
 
 import classes from './NounProfileVoteRow.module.css';
 

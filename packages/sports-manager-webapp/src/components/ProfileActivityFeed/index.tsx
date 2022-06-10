@@ -4,11 +4,11 @@ import Section from '../../layout/Section';
 import classes from './ProfileActivityFeed.module.css';
 
 import { useQuery } from '@apollo/client';
-import { Proposal, ProposalState, useAllProposals } from '../../wrappers/nounsDao';
+import { Proposal, ProposalState, useAllProposals } from '../../wrappers/sportsManagerDao';
 import { createTimestampAllProposals, nounVotingHistoryQuery } from '../../wrappers/subgraph';
 import NounProfileVoteRow from '../NounProfileVoteRow';
 import { LoadingNoun } from '../Noun';
-import { useNounCanVoteTimestamp } from '../../wrappers/nounsAuction';
+import { useNounCanVoteTimestamp } from '../../wrappers/sportsManagerAuction';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
@@ -16,7 +16,7 @@ import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { Trans } from '@lingui/macro';
 
 interface ProfileActivityFeedProps {
-  nounId: number;
+  sportsManagerId: number;
 }
 
 interface ProposalInfo {
@@ -30,20 +30,20 @@ export interface NounVoteHistory {
 }
 
 const ProfileActivityFeed: React.FC<ProfileActivityFeedProps> = props => {
-  const { nounId } = props;
+  const { sportsManagerId } = props;
 
   const MAX_EVENTS_SHOW_ABOVE_FOLD = 5;
 
   const [truncateProposals, setTruncateProposals] = useState(true);
 
-  const { loading, error, data } = useQuery(nounVotingHistoryQuery(nounId));
+  const { loading, error, data } = useQuery(nounVotingHistoryQuery(sportsManagerId));
   const {
     loading: proposalTimestampLoading,
     error: proposalTimestampError,
     data: proposalCreatedTimestamps,
   } = useQuery(createTimestampAllProposals());
 
-  const nounCanVoteTimestamp = useNounCanVoteTimestamp(nounId);
+  const nounCanVoteTimestamp = useNounCanVoteTimestamp(sportsManagerId);
 
   const { data: proposals } = useAllProposals();
 

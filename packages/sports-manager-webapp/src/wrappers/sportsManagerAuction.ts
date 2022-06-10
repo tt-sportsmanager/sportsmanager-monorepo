@@ -1,6 +1,6 @@
 import { useContractCall } from '@usedapp/core';
 import { BigNumber as EthersBN, utils } from 'ethers';
-import { NounsAuctionHouseABI } from '@sports-manager/sdk';
+import { SportsManagerAuctionHouseABI } from '@sports-manager/sdk';
 import config from '../config';
 import BigNumber from 'bignumber.js';
 import { isNounderNoun } from '../utils/nounderNoun';
@@ -11,7 +11,7 @@ export enum AuctionHouseContractFunction {
   auction = 'auction',
   duration = 'duration',
   minBidIncrementPercentage = 'minBidIncrementPercentage',
-  nouns = 'nouns',
+  sportsManagers = 'sportsManagers',
   createBid = 'createBid',
   settleCurrentAndCreateNewAuction = 'settleCurrentAndCreateNewAuction',
 }
@@ -21,11 +21,11 @@ export interface Auction {
   bidder: string;
   endTime: EthersBN;
   startTime: EthersBN;
-  nounId: EthersBN;
+  sportsManagerId: EthersBN;
   settled: boolean;
 }
 
-const abi = new utils.Interface(NounsAuctionHouseABI);
+const abi = new utils.Interface(SportsManagerAuctionHouseABI.abi);
 
 export const useAuction = (auctionHouseProxyAddress: string) => {
   const auction = useContractCall<Auction>({
@@ -40,7 +40,7 @@ export const useAuction = (auctionHouseProxyAddress: string) => {
 export const useAuctionMinBidIncPercentage = () => {
   const minBidIncrement = useContractCall({
     abi,
-    address: config.addresses.nounsAuctionHouseProxy,
+    address: config.addresses.sportsManagerAuctionHouseProxy,
     method: 'minBidIncrementPercentage',
     args: [],
   });
@@ -65,7 +65,7 @@ export const useNounCanVoteTimestamp = (nounId: number) => {
   const pastAuctions = useAppSelector(state => state.pastAuctions.pastAuctions);
 
   const maybeNounCanVoteTimestamp = pastAuctions.find((auction: AuctionState, i: number) => {
-    const maybeNounId = auction.activeAuction?.nounId;
+    const maybeNounId = auction.activeAuction?.sportsManagerId;
     return maybeNounId ? EthersBN.from(maybeNounId).eq(EthersBN.from(nextNounIdForQuery)) : false;
   })?.activeAuction?.startTime;
 

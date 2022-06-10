@@ -9,7 +9,7 @@ import { Trans } from '@lingui/macro';
 const Footer = () => {
   const twitterURL = externalURL(ExternalURL.twitter);
   const discordURL = externalURL(ExternalURL.discord);
-  const etherscanURL = buildEtherscanAddressLink(config.addresses.nounsToken);
+  const etherscanURL = buildEtherscanAddressLink(config.addresses.sportsManagerToken);
   const discourseURL = externalURL(ExternalURL.discourse);
 
   return (

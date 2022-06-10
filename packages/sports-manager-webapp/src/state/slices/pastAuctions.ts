@@ -20,7 +20,7 @@ const reduxSafePastAuctions = (data: any): AuctionState[] => {
         bidder: auction.bidder ? auction.bidder.id : '',
         startTime: BigNumber.from(auction.startTime).toJSON(),
         endTime: BigNumber.from(auction.endTime).toJSON(),
-        nounId: BigNumber.from(auction.id).toJSON(),
+        sportsManagerId: BigNumber.from(auction.id).toJSON(),
         settled: false,
       },
       bids: auction.bids.map((bid: any) => {
