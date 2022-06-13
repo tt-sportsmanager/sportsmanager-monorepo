@@ -2,12 +2,12 @@ import { ImageData as data, getNounData } from '@sports-manager/assets';
 import { buildSVG } from '@sports-manager/sdk';
 import { BigNumber as EthersBN } from 'ethers';
 import { INounSeed, useNounSeed } from '../../wrappers/sportsManagerToken';
-import Noun from '../Noun';
+import Noun from '../SportsManager';
 import { Link } from 'react-router-dom';
 import classes from './StandaloneNoun.module.css';
 import { useDispatch } from 'react-redux';
 import { setOnDisplayAuctionNounId } from '../../state/slices/onDisplayAuction';
-import nounClasses from '../Noun/Noun.module.css';
+import nounClasses from '../SportsManager/SportsManager.module.css';
 
 interface StandaloneNounProps {
   sportsManagerId: EthersBN;

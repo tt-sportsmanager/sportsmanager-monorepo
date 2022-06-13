@@ -3,7 +3,7 @@ import { StandaloneNounWithSeed } from '../StandaloneNoun';
 import AuctionActivity from '../AuctionActivity';
 import { Row, Container } from 'react-bootstrap';
 import { setStateBackgroundColor } from '../../state/slices/application';
-import { LoadingNoun } from '../Noun';
+import { LoadingNoun } from '../SportsManager';
 import { Auction as IAuction } from '../../wrappers/sportsManagerAuction';
 import classes from './Auction.module.css';
 import { INounSeed } from '../../wrappers/sportsManagerToken';

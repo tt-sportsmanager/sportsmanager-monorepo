@@ -7,7 +7,7 @@ const AuctionActivityNounTitle: React.FC<{ sportsManagerId: BigNumber; isCool?: 
   return (
     <div className={classes.wrapper}>
       <h1 style={{ color: isCool ? 'var(--brand-cool-dark-text)' : 'var(--brand-warm-dark-text)' }}>
-        <Trans>Noun {sportsManagerId.toString()}</Trans>
+        <Trans>SportsManager {sportsManagerId.toString()}</Trans>
       </h1>
     </div>
   );

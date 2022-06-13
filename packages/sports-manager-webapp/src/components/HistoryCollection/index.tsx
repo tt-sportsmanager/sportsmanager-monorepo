@@ -3,7 +3,7 @@ import Section from '../../layout/Section';
 import classes from './HistoryCollection.module.css';
 import clsx from 'clsx';
 import StandaloneNoun from '../StandaloneNoun';
-import { LoadingNoun } from '../Noun';
+import { LoadingNoun } from '../SportsManager';
 import config from '../../config';
 import { Container, Row } from 'react-bootstrap';
 

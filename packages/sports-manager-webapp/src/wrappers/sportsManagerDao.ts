@@ -117,12 +117,12 @@ export interface ProposalTransaction {
 }
 
 const abi = new utils.Interface(SportsManagerDAOABI.abi);
-const nounsDaoContract = new SportsManagerDaoLogicV1Factory().attach(config.addresses.sportsManagerDAOProxy);
+const sportsManagerDaoContract = new SportsManagerDaoLogicV1Factory().attach(config.addresses.sportsManagerDAOProxy);
 
 // Start the log search at the mainnet deployment block to speed up log queries
 const fromBlock = CHAIN_ID === ChainId.Mainnet ? 12985453 : 0;
 const proposalCreatedFilter = {
-  ...nounsDaoContract.filters?.ProposalCreated(
+  ...sportsManagerDaoContract.filters?.ProposalCreated(
     null,
     null,
     null,
@@ -175,7 +175,7 @@ export const useHasVotedOnProposal = (proposalId: string | undefined): boolean =
   const [receipt] =
     useContractCall<[any]>({
       abi,
-      address: nounsDaoContract.address,
+      address: sportsManagerDaoContract.address,
       method: 'getReceipt',
       args: [proposalId, account],
     }) || [];
@@ -189,7 +189,7 @@ export const useProposalVote = (proposalId: string | undefined): string => {
   const [receipt] =
     useContractCall<[any]>({
       abi,
-      address: nounsDaoContract.address,
+      address: sportsManagerDaoContract.address,
       method: 'getReceipt',
       args: [proposalId, account],
     }) || [];
@@ -211,7 +211,7 @@ export const useProposalCount = (): number | undefined => {
   const [count] =
     useContractCall<[EthersBN]>({
       abi,
-      address: nounsDaoContract.address,
+      address: sportsManagerDaoContract.address,
       method: 'proposalCount',
       args: [],
     }) || [];
@@ -222,18 +222,18 @@ export const useProposalThreshold = (): number | undefined => {
   const [count] =
     useContractCall<[EthersBN]>({
       abi,
-      address: nounsDaoContract.address,
+      address: sportsManagerDaoContract.address,
       method: 'proposalThreshold',
       args: [],
     }) || [];
   return count?.toNumber();
 };
 
-const useVotingDelay = (nounsDao: string): number | undefined => {
+const useVotingDelay = (sportsManagerDao: string): number | undefined => {
   const [blockDelay] =
     useContractCall<[EthersBN]>({
       abi,
-      address: nounsDao,
+      address: sportsManagerDao,
       method: 'votingDelay',
       args: [],
     }) || [];
@@ -362,7 +362,7 @@ export const useAllProposalsViaSubgraph = (): ProposalData => {
 
 export const useAllProposalsViaChain = (skip = false): ProposalData => {
   const proposalCount = useProposalCount();
-  const votingDelay = useVotingDelay(nounsDaoContract.address);
+  const votingDelay = useVotingDelay(sportsManagerDaoContract.address);
 
   const govProposalIndexes = useMemo(() => {
     return countToIndices(proposalCount);
@@ -373,7 +373,7 @@ export const useAllProposalsViaChain = (skip = false): ProposalData => {
     return govProposalIndexes.map(index => ({
       abi,
       method,
-      address: nounsDaoContract.address,
+      address: sportsManagerDaoContract.address,
       args: [index],
     }));
   };
@@ -430,7 +430,7 @@ export const useProposal = (id: string | number): Proposal | undefined => {
 
 export const useCastVote = () => {
   const { send: castVote, state: castVoteState } = useContractFunction(
-    nounsDaoContract,
+    sportsManagerDaoContract,
     'castVote',
   );
   return { castVote, castVoteState };
@@ -438,20 +438,20 @@ export const useCastVote = () => {
 
 export const useCastVoteWithReason = () => {
   const { send: castVoteWithReason, state: castVoteWithReasonState } = useContractFunction(
-    nounsDaoContract,
+    sportsManagerDaoContract,
     'castVoteWithReason',
   );
   return { castVoteWithReason, castVoteWithReasonState };
 };
 
 export const usePropose = () => {
-  const { send: propose, state: proposeState } = useContractFunction(nounsDaoContract, 'propose');
+  const { send: propose, state: proposeState } = useContractFunction(sportsManagerDaoContract, 'propose');
   return { propose, proposeState };
 };
 
 export const useQueueProposal = () => {
   const { send: queueProposal, state: queueProposalState } = useContractFunction(
-    nounsDaoContract,
+    sportsManagerDaoContract,
     'queue',
   );
   return { queueProposal, queueProposalState };
@@ -459,7 +459,7 @@ export const useQueueProposal = () => {
 
 export const useExecuteProposal = () => {
   const { send: executeProposal, state: executeProposalState } = useContractFunction(
-    nounsDaoContract,
+    sportsManagerDaoContract,
     'execute',
   );
   return { executeProposal, executeProposalState };

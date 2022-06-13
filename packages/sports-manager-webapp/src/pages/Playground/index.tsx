@@ -15,7 +15,7 @@ import Link from '../../components/Link';
 import { ImageData, getNounData, getRandomNounSeed } from '@sports-manager/assets';
 import { buildSVG, EncodedImage, PNGCollectionEncoder } from '@sports-manager/sdk';
 import InfoIcon from '../../assets/icons/Info.svg';
-import Noun from '../../components/Noun';
+import Noun from '../../components/SportsManager';
 import NounModal from './NounModal';
 import { PNG } from 'pngjs';
 import { Trans } from '@lingui/macro';

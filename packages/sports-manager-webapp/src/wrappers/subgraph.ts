@@ -32,7 +32,7 @@ export interface ProposalVotes {
 
 export interface Delegate {
   id: string;
-  nounsRepresented: {
+  sportsManagerRepresented: {
     id: string;
   }[];
 }
@@ -152,9 +152,9 @@ export const nounQuery = (id: string) => gql`
   }
  `;
 
-export const nounsIndex = () => gql`
+export const sportsManagerIndex = () => gql`
   {
-    nouns {
+    sportsManager {
       id
       owner {
         id
@@ -258,7 +258,7 @@ export const delegateNounsAtBlockQuery = (delegates: string[], block: number) =>
 {
   delegates(where: { id_in: ${JSON.stringify(delegates)} }, block: { number: ${block} }) {
     id
-    nounsRepresented {
+    sportsManagerRepresented {
       id
     }
   }

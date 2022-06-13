@@ -1,10 +1,10 @@
 import { getGrayBackgroundSVG } from '../../utils/grayBackgroundSVG';
-import nounClasses from '../Noun/Noun.module.css';
-import Noun from '../Noun';
+import nounClasses from '../SportsManager/SportsManager.module.css';
+import SportsManager from '../SportsManager';
 
 export const GrayCircle = () => {
   return (
-    <Noun
+    <SportsManager
       imgPath={getGrayBackgroundSVG()}
       alt={''}
       wrapperClassName={nounClasses.circularNounWrapper}

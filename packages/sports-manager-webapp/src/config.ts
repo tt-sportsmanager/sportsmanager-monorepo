@@ -1,5 +1,5 @@
 import {
-  ContractAddresses as NounsContractAddresses,
+  ContractAddresses as SportsManagerContractAddresses,
   getContractAddressesForChainOrThrow,
 } from '@sports-manager/sdk';
 import { ChainId } from '@usedapp/core';
@@ -8,7 +8,7 @@ interface ExternalContractAddresses {
   lidoToken: string | undefined;
 }
 
-export type ContractAddresses = NounsContractAddresses & ExternalContractAddresses;
+export type ContractAddresses = SportsManagerContractAddresses & ExternalContractAddresses;
 
 interface AppConfig {
   jsonRpcUri: string;
@@ -85,11 +85,11 @@ const externalAddresses: Record<SupportedChains, ExternalContractAddresses> = {
 };
 
 const getAddresses = (): ContractAddresses => {
-  let nounsAddresses = {} as NounsContractAddresses;
+  let sportsManagerAddresses = {} as SportsManagerContractAddresses;
   try {
-    nounsAddresses = getContractAddressesForChainOrThrow(CHAIN_ID);
+    sportsManagerAddresses = getContractAddressesForChainOrThrow(CHAIN_ID);
   } catch {}
-  return { ...nounsAddresses, ...externalAddresses[CHAIN_ID] };
+  return { ...sportsManagerAddresses, ...externalAddresses[CHAIN_ID] };
 };
 
 const config = {

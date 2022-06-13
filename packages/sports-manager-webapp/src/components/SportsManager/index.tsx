@@ -1,4 +1,4 @@
-import classes from './Noun.module.css';
+import classes from './SportsManager.module.css';
 import React from 'react';
 import loadingNoun from '../../assets/loading-skull-noun.gif';
 import Image from 'react-bootstrap/Image';
@@ -11,7 +11,7 @@ export const LoadingNoun = () => {
   );
 };
 
-const Noun: React.FC<{
+const SportsManager: React.FC<{
   imgPath: string;
   alt: string;
   className?: string;
@@ -30,4 +30,4 @@ const Noun: React.FC<{
   );
 };
 
-export default Noun;
+export default SportsManager;

@@ -7,7 +7,7 @@ import { useQuery } from '@apollo/client';
 import { Proposal, ProposalState, useAllProposals } from '../../wrappers/sportsManagerDao';
 import { createTimestampAllProposals, nounVotingHistoryQuery } from '../../wrappers/subgraph';
 import NounProfileVoteRow from '../NounProfileVoteRow';
-import { LoadingNoun } from '../Noun';
+import { LoadingNoun } from '../SportsManager';
 import { useNounCanVoteTimestamp } from '../../wrappers/sportsManagerAuction';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

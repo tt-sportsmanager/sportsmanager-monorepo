@@ -219,13 +219,13 @@ const VotePage = ({
 
   const { delegates } = delegateSnapshot || {};
   const delegateToNounIds = delegates?.reduce<Record<string, string[]>>((acc, curr) => {
-    acc[curr.id] = curr?.nounsRepresented?.map(nr => nr.id) ?? [];
+    acc[curr.id] = curr?.sportsManagerRepresented?.map(nr => nr.id) ?? [];
     return acc;
   }, {});
 
   const data = voters?.votes?.map(v => ({
     supportDetailed: v.supportDetailed,
-    nounsRepresented: delegateToNounIds?.[v.voter.id] ?? [],
+    sportsManagerRepresented: delegateToNounIds?.[v.voter.id] ?? [],
   }));
 
   const [showToast, setShowToast] = useState(true);
