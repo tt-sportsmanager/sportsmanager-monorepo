@@ -2,26 +2,26 @@ import chai from 'chai';
 import { ethers } from 'hardhat';
 import { BigNumber as EthersBN, constants } from 'ethers';
 import { solidity } from 'ethereum-waffle';
-import { NounsDescriptor__factory as NounsDescriptorFactory, NounsToken } from '../typechain';
-import { deployNounsToken, populateDescriptor } from './utils';
+import { SportsManagerDescriptor__factory as SportsManagerDescriptorFactory, SportsManagerToken } from '../typechain';
+import { deploySportsManagerToken, populateDescriptor } from './utils';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 
 chai.use(solidity);
 const { expect } = chai;
 
-describe('NounsToken', () => {
-  let nounsToken: NounsToken;
+describe('SportsManagerToken', () => {
+  let nounsToken: SportsManagerToken;
   let deployer: SignerWithAddress;
   let noundersDAO: SignerWithAddress;
   let snapshotId: number;
 
   before(async () => {
     [deployer, noundersDAO] = await ethers.getSigners();
-    nounsToken = await deployNounsToken(deployer, noundersDAO.address, deployer.address);
+    nounsToken = await deploySportsManagerToken(deployer, noundersDAO.address, deployer.address);
 
     const descriptor = await nounsToken.descriptor();
 
-    await populateDescriptor(NounsDescriptorFactory.connect(descriptor, deployer));
+    await populateDescriptor(SportsManagerDescriptorFactory.connect(descriptor, deployer));
   });
 
   beforeEach(async () => {
@@ -35,24 +35,24 @@ describe('NounsToken', () => {
   it('should allow the minter to mint a noun to itself and a reward noun to the noundersDAO', async () => {
     const receipt = await (await nounsToken.mint()).wait();
 
-    const [, , , noundersNounCreated, , , , ownersNounCreated] = receipt.events || [];
+    const [, , , noundersSportsManagerCreated, , , , ownersSportsManagerCreated] = receipt.events || [];
 
     expect(await nounsToken.ownerOf(0)).to.eq(noundersDAO.address);
-    expect(noundersNounCreated?.event).to.eq('NounCreated');
-    expect(noundersNounCreated?.args?.tokenId).to.eq(0);
-    expect(noundersNounCreated?.args?.seed.length).to.equal(5);
+    expect(noundersSportsManagerCreated?.event).to.eq('SportsManagerCreated');
+    expect(noundersSportsManagerCreated?.args?.tokenId).to.eq(0);
+    expect(noundersSportsManagerCreated?.args?.seed.length).to.equal(5);
 
     expect(await nounsToken.ownerOf(1)).to.eq(deployer.address);
-    expect(ownersNounCreated?.event).to.eq('NounCreated');
-    expect(ownersNounCreated?.args?.tokenId).to.eq(1);
-    expect(ownersNounCreated?.args?.seed.length).to.equal(5);
+    expect(ownersSportsManagerCreated?.event).to.eq('SportsManagerCreated');
+    expect(ownersSportsManagerCreated?.args?.tokenId).to.eq(1);
+    expect(ownersSportsManagerCreated?.args?.seed.length).to.equal(5);
 
-    noundersNounCreated?.args?.seed.forEach((item: EthersBN | number) => {
+    noundersSportsManagerCreated?.args?.seed.forEach((item: EthersBN | number) => {
       const value = typeof item !== 'number' ? item?.toNumber() : item;
       expect(value).to.be.a('number');
     });
 
-    ownersNounCreated?.args?.seed.forEach((item: EthersBN | number) => {
+    ownersSportsManagerCreated?.args?.seed.forEach((item: EthersBN | number) => {
       const value = typeof item !== 'number' ? item?.toNumber() : item;
       expect(value).to.be.a('number');
     });
@@ -63,7 +63,7 @@ describe('NounsToken', () => {
   });
 
   it('should set name', async () => {
-    expect(await nounsToken.name()).to.eq('Nouns');
+    expect(await nounsToken.name()).to.eq('SportsManager');
   });
 
   it('should allow minter to mint a noun to itself', async () => {
@@ -73,7 +73,7 @@ describe('NounsToken', () => {
     const nounCreated = receipt.events?.[3];
 
     expect(await nounsToken.ownerOf(2)).to.eq(deployer.address);
-    expect(nounCreated?.event).to.eq('NounCreated');
+    expect(nounCreated?.event).to.eq('SportsManagerCreated');
     expect(nounCreated?.args?.tokenId).to.eq(2);
     expect(nounCreated?.args?.seed.length).to.equal(5);
 
@@ -103,12 +103,12 @@ describe('NounsToken', () => {
     await (await nounsToken.mint()).wait();
 
     const tx = nounsToken.burn(0);
-    await expect(tx).to.emit(nounsToken, 'NounBurned').withArgs(0);
+    await expect(tx).to.emit(nounsToken, 'SportsManagerBurned').withArgs(0);
   });
 
   it('should revert on non-minter mint', async () => {
-    const account0AsNounErc721Account = nounsToken.connect(noundersDAO);
-    await expect(account0AsNounErc721Account.mint()).to.be.reverted;
+    const account0AsSportsManagerErc721Account = nounsToken.connect(noundersDAO);
+    await expect(account0AsSportsManagerErc721Account.mint()).to.be.reverted;
   });
 
   describe('contractURI', async () => {

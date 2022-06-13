@@ -7,7 +7,7 @@ const { ethers } = hardhat;
 import { BigNumber as EthersBN } from 'ethers';
 
 import {
-  deployNounsToken,
+  deploySportsManagerToken,
   getSigners,
   TestSigners,
   setTotalSupply,
@@ -24,13 +24,13 @@ import {
 
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
-  NounsToken,
-  NounsDescriptor__factory as NounsDescriptorFactory,
-  NounsDAOProxy__factory as NounsDaoProxyFactory,
-  NounsDAOLogicV1,
-  NounsDAOLogicV1__factory as NounsDaoLogicV1Factory,
-  NounsDAOExecutor,
-  NounsDAOExecutor__factory as NounsDaoExecutorFactory,
+  SportsManagerToken,
+  SportsManagerDescriptor__factory as SportsManagerDescriptorFactory,
+  SportsManagerDAOProxy__factory as SportsManagerDaoProxyFactory,
+  SportsManagerDAOLogicV1,
+  SportsManagerDAOLogicV1__factory as SportsManagerDaoLogicV1Factory,
+  SportsManagerDAOExecutor,
+  SportsManagerDAOExecutor__factory as SportsManagerDaoExecutorFactory,
 } from '../../../typechain';
 
 chai.use(solidity);
@@ -59,13 +59,13 @@ async function reset(): Promise<void> {
     return;
   }
 
-  // nonce 0: Deploy NounsDAOExecutor
-  // nonce 1: Deploy NounsDAOLogicV1
+  // nonce 0: Deploy SportsManagerDAOExecutor
+  // nonce 1: Deploy SportsManagerDAOLogicV1
   // nonce 2: Deploy nftDescriptorLibraryFactory
-  // nonce 3: Deploy NounsDescriptor
-  // nonce 4: Deploy NounsSeeder
-  // nonce 5: Deploy NounsToken
-  // nonce 6: Deploy NounsDAOProxy
+  // nonce 3: Deploy SportsManagerDescriptor
+  // nonce 4: Deploy SportsManagerSeeder
+  // nonce 5: Deploy SportsManagerToken
+  // nonce 6: Deploy SportsManagerDAOProxy
   // nonce 7+: populate Descriptor
 
   vetoer = deployer;
@@ -75,18 +75,18 @@ async function reset(): Promise<void> {
     nonce: (await deployer.getTransactionCount()) + 6,
   });
 
-  // Deploy NounsDAOExecutor with pre-computed Delegator address
-  timelock = await new NounsDaoExecutorFactory(deployer).deploy(govDelegatorAddress, timelockDelay);
+  // Deploy SportsManagerDAOExecutor with pre-computed Delegator address
+  timelock = await new SportsManagerDaoExecutorFactory(deployer).deploy(govDelegatorAddress, timelockDelay);
   const timelockAddress = timelock.address;
 
   // Deploy Delegate
-  const { address: govDelegateAddress } = await new NounsDaoLogicV1Factory(deployer).deploy();
+  const { address: govDelegateAddress } = await new SportsManagerDaoLogicV1Factory(deployer).deploy();
 
-  // Deploy Nouns token
-  token = await deployNounsToken(deployer);
+  // Deploy SportsManager token
+  token = await deploySportsManagerToken(deployer);
 
   // Deploy Delegator
-  await new NounsDaoProxyFactory(deployer).deploy(
+  await new SportsManagerDaoProxyFactory(deployer).deploy(
     timelockAddress,
     token.address,
     vetoer.address,
@@ -99,9 +99,9 @@ async function reset(): Promise<void> {
   );
 
   // Cast Delegator as Delegate
-  gov = NounsDaoLogicV1Factory.connect(govDelegatorAddress, deployer);
+  gov = SportsManagerDaoLogicV1Factory.connect(govDelegatorAddress, deployer);
 
-  await populateDescriptor(NounsDescriptorFactory.connect(await token.descriptor(), deployer));
+  await populateDescriptor(SportsManagerDescriptorFactory.connect(await token.descriptor(), deployer));
 
   snapshotId = await ethers.provider.send('evm_snapshot', []);
 }
@@ -125,7 +125,7 @@ async function propose(proposer: SignerWithAddress, mint = true) {
 
 let snapshotId: number;
 
-let token: NounsToken;
+let token: SportsManagerToken;
 let deployer: SignerWithAddress;
 let vetoer: SignerWithAddress;
 let account0: SignerWithAddress;
@@ -133,8 +133,8 @@ let account1: SignerWithAddress;
 let account2: SignerWithAddress;
 let signers: TestSigners;
 
-let gov: NounsDAOLogicV1;
-let timelock: NounsDAOExecutor;
+let gov: SportsManagerDAOLogicV1;
+let timelock: SportsManagerDAOExecutor;
 const timelockDelay = 172800; // 2 days
 
 const proposalThresholdBPS = 500; // 5%
@@ -146,7 +146,7 @@ let signatures: string[];
 let callDatas: string[];
 let proposalId: EthersBN;
 
-describe('NounsDAO#vetoing', () => {
+describe('SportsManagerDAO#vetoing', () => {
   before(async () => {
     signers = await getSigners();
     deployer = signers.deployer;
@@ -168,7 +168,7 @@ describe('NounsDAO#vetoing', () => {
 
   it('rejects setting a new vetoer when sender is not vetoer', async () => {
     await expect(gov.connect(account0)._setVetoer(account1.address)).revertedWith(
-      'NounsDAO::_setVetoer: vetoer only',
+      'SportsManagerDAO::_setVetoer: vetoer only',
     );
   });
 
@@ -181,18 +181,18 @@ describe('NounsDAO#vetoing', () => {
 
   it('only vetoer can veto', async () => {
     await propose(account0);
-    await expect(gov.veto(proposalId)).revertedWith('NounsDAO::veto: only vetoer');
+    await expect(gov.veto(proposalId)).revertedWith('SportsManagerDAO::veto: only vetoer');
   });
 
   it('burns veto power correctly', async () => {
     // vetoer is still set
     expect(await gov.vetoer()).to.equal(vetoer.address);
-    await expect(gov._burnVetoPower()).revertedWith('NounsDAO::_burnVetoPower: vetoer only');
+    await expect(gov._burnVetoPower()).revertedWith('SportsManagerDAO::_burnVetoPower: vetoer only');
     // burn
     await gov.connect(vetoer)._burnVetoPower();
     expect(await gov.vetoer()).to.equal(address(0));
     await expect(gov.connect(vetoer).veto(proposalId)).revertedWith(
-      'NounsDAO::veto: veto power burned',
+      'SportsManagerDAO::veto: veto power burned',
     );
   });
 
@@ -308,7 +308,7 @@ describe('NounsDAO#vetoing', () => {
       await gov.execute(proposalId);
       await expectState(proposalId, 'Executed');
       await expect(gov.veto(proposalId)).revertedWith(
-        'NounsDAO::veto: cannot veto executed proposal',
+        'SportsManagerDAO::veto: cannot veto executed proposal',
       );
     });
     it('Vetoed', async () => {

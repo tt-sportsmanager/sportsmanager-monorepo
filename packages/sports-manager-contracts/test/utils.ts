@@ -1,12 +1,12 @@
 import { ethers, network } from 'hardhat';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
-  NounsDescriptor,
-  NounsDescriptor__factory as NounsDescriptorFactory,
-  NounsToken,
-  NounsToken__factory as NounsTokenFactory,
-  NounsSeeder,
-  NounsSeeder__factory as NounsSeederFactory,
+  SportsManagerDescriptor,
+  SportsManagerDescriptor__factory as SportsManagerDescriptorFactory,
+  SportsManagerToken,
+  SportsManagerToken__factory as SportsManagerTokenFactory,
+  SportsManagerSeeder,
+  SportsManagerSeeder__factory as SportsManagerSeederFactory,
   WETH,
   WETH__factory as WethFactory,
 } from '../typechain';
@@ -31,44 +31,44 @@ export const getSigners = async (): Promise<TestSigners> => {
   };
 };
 
-export const deployNounsDescriptor = async (
+export const deploySportsManagerDescriptor = async (
   deployer?: SignerWithAddress,
-): Promise<NounsDescriptor> => {
+): Promise<SportsManagerDescriptor> => {
   const signer = deployer || (await getSigners()).deployer;
   const nftDescriptorLibraryFactory = await ethers.getContractFactory('NFTDescriptor', signer);
   const nftDescriptorLibrary = await nftDescriptorLibraryFactory.deploy();
-  const nounsDescriptorFactory = new NounsDescriptorFactory(
+  const sportsManagerDescriptorFactory = new SportsManagerDescriptorFactory(
     {
       'contracts/libs/NFTDescriptor.sol:NFTDescriptor': nftDescriptorLibrary.address,
     },
     signer,
   );
 
-  return nounsDescriptorFactory.deploy();
+  return sportsManagerDescriptorFactory.deploy();
 };
 
-export const deployNounsSeeder = async (deployer?: SignerWithAddress): Promise<NounsSeeder> => {
-  const factory = new NounsSeederFactory(deployer || (await getSigners()).deployer);
+export const deploySportsManagerSeeder = async (deployer?: SignerWithAddress): Promise<SportsManagerSeeder> => {
+  const factory = new SportsManagerSeederFactory(deployer || (await getSigners()).deployer);
 
   return factory.deploy();
 };
 
-export const deployNounsToken = async (
+export const deploySportsManagerToken = async (
   deployer?: SignerWithAddress,
-  noundersDAO?: string,
+  sportsManagerFoundersDAO?: string,
   minter?: string,
   descriptor?: string,
   seeder?: string,
   proxyRegistryAddress?: string,
-): Promise<NounsToken> => {
+): Promise<SportsManagerToken> => {
   const signer = deployer || (await getSigners()).deployer;
-  const factory = new NounsTokenFactory(signer);
+  const factory = new SportsManagerTokenFactory(signer);
 
   return factory.deploy(
-    noundersDAO || signer.address,
+    sportsManagerFoundersDAO || signer.address,
     minter || signer.address,
-    descriptor || (await deployNounsDescriptor(signer)).address,
-    seeder || (await deployNounsSeeder(signer)).address,
+    descriptor || (await deploySportsManagerDescriptor(signer)).address,
+    seeder || (await deploySportsManagerSeeder(signer)).address,
     proxyRegistryAddress || address(0),
   );
 };
@@ -79,30 +79,30 @@ export const deployWeth = async (deployer?: SignerWithAddress): Promise<WETH> =>
   return factory.deploy();
 };
 
-export const populateDescriptor = async (nounsDescriptor: NounsDescriptor): Promise<void> => {
+export const populateDescriptor = async (sportsManagerDescriptor: SportsManagerDescriptor): Promise<void> => {
   const { bgcolors, palette, images } = ImageData;
   const { bodies, accessories, heads, glasses } = images;
 
   // Split up head and accessory population due to high gas usage
   await Promise.all([
-    nounsDescriptor.addManyBackgrounds(bgcolors),
-    nounsDescriptor.addManyColorsToPalette(0, palette),
-    nounsDescriptor.addManyBodies(bodies.map(({ data }) => data)),
+    sportsManagerDescriptor.addManyBackgrounds(bgcolors),
+    sportsManagerDescriptor.addManyColorsToPalette(0, palette),
+    sportsManagerDescriptor.addManyBodies(bodies.map(({ data }) => data)),
     chunkArray(accessories, 10).map(chunk =>
-      nounsDescriptor.addManyAccessories(chunk.map(({ data }) => data)),
+      sportsManagerDescriptor.addManyAccessories(chunk.map(({ data }) => data)),
     ),
-    chunkArray(heads, 10).map(chunk => nounsDescriptor.addManyHeads(chunk.map(({ data }) => data))),
-    nounsDescriptor.addManyGlasses(glasses.map(({ data }) => data)),
+    chunkArray(heads, 10).map(chunk => sportsManagerDescriptor.addManyHeads(chunk.map(({ data }) => data))),
+    sportsManagerDescriptor.addManyGlasses(glasses.map(({ data }) => data)),
   ]);
 };
 
 /**
- * Return a function used to mint `amount` Nouns on the provided `token`
- * @param token The Nouns ERC721 token
- * @param amount The number of Nouns to mint
+ * Return a function used to mint `amount` SportsManager on the provided `token`
+ * @param token The SportsManager ERC721 token
+ * @param amount The number of SportsManager to mint
  */
-export const MintNouns = (
-  token: NounsToken,
+export const MintSportsManager = (
+  token: SportsManagerToken,
   burnNoundersTokens = true,
 ): ((amount: number) => Promise<void>) => {
   return async (amount: number): Promise<void> => {
@@ -118,7 +118,7 @@ export const MintNouns = (
 /**
  * Mints or burns tokens to target a total supply. Due to Nounders' rewards tokens may be burned and tokenIds will not be sequential
  */
-export const setTotalSupply = async (token: NounsToken, newTotalSupply: number): Promise<void> => {
+export const setTotalSupply = async (token: SportsManagerToken, newTotalSupply: number): Promise<void> => {
   const totalSupply = (await token.totalSupply()).toNumber();
 
   if (totalSupply < newTotalSupply) {

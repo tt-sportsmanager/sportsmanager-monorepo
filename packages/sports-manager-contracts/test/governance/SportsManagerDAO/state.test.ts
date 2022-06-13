@@ -7,7 +7,7 @@ const { ethers } = hardhat;
 import { BigNumber as EthersBN } from 'ethers';
 
 import {
-  deployNounsToken,
+  deploySportsManagerToken,
   getSigners,
   TestSigners,
   setTotalSupply,
@@ -26,12 +26,12 @@ import {
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 
 import {
-  NounsToken,
-  NounsDescriptor__factory as NounsDescriptorFactory,
-  NounsDAOExecutorHarness,
-  NounsDAOExecutorHarness__factory as NounsDaoExecutorHarnessFactory,
-  NounsDAOImmutable,
-  NounsDAOImmutable__factory as NounsDaoImmutableFactory,
+  SportsManagerToken,
+  SportsManagerDescriptor__factory as SportsManagerDescriptorFactory,
+  SportsManagerDAOExecutorHarness,
+  SportsManagerDAOExecutorHarness__factory as SportsManagerDaoExecutorHarnessFactory,
+  SportsManagerDAOImmutable,
+  SportsManagerDAOImmutable__factory as SportsManagerDaoImmutableFactory,
 } from '../../../typechain';
 
 chai.use(solidity);
@@ -48,14 +48,14 @@ const states: string[] = [
   'Executed',
 ];
 
-let token: NounsToken;
+let token: SportsManagerToken;
 let deployer: SignerWithAddress;
 let account0: SignerWithAddress;
 let account1: SignerWithAddress;
 let signers: TestSigners;
 
-let gov: NounsDAOImmutable;
-let timelock: NounsDAOExecutorHarness;
+let gov: SportsManagerDAOImmutable;
+let timelock: SportsManagerDAOExecutorHarness;
 let delay: number;
 
 let targets: string[];
@@ -82,9 +82,9 @@ async function makeProposal(
 
   delay = 4 * 24 * 60 * 60;
 
-  timelock = await new NounsDaoExecutorHarnessFactory(deployer).deploy(deployer.address, delay);
+  timelock = await new SportsManagerDaoExecutorHarnessFactory(deployer).deploy(deployer.address, delay);
 
-  gov = await new NounsDaoImmutableFactory(deployer).deploy(
+  gov = await new SportsManagerDaoImmutableFactory(deployer).deploy(
     timelock.address,
     token.address,
     address(0),
@@ -111,7 +111,7 @@ async function makeProposal(
   proposalId = await gov.latestProposalIds(proposer.address);
 }
 
-describe('NounsDAO#state/1', () => {
+describe('SportsManagerDAO#state/1', () => {
   before(async () => {
     await freezeTime(100);
     signers = await getSigners();
@@ -119,10 +119,10 @@ describe('NounsDAO#state/1', () => {
     account0 = signers.account0;
     account1 = signers.account1;
 
-    token = await deployNounsToken(signers.deployer);
+    token = await deploySportsManagerToken(signers.deployer);
 
     await populateDescriptor(
-      NounsDescriptorFactory.connect(await token.descriptor(), signers.deployer),
+      SportsManagerDescriptorFactory.connect(await token.descriptor(), signers.deployer),
     );
   });
 
@@ -136,7 +136,7 @@ describe('NounsDAO#state/1', () => {
 
   it('Invalid for proposal not found', async () => {
     await makeProposal();
-    await expect(gov.state(5)).revertedWith('NounsDAO::state: invalid proposal id');
+    await expect(gov.state(5)).revertedWith('SportsManagerDAO::state: invalid proposal id');
   });
 
   it('Pending', async () => {

@@ -5,20 +5,20 @@ import { solidity } from 'ethereum-waffle';
 
 import {
   WETH,
-  NounsToken,
-  NounsAuctionHouse,
-  NounsAuctionHouse__factory as NounsAuctionHouseFactory,
-  NounsDescriptor,
-  NounsDescriptor__factory as NounsDescriptorFactory,
-  NounsDAOProxy__factory as NounsDaoProxyFactory,
-  NounsDAOLogicV1,
-  NounsDAOLogicV1__factory as NounsDaoLogicV1Factory,
-  NounsDAOExecutor,
-  NounsDAOExecutor__factory as NounsDaoExecutorFactory,
+  SportsManagerToken,
+  SportsManagerAuctionHouse,
+  SportsManagerAuctionHouse__factory as SportsManagerAuctionHouseFactory,
+  SportsManagerDescriptor,
+  SportsManagerDescriptor__factory as SportsManagerDescriptorFactory,
+  SportsManagerDAOProxy__factory as SportsManagerDaoProxyFactory,
+  SportsManagerDAOLogicV1,
+  SportsManagerDAOLogicV1__factory as SportsManagerDaoLogicV1Factory,
+  SportsManagerDAOExecutor,
+  SportsManagerDAOExecutor__factory as SportsManagerDaoExecutorFactory,
 } from '../typechain';
 
 import {
-  deployNounsToken,
+  deploySportsManagerToken,
   deployWeth,
   populateDescriptor,
   address,
@@ -33,12 +33,12 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 chai.use(solidity);
 const { expect } = chai;
 
-let nounsToken: NounsToken;
-let nounsAuctionHouse: NounsAuctionHouse;
-let descriptor: NounsDescriptor;
+let sportsManagerToken: SportsManagerToken;
+let sportsManagerAuctionHouse: SportsManagerAuctionHouse;
+let descriptor: SportsManagerDescriptor;
 let weth: WETH;
-let gov: NounsDAOLogicV1;
-let timelock: NounsDAOExecutor;
+let gov: SportsManagerDAOLogicV1;
+let timelock: SportsManagerDAOExecutor;
 
 let deployer: SignerWithAddress;
 let wethDeployer: SignerWithAddress;
@@ -75,26 +75,26 @@ async function deploy() {
 
   // nonce 2: Deploy AuctionHouse
   // nonce 3: Deploy nftDescriptorLibraryFactory
-  // nonce 4: Deploy NounsDescriptor
-  // nonce 5: Deploy NounsSeeder
-  // nonce 6: Deploy NounsToken
-  // nonce 0: Deploy NounsDAOExecutor
-  // nonce 1: Deploy NounsDAOLogicV1
-  // nonce 7: Deploy NounsDAOProxy
+  // nonce 4: Deploy SportsManagerDescriptor
+  // nonce 5: Deploy SportsManagerSeeder
+  // nonce 6: Deploy SportsManagerToken
+  // nonce 0: Deploy SportsManagerDAOExecutor
+  // nonce 1: Deploy SportsManagerDAOLogicV1
+  // nonce 7: Deploy SportsManagerDAOProxy
   // nonce ++: populate Descriptor
   // nonce ++: set ownable contracts owner to timelock
 
-  // 1. DEPLOY Nouns token
-  nounsToken = await deployNounsToken(
+  // 1. DEPLOY SportsManager token
+  sportsManagerToken = await deploySportsManagerToken(
     deployer,
     noundersDAO.address,
     deployer.address, // do not know minter/auction house yet
   );
 
   // 2a. DEPLOY AuctionHouse
-  const auctionHouseFactory = await ethers.getContractFactory('NounsAuctionHouse', deployer);
-  const nounsAuctionHouseProxy = await upgrades.deployProxy(auctionHouseFactory, [
-    nounsToken.address,
+  const auctionHouseFactory = await ethers.getContractFactory('SportsManagerAuctionHouse', deployer);
+  const sportsManagerAuctionHouseProxy = await upgrades.deployProxy(auctionHouseFactory, [
+    sportsManagerToken.address,
     weth.address,
     TIME_BUFFER,
     RESERVE_PRICE,
@@ -103,13 +103,13 @@ async function deploy() {
   ]);
 
   // 2b. CAST proxy as AuctionHouse
-  nounsAuctionHouse = NounsAuctionHouseFactory.connect(nounsAuctionHouseProxy.address, deployer);
+  sportsManagerAuctionHouse = SportsManagerAuctionHouseFactory.connect(sportsManagerAuctionHouseProxy.address, deployer);
 
   // 3. SET MINTER
-  await nounsToken.setMinter(nounsAuctionHouse.address);
+  await sportsManagerToken.setMinter(sportsManagerAuctionHouse.address);
 
   // 4. POPULATE body parts
-  descriptor = NounsDescriptorFactory.connect(await nounsToken.descriptor(), deployer);
+  descriptor = SportsManagerDescriptorFactory.connect(await sportsManagerToken.descriptor(), deployer);
 
   await populateDescriptor(descriptor);
 
@@ -119,19 +119,19 @@ async function deploy() {
     nonce: (await deployer.getTransactionCount()) + 2,
   });
 
-  // 5b. DEPLOY NounsDAOExecutor with pre-computed Delegator address
-  timelock = await new NounsDaoExecutorFactory(deployer).deploy(
+  // 5b. DEPLOY SportsManagerDAOExecutor with pre-computed Delegator address
+  timelock = await new SportsManagerDaoExecutorFactory(deployer).deploy(
     calculatedGovDelegatorAddress,
     TIME_LOCK_DELAY,
   );
 
   // 6. DEPLOY Delegate
-  const govDelegate = await new NounsDaoLogicV1Factory(deployer).deploy();
+  const govDelegate = await new SportsManagerDaoLogicV1Factory(deployer).deploy();
 
   // 7a. DEPLOY Delegator
-  const nounsDAOProxy = await new NounsDaoProxyFactory(deployer).deploy(
+  const sportsManagerDAOProxy = await new SportsManagerDaoProxyFactory(deployer).deploy(
     timelock.address,
-    nounsToken.address,
+    sportsManagerToken.address,
     noundersDAO.address, // NoundersDAO is vetoer
     timelock.address,
     govDelegate.address,
@@ -141,33 +141,33 @@ async function deploy() {
     QUORUM_VOTES_BPS,
   );
 
-  expect(calculatedGovDelegatorAddress).to.equal(nounsDAOProxy.address);
+  expect(calculatedGovDelegatorAddress).to.equal(sportsManagerDAOProxy.address);
 
   // 7b. CAST Delegator as Delegate
-  gov = NounsDaoLogicV1Factory.connect(nounsDAOProxy.address, deployer);
+  gov = SportsManagerDaoLogicV1Factory.connect(sportsManagerDAOProxy.address, deployer);
 
-  // 8. SET Nouns owner to NounsDAOExecutor
-  await nounsToken.transferOwnership(timelock.address);
-  // 9. SET Descriptor owner to NounsDAOExecutor
+  // 8. SET SportsManager owner to SportsManagerDAOExecutor
+  await sportsManagerToken.transferOwnership(timelock.address);
+  // 9. SET Descriptor owner to SportsManagerDAOExecutor
   await descriptor.transferOwnership(timelock.address);
 
   // 10. UNPAUSE auction and kick off first mint
-  await nounsAuctionHouse.unpause();
+  await sportsManagerAuctionHouse.unpause();
 
-  // 11. SET Auction House owner to NounsDAOExecutor
-  await nounsAuctionHouse.transferOwnership(timelock.address);
+  // 11. SET Auction House owner to SportsManagerDAOExecutor
+  await sportsManagerAuctionHouse.transferOwnership(timelock.address);
 }
 
 describe('End to End test with deployment, auction, proposing, voting, executing', async () => {
   before(deploy);
 
   it('sets all starting params correctly', async () => {
-    expect(await nounsToken.owner()).to.equal(timelock.address);
+    expect(await sportsManagerToken.owner()).to.equal(timelock.address);
     expect(await descriptor.owner()).to.equal(timelock.address);
-    expect(await nounsAuctionHouse.owner()).to.equal(timelock.address);
+    expect(await sportsManagerAuctionHouse.owner()).to.equal(timelock.address);
 
-    expect(await nounsToken.minter()).to.equal(nounsAuctionHouse.address);
-    expect(await nounsToken.noundersDAO()).to.equal(noundersDAO.address);
+    expect(await sportsManagerToken.minter()).to.equal(sportsManagerAuctionHouse.address);
+    expect(await sportsManagerToken.noundersDAO()).to.equal(noundersDAO.address);
 
     expect(await gov.admin()).to.equal(timelock.address);
     expect(await timelock.admin()).to.equal(gov.address);
@@ -175,28 +175,28 @@ describe('End to End test with deployment, auction, proposing, voting, executing
 
     expect(await gov.vetoer()).to.equal(noundersDAO.address);
 
-    expect(await nounsToken.totalSupply()).to.equal(EthersBN.from('2'));
+    expect(await sportsManagerToken.totalSupply()).to.equal(EthersBN.from('2'));
 
-    expect(await nounsToken.ownerOf(0)).to.equal(noundersDAO.address);
-    expect(await nounsToken.ownerOf(1)).to.equal(nounsAuctionHouse.address);
+    expect(await sportsManagerToken.ownerOf(0)).to.equal(noundersDAO.address);
+    expect(await sportsManagerToken.ownerOf(1)).to.equal(sportsManagerAuctionHouse.address);
 
-    expect((await nounsAuctionHouse.auction()).nounId).to.equal(EthersBN.from('1'));
+    expect((await sportsManagerAuctionHouse.auction()).cardId).to.equal(EthersBN.from('1'));
   });
 
   it('allows bidding, settling, and transferring ETH correctly', async () => {
-    await nounsAuctionHouse.connect(bidderA).createBid(1, { value: RESERVE_PRICE });
+    await sportsManagerAuctionHouse.connect(bidderA).createBid(1, { value: RESERVE_PRICE });
     await setNextBlockTimestamp(Number(await blockTimestamp('latest')) + DURATION);
-    await nounsAuctionHouse.settleCurrentAndCreateNewAuction();
+    await sportsManagerAuctionHouse.settleCurrentAndCreateNewAuction();
 
-    expect(await nounsToken.ownerOf(1)).to.equal(bidderA.address);
+    expect(await sportsManagerToken.ownerOf(1)).to.equal(bidderA.address);
     expect(await ethers.provider.getBalance(timelock.address)).to.equal(RESERVE_PRICE);
   });
 
   it('allows proposing, voting, queuing', async () => {
-    const description = 'Set nounsToken minter to address(1) and transfer treasury to address(2)';
+    const description = 'Set sportsManagerToken minter to address(1) and transfer treasury to address(2)';
 
-    // Action 1. Execute nounsToken.setMinter(address(1))
-    targets.push(nounsToken.address);
+    // Action 1. Execute sportsManagerToken.setMinter(address(1))
+    targets.push(sportsManagerToken.address);
     values.push('0');
     signatures.push('setMinter(address)');
     callDatas.push(encodeParameters(['address'], [address(1)]));
@@ -231,16 +231,16 @@ describe('End to End test with deployment, auction, proposing, voting, executing
     await gov.execute(proposalId);
 
     // Successfully executed Action 1
-    expect(await nounsToken.minter()).to.equal(address(1));
+    expect(await sportsManagerToken.minter()).to.equal(address(1));
 
     // Successfully executed Action 2
     expect(await ethers.provider.getBalance(address(2))).to.equal(RESERVE_PRICE);
   });
 
-  it('does not allow NounsDAO to accept funds', async () => {
+  it('does not allow SportsManagerDAO to accept funds', async () => {
     let error1;
 
-    // NounsDAO does not accept value without calldata
+    // SportsManagerDAO does not accept value without calldata
     try {
       await bidderA.sendTransaction({
         to: gov.address,
@@ -254,7 +254,7 @@ describe('End to End test with deployment, auction, proposing, voting, executing
 
     let error2;
 
-    // NounsDAO does not accept value with calldata
+    // SportsManagerDAO does not accept value with calldata
     try {
       await bidderA.sendTransaction({
         data: '0xb6b55f250000000000000000000000000000000000000000000000000000000000000001',
@@ -268,7 +268,7 @@ describe('End to End test with deployment, auction, proposing, voting, executing
     expect(error2);
   });
 
-  it('allows NounsDAOExecutor to receive funds', async () => {
+  it('allows SportsManagerDAOExecutor to receive funds', async () => {
     // test receive()
     await bidderA.sendTransaction({
       to: timelock.address,

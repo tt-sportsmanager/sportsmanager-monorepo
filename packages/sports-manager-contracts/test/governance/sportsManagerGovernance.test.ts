@@ -1,10 +1,10 @@
 import chai from 'chai';
 import { solidity } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
-import { NounsToken, NounsDescriptor__factory as NounsDescriptorFactory } from '../../typechain';
+import { SportsManagerToken, SportsManagerDescriptor__factory as SportsManagerDescriptorFactory } from '../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
-  deployNounsToken,
+  deploySportsManagerToken,
   getSigners,
   TestSigners,
   setTotalSupply,
@@ -19,11 +19,11 @@ import {
 chai.use(solidity);
 const { expect } = chai;
 
-describe('Nouns Governance', () => {
+describe('SportsManager Governance', () => {
   let snapshotId: number;
-  let token: NounsToken;
-  let tokenCallFromGuy: NounsToken;
-  let tokenCallFromDeployer: NounsToken;
+  let token: SportsManagerToken;
+  let tokenCallFromGuy: SportsManagerToken;
+  let tokenCallFromDeployer: SportsManagerToken;
   let account0: SignerWithAddress;
   let account1: SignerWithAddress;
   let account2: SignerWithAddress;
@@ -57,13 +57,13 @@ describe('Nouns Governance', () => {
     account2 = signers.account2;
     deployer = signers.deployer;
 
-    token = await deployNounsToken(signers.deployer);
+    token = await deploySportsManagerToken(signers.deployer);
 
     await populateDescriptor(
-      NounsDescriptorFactory.connect(await token.descriptor(), signers.deployer),
+      SportsManagerDescriptorFactory.connect(await token.descriptor(), signers.deployer),
     );
 
-    domain = Domain('Nouns', token.address, await chainId());
+    domain = Domain('SportsManager', token.address, await chainId());
 
     tokenCallFromGuy = token.connect(signers.account0);
     tokenCallFromDeployer = token;
