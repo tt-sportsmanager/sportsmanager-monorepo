@@ -103,20 +103,20 @@ export const populateDescriptor = async (sportsManagerDescriptor: SportsManagerD
  */
 export const MintSportsManager = (
   token: SportsManagerToken,
-  burnNoundersTokens = true,
+  burnSportsManagerdersTokens = true,
 ): ((amount: number) => Promise<void>) => {
   return async (amount: number): Promise<void> => {
     for (let i = 0; i < amount; i++) {
       await token.mint();
     }
-    if (!burnNoundersTokens) return;
+    if (!burnSportsManagerdersTokens) return;
 
     await setTotalSupply(token, amount);
   };
 };
 
 /**
- * Mints or burns tokens to target a total supply. Due to Nounders' rewards tokens may be burned and tokenIds will not be sequential
+ * Mints or burns tokens to target a total supply. Due to SportsManagerders' rewards tokens may be burned and tokenIds will not be sequential
  */
 export const setTotalSupply = async (token: SportsManagerToken, newTotalSupply: number): Promise<void> => {
   const totalSupply = (await token.totalSupply()).toNumber();
@@ -125,7 +125,7 @@ export const setTotalSupply = async (token: SportsManagerToken, newTotalSupply: 
     for (let i = 0; i < newTotalSupply - totalSupply; i++) {
       await token.mint();
     }
-    // If Nounder's reward tokens were minted totalSupply will be more than expected, so run setTotalSupply again to burn extra tokens
+    // If SportsManagerder's reward tokens were minted totalSupply will be more than expected, so run setTotalSupply again to burn extra tokens
     await setTotalSupply(token, newTotalSupply);
   }
 

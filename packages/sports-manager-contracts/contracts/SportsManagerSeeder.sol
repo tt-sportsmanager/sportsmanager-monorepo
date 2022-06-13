@@ -22,12 +22,12 @@ import { ISportsManagerDescriptor } from './interfaces/ISportsManagerDescriptor.
 
 contract SportsManagerSeeder is ISportsManagerSeeder {
     /**
-     * @notice Generate a pseudo-random Noun seed using the previous blockhash and noun ID.
+     * @notice Generate a pseudo-random SportsManager seed using the previous blockhash and noun ID.
      */
     // prettier-ignore
-    function generateSeed(uint256 nounId, ISportsManagerDescriptor descriptor) external view override returns (Seed memory) {
+    function generateSeed(uint256 sportsManagerId, ISportsManagerDescriptor descriptor) external view override returns (Seed memory) {
         uint256 pseudorandomness = uint256(
-            keccak256(abi.encodePacked(blockhash(block.number - 1), nounId))
+            keccak256(abi.encodePacked(blockhash(block.number - 1), sportsManagerId))
         );
 
         uint256 backgroundCount = descriptor.backgroundCount();

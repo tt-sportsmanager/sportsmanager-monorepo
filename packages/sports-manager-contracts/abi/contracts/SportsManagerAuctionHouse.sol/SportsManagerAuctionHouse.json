@@ -9,7 +9,7 @@
         {
           "indexed": true,
           "internalType": "uint256",
-          "name": "nounId",
+          "name": "sportsManagerId",
           "type": "uint256"
         },
         {
@@ -40,7 +40,7 @@
         {
           "indexed": true,
           "internalType": "uint256",
-          "name": "nounId",
+          "name": "sportsManagerId",
           "type": "uint256"
         },
         {
@@ -65,7 +65,7 @@
         {
           "indexed": true,
           "internalType": "uint256",
-          "name": "nounId",
+          "name": "sportsManagerId",
           "type": "uint256"
         },
         {
@@ -110,7 +110,7 @@
         {
           "indexed": true,
           "internalType": "uint256",
-          "name": "nounId",
+          "name": "sportsManagerId",
           "type": "uint256"
         },
         {

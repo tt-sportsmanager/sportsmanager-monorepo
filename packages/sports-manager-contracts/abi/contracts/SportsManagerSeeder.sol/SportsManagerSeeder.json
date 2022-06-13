@@ -7,7 +7,7 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "nounId",
+          "name": "sportsManagerId",
           "type": "uint256"
         },
         {

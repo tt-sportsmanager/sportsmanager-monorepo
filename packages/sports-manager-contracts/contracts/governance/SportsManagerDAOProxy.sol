@@ -16,16 +16,16 @@
  *********************************/
 
 // LICENSE
-// NounsDAOProxy.sol is a modified version of Compound Lab's GovernorBravoDelegator.sol:
+// SportsManagerDAOProxy.sol is a modified version of Compound Lab's GovernorBravoDelegator.sol:
 // https://github.com/compound-finance/compound-protocol/blob/b9b14038612d846b83f8a009a82c38974ff2dcfe/contracts/Governance/GovernorBravoDelegator.sol
 //
 // GovernorBravoDelegator.sol source code Copyright 2020 Compound Labs, Inc. licensed under the BSD-3-Clause license.
-// With modifications by Nounders DAO.
+// With modifications by SportsManagerders DAO.
 //
 // Additional conditions of BSD-3-Clause can be found here: https://opensource.org/licenses/BSD-3-Clause
 //
 //
-// NounsDAOProxy.sol uses parts of Open Zeppelin's Proxy.sol:
+// SportsManagerDAOProxy.sol uses parts of Open Zeppelin's Proxy.sol:
 // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/5c8746f56b4bed8cc9e0e044f5f69ab2f9428ce1/contracts/proxy/Proxy.sol
 //
 // Proxy.sol source code licensed under MIT License.

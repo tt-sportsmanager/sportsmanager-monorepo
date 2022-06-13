@@ -22,11 +22,11 @@ import { ISportsManagerDescriptor } from './ISportsManagerDescriptor.sol';
 import { ISportsManagerSeeder } from './ISportsManagerSeeder.sol';
 
 interface ISportsManagerToken is IERC721 {
-    event NounCreated(uint256 indexed tokenId, ISportsManagerSeeder.Seed seed);
+    event SportsManagerCreated(uint256 indexed tokenId, ISportsManagerSeeder.Seed seed);
 
-    event NounBurned(uint256 indexed tokenId);
+    event SportsManagerBurned(uint256 indexed tokenId);
 
-    event NoundersDAOUpdated(address noundersDAO);
+    event SportsManagerdersDAOUpdated(address noundersDAO);
 
     event MinterUpdated(address minter);
 
@@ -46,7 +46,7 @@ interface ISportsManagerToken is IERC721 {
 
     function dataURI(uint256 tokenId) external returns (string memory);
 
-    function setNoundersDAO(address noundersDAO) external;
+    function setSportsManagerdersDAO(address noundersDAO) external;
 
     function setMinter(address minter) external;
 

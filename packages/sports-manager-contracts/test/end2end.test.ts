@@ -132,7 +132,7 @@ async function deploy() {
   const sportsManagerDAOProxy = await new SportsManagerDaoProxyFactory(deployer).deploy(
     timelock.address,
     sportsManagerToken.address,
-    noundersDAO.address, // NoundersDAO is vetoer
+    noundersDAO.address, // SportsManagerdersDAO is vetoer
     timelock.address,
     govDelegate.address,
     VOTING_PERIOD,
@@ -180,7 +180,7 @@ describe('End to End test with deployment, auction, proposing, voting, executing
     expect(await sportsManagerToken.ownerOf(0)).to.equal(noundersDAO.address);
     expect(await sportsManagerToken.ownerOf(1)).to.equal(sportsManagerAuctionHouse.address);
 
-    expect((await sportsManagerAuctionHouse.auction()).cardId).to.equal(EthersBN.from('1'));
+    expect((await sportsManagerAuctionHouse.auction()).sportsManagerId).to.equal(EthersBN.from('1'));
   });
 
   it('allows bidding, settling, and transferring ETH correctly', async () => {

@@ -2,7 +2,7 @@ import { task, types } from 'hardhat/config';
 import ImageData from '../files/image-data.json';
 import { chunkArray } from '../utils';
 
-task('populate-descriptor', 'Populates the descriptor with color palettes and Noun parts')
+task('populate-descriptor', 'Populates the descriptor with color palettes and SportsManager parts')
   .addOptionalParam(
     'nftDescriptor',
     'The `NFTDescriptor` contract address',

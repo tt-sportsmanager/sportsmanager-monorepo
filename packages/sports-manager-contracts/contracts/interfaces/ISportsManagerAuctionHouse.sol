@@ -33,13 +33,13 @@ interface ISportsManagerAuctionHouse {
         bool settled;
     }
 
-    event AuctionCreated(uint256 indexed nounId, uint256 startTime, uint256 endTime);
+    event AuctionCreated(uint256 indexed sportsManagerId, uint256 startTime, uint256 endTime);
 
-    event AuctionBid(uint256 indexed nounId, address sender, uint256 value, bool extended);
+    event AuctionBid(uint256 indexed sportsManagerId, address sender, uint256 value, bool extended);
 
-    event AuctionExtended(uint256 indexed nounId, uint256 endTime);
+    event AuctionExtended(uint256 indexed sportsManagerId, uint256 endTime);
 
-    event AuctionSettled(uint256 indexed nounId, address winner, uint256 amount);
+    event AuctionSettled(uint256 indexed sportsManagerId, address winner, uint256 amount);
 
     event AuctionTimeBufferUpdated(uint256 timeBuffer);
 
@@ -51,7 +51,7 @@ interface ISportsManagerAuctionHouse {
 
     function settleCurrentAndCreateNewAuction() external;
 
-    function createBid(uint256 nounId) external payable;
+    function createBid(uint256 sportsManagerId) external payable;
 
     function pause() external;
 

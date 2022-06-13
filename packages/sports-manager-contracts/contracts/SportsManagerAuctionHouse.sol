@@ -20,7 +20,7 @@
 // https://github.com/ourzora/auction-house/blob/54a12ec1a6cf562e49f0a4917990474b11350a2d/contracts/AuctionHouse.sol
 //
 // AuctionHouse.sol source code Copyright Zora licensed under the GPL-3.0 license.
-// With modifications by Nounders DAO.
+// With modifications by SportsManagerders DAO.
 
 pragma solidity ^0.8.6;
 
@@ -82,7 +82,7 @@ contract SportsManagerAuctionHouse is ISportsManagerAuctionHouse, PausableUpgrad
     }
 
     /**
-     * @notice Settle the current auction, mint a new Noun, and put it up for auction.
+     * @notice Settle the current auction, mint a new SportsManager, and put it up for auction.
      */
     function settleCurrentAndCreateNewAuction() external override nonReentrant whenNotPaused {
         _settleAuction();
@@ -98,13 +98,13 @@ contract SportsManagerAuctionHouse is ISportsManagerAuctionHouse, PausableUpgrad
     }
 
     /**
-     * @notice Create a bid for a Noun, with a given amount.
+     * @notice Create a bid for a SportsManager, with a given amount.
      * @dev This contract only accepts payment in ETH.
      */
     function createBid(uint256 sportsManagerId) external payable override nonReentrant {
         ISportsManagerAuctionHouse.Auction memory _auction = auction;
 
-        require(_auction.sportsManagerId == sportsManagerId, 'Noun not up for auction');
+        require(_auction.sportsManagerId == sportsManagerId, 'SportsManager not up for auction');
         require(block.timestamp < _auction.endTime, 'Auction expired');
         require(msg.value >= reservePrice, 'Must send at least reservePrice');
         require(
@@ -216,7 +216,7 @@ contract SportsManagerAuctionHouse is ISportsManagerAuctionHouse, PausableUpgrad
 
     /**
      * @notice Settle an auction, finalizing the bid and paying out to the owner.
-     * @dev If there are no bids, the Noun is burned.
+     * @dev If there are no bids, the SportsManager is burned.
      */
     function _settleAuction() internal {
         ISportsManagerAuctionHouse.Auction memory _auction = auction;

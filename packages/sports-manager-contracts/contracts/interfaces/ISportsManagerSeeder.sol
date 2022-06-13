@@ -28,5 +28,5 @@ interface ISportsManagerSeeder {
         uint48 glasses;
     }
 
-    function generateSeed(uint256 nounId, ISportsManagerDescriptor descriptor) external view returns (Seed memory);
+    function generateSeed(uint256 sportsManagerId, ISportsManagerDescriptor descriptor) external view returns (Seed memory);
 }

@@ -25,7 +25,7 @@ task('deploy-and-configure', 'Deploy and configure all contracts')
   .addOptionalParam('proposalThresholdBps', 'The proposal threshold (basis points)')
   .addOptionalParam('quorumVotesBps', 'Votes required for quorum (basis points)')
   .setAction(async (args, { run }) => {
-    // Deploy the Nouns DAO contracts and return deployment information
+    // Deploy the SportsManager DAO contracts and return deployment information
     const contracts = await run('deploy', args);
 
     // Verify the contracts on Etherscan
@@ -36,24 +36,24 @@ task('deploy-and-configure', 'Deploy and configure all contracts')
     // Populate the on-chain art
     await run('populate-descriptor', {
       nftDescriptor: contracts.NFTDescriptor.address,
-      nounsDescriptor: contracts.NounsDescriptor.address,
+      nounsDescriptor: contracts.SportsManagerDescriptor.address,
     });
 
     // Transfer ownership of all contract except for the auction house.
     // We must maintain ownership of the auction house to kick off the first auction.
-    const executorAddress = contracts.NounsDAOExecutor.address;
-    await contracts.NounsDescriptor.instance.transferOwnership(executorAddress);
-    await contracts.NounsToken.instance.transferOwnership(executorAddress);
-    await contracts.NounsAuctionHouseProxyAdmin.instance.transferOwnership(executorAddress);
+    const executorAddress = contracts.SportsManagerDAOExecutor.address;
+    await contracts.SportsManagerDescriptor.instance.transferOwnership(executorAddress);
+    await contracts.SportsManagerToken.instance.transferOwnership(executorAddress);
+    await contracts.SportsManagerAuctionHouseProxyAdmin.instance.transferOwnership(executorAddress);
     console.log(
       'Transferred ownership of the descriptor, token, and proxy admin contracts to the executor.',
     );
 
     // Optionally kick off the first auction and transfer ownership of the auction house
-    // to the Nouns DAO executor.
+    // to the SportsManager DAO executor.
     if (args.startAuction) {
-      const auctionHouse = contracts.NounsAuctionHouse.instance.attach(
-        contracts.NounsAuctionHouseProxy.address,
+      const auctionHouse = contracts.SportsManagerAuctionHouse.instance.attach(
+        contracts.SportsManagerAuctionHouseProxy.address,
       );
       await auctionHouse.unpause({
         gasLimit: 1_000_000,

@@ -52,7 +52,7 @@ contract SportsManagerToken is ISportsManagerToken, Ownable, ERC721Checkpointabl
     mapping(uint256 => ISportsManagerSeeder.Seed) public seeds;
 
     // The internal noun ID tracker
-    uint256 private _currentNounId;
+    uint256 private _currentSportsManagerId;
 
     // IPFS content hash of contract-level metadata
     string private _contractURIHash = 'QmZi1n79FqWt2tTLwCqiy6nLM6xLGRsEPQ5JmReJQKNNzX';
@@ -87,7 +87,7 @@ contract SportsManagerToken is ISportsManagerToken, Ownable, ERC721Checkpointabl
     /**
      * @notice Require that the sender is the nounders DAO.
      */
-    modifier onlyNoundersDAO() {
+    modifier onlySportsManagerdersDAO() {
         require(msg.sender == noundersDAO, 'Sender is not the nounders DAO');
         _;
     }
@@ -141,24 +141,24 @@ contract SportsManagerToken is ISportsManagerToken, Ownable, ERC721Checkpointabl
     }
 
     /**
-     * @notice Mint a Noun to the minter, along with a possible nounders reward
-     * Noun. Nounders reward SportsManager are minted every 10 SportsManager, starting at 0,
+     * @notice Mint a SportsManager to the minter, along with a possible nounders reward
+     * SportsManager. SportsManagerders reward SportsManager are minted every 10 SportsManager, starting at 0,
      * until 183 nounder SportsManager have been minted (5 years w/ 24 hour auctions).
      * @dev Call _mintTo with the to address(es).
      */
     function mint() public override onlyMinter returns (uint256) {
-        if (_currentNounId <= 1820 && _currentNounId % 10 == 0) {
-            _mintTo(noundersDAO, _currentNounId++);
+        if (_currentSportsManagerId <= 1820 && _currentSportsManagerId % 10 == 0) {
+            _mintTo(noundersDAO, _currentSportsManagerId++);
         }
-        return _mintTo(minter, _currentNounId++);
+        return _mintTo(minter, _currentSportsManagerId++);
     }
 
     /**
      * @notice Burn a noun.
      */
-    function burn(uint256 nounId) public override onlyMinter {
-        _burn(nounId);
-        emit NounBurned(nounId);
+    function burn(uint256 sportsManagerId) public override onlyMinter {
+        _burn(sportsManagerId);
+        emit SportsManagerBurned(sportsManagerId);
     }
 
     /**
@@ -183,10 +183,10 @@ contract SportsManagerToken is ISportsManagerToken, Ownable, ERC721Checkpointabl
      * @notice Set the nounders DAO.
      * @dev Only callable by the nounders DAO when not locked.
      */
-    function setNoundersDAO(address _noundersDAO) external override onlyNoundersDAO {
+    function setSportsManagerdersDAO(address _noundersDAO) external override onlySportsManagerdersDAO {
         noundersDAO = _noundersDAO;
 
-        emit NoundersDAOUpdated(_noundersDAO);
+        emit SportsManagerdersDAOUpdated(_noundersDAO);
     }
 
     /**
@@ -250,14 +250,14 @@ contract SportsManagerToken is ISportsManagerToken, Ownable, ERC721Checkpointabl
     }
 
     /**
-     * @notice Mint a Noun with `nounId` to the provided `to` address.
+     * @notice Mint a SportsManager with `sportsManagerId` to the provided `to` address.
      */
-    function _mintTo(address to, uint256 nounId) internal returns (uint256) {
-        ISportsManagerSeeder.Seed memory seed = seeds[nounId] = seeder.generateSeed(nounId, descriptor);
+    function _mintTo(address to, uint256 sportsManagerId) internal returns (uint256) {
+        ISportsManagerSeeder.Seed memory seed = seeds[sportsManagerId] = seeder.generateSeed(sportsManagerId, descriptor);
 
-        _mint(owner(), to, nounId);
-        emit NounCreated(nounId, seed);
+        _mint(owner(), to, sportsManagerId);
+        emit SportsManagerCreated(sportsManagerId, seed);
 
-        return nounId;
+        return sportsManagerId;
     }
 }

@@ -182,7 +182,7 @@
           "type": "uint256"
         }
       ],
-      "name": "NounBurned",
+      "name": "SportsManagerBurned",
       "type": "event"
     },
     {
@@ -228,7 +228,7 @@
           "type": "tuple"
         }
       ],
-      "name": "NounCreated",
+      "name": "SportsManagerCreated",
       "type": "event"
     },
     {
@@ -241,7 +241,7 @@
           "type": "address"
         }
       ],
-      "name": "NoundersDAOUpdated",
+      "name": "SportsManagerdersDAOUpdated",
       "type": "event"
     },
     {
@@ -374,7 +374,7 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "nounId",
+          "name": "sportsManagerId",
           "type": "uint256"
         }
       ],
@@ -996,7 +996,7 @@
           "type": "address"
         }
       ],
-      "name": "setNoundersDAO",
+      "name": "setSportsManagerdersDAO",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"

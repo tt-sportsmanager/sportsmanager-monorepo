@@ -87,12 +87,12 @@ describe('SportsManagerAuctionHouse', () => {
   it('should revert if a user creates a bid for an inactive auction', async () => {
     await (await sportsManagerAuctionHouse.unpause()).wait();
 
-    const { cardId } = await sportsManagerAuctionHouse.auction();
-    const tx = sportsManagerAuctionHouse.connect(bidderA).createBid(cardId.add(1), {
+    const { sportsManagerId } = await sportsManagerAuctionHouse.auction();
+    const tx = sportsManagerAuctionHouse.connect(bidderA).createBid(sportsManagerId.add(1), {
       value: RESERVE_PRICE,
     });
 
-    await expect(tx).to.be.revertedWith('Noun not up for auction');
+    await expect(tx).to.be.revertedWith('SportsManager not up for auction');
   });
 
   it('should revert if a user creates a bid for an expired auction', async () => {
@@ -100,8 +100,8 @@ describe('SportsManagerAuctionHouse', () => {
 
     await ethers.provider.send('evm_increaseTime', [60 * 60 * 25]); // Add 25 hours
 
-    const { cardId } = await sportsManagerAuctionHouse.auction();
-    const tx = sportsManagerAuctionHouse.connect(bidderA).createBid(cardId, {
+    const { sportsManagerId } = await sportsManagerAuctionHouse.auction();
+    const tx = sportsManagerAuctionHouse.connect(bidderA).createBid(sportsManagerId, {
       value: RESERVE_PRICE,
     });
 
@@ -111,8 +111,8 @@ describe('SportsManagerAuctionHouse', () => {
   it('should revert if a user creates a bid with an amount below the reserve price', async () => {
     await (await sportsManagerAuctionHouse.unpause()).wait();
 
-    const { cardId } = await sportsManagerAuctionHouse.auction();
-    const tx = sportsManagerAuctionHouse.connect(bidderA).createBid(cardId, {
+    const { sportsManagerId } = await sportsManagerAuctionHouse.auction();
+    const tx = sportsManagerAuctionHouse.connect(bidderA).createBid(sportsManagerId, {
       value: RESERVE_PRICE - 1,
     });
 
@@ -122,11 +122,11 @@ describe('SportsManagerAuctionHouse', () => {
   it('should revert if a user creates a bid less than the min bid increment percentage', async () => {
     await (await sportsManagerAuctionHouse.unpause()).wait();
 
-    const { cardId } = await sportsManagerAuctionHouse.auction();
-    await sportsManagerAuctionHouse.connect(bidderA).createBid(cardId, {
+    const { sportsManagerId } = await sportsManagerAuctionHouse.auction();
+    await sportsManagerAuctionHouse.connect(bidderA).createBid(sportsManagerId, {
       value: RESERVE_PRICE * 50,
     });
-    const tx = sportsManagerAuctionHouse.connect(bidderB).createBid(cardId, {
+    const tx = sportsManagerAuctionHouse.connect(bidderB).createBid(sportsManagerId, {
       value: RESERVE_PRICE * 51,
     });
 
@@ -138,13 +138,13 @@ describe('SportsManagerAuctionHouse', () => {
   it('should refund the previous bidder when the following user creates a bid', async () => {
     await (await sportsManagerAuctionHouse.unpause()).wait();
 
-    const { cardId } = await sportsManagerAuctionHouse.auction();
-    await sportsManagerAuctionHouse.connect(bidderA).createBid(cardId, {
+    const { sportsManagerId } = await sportsManagerAuctionHouse.auction();
+    await sportsManagerAuctionHouse.connect(bidderA).createBid(sportsManagerId, {
       value: RESERVE_PRICE,
     });
 
     const bidderAPostBidBalance = await bidderA.getBalance();
-    await sportsManagerAuctionHouse.connect(bidderB).createBid(cardId, {
+    await sportsManagerAuctionHouse.connect(bidderB).createBid(sportsManagerId, {
       value: RESERVE_PRICE * 2,
     });
     const bidderAPostRefundBalance = await bidderA.getBalance();
@@ -155,19 +155,19 @@ describe('SportsManagerAuctionHouse', () => {
   it('should cap the maximum bid griefing cost at 30K gas + the cost to wrap and transfer WETH', async () => {
     await (await sportsManagerAuctionHouse.unpause()).wait();
 
-    const { cardId } = await sportsManagerAuctionHouse.auction();
+    const { sportsManagerId } = await sportsManagerAuctionHouse.auction();
 
     const maliciousBidderFactory = new MaliciousBidderFactory(bidderA);
     const maliciousBidder = await maliciousBidderFactory.deploy();
 
     const maliciousBid = await maliciousBidder
       .connect(bidderA)
-      .bid(sportsManagerAuctionHouse.address, cardId, {
+      .bid(sportsManagerAuctionHouse.address, sportsManagerId, {
         value: RESERVE_PRICE,
       });
     await maliciousBid.wait();
 
-    const tx = await sportsManagerAuctionHouse.connect(bidderB).createBid(cardId, {
+    const tx = await sportsManagerAuctionHouse.connect(bidderB).createBid(sportsManagerId, {
       value: RESERVE_PRICE * 2,
       gasLimit: 1_000_000,
     });
@@ -180,38 +180,38 @@ describe('SportsManagerAuctionHouse', () => {
   it('should emit an `AuctionBid` event on a successful bid', async () => {
     await (await sportsManagerAuctionHouse.unpause()).wait();
 
-    const { cardId } = await sportsManagerAuctionHouse.auction();
-    const tx = sportsManagerAuctionHouse.connect(bidderA).createBid(cardId, {
+    const { sportsManagerId } = await sportsManagerAuctionHouse.auction();
+    const tx = sportsManagerAuctionHouse.connect(bidderA).createBid(sportsManagerId, {
       value: RESERVE_PRICE,
     });
 
     await expect(tx)
       .to.emit(sportsManagerAuctionHouse, 'AuctionBid')
-      .withArgs(cardId, bidderA.address, RESERVE_PRICE, false);
+      .withArgs(sportsManagerId, bidderA.address, RESERVE_PRICE, false);
   });
 
   it('should emit an `AuctionExtended` event if the auction end time is within the time buffer', async () => {
     await (await sportsManagerAuctionHouse.unpause()).wait();
 
-    const { cardId, endTime } = await sportsManagerAuctionHouse.auction();
+    const { sportsManagerId, endTime } = await sportsManagerAuctionHouse.auction();
 
     await ethers.provider.send('evm_setNextBlockTimestamp', [endTime.sub(60 * 5).toNumber()]); // Subtract 5 mins from current end time
 
-    const tx = sportsManagerAuctionHouse.connect(bidderA).createBid(cardId, {
+    const tx = sportsManagerAuctionHouse.connect(bidderA).createBid(sportsManagerId, {
       value: RESERVE_PRICE,
     });
 
     await expect(tx)
       .to.emit(sportsManagerAuctionHouse, 'AuctionExtended')
-      .withArgs(cardId, endTime.add(60 * 10));
+      .withArgs(sportsManagerId, endTime.add(60 * 10));
   });
 
   it('should revert if auction settlement is attempted while the auction is still active', async () => {
     await (await sportsManagerAuctionHouse.unpause()).wait();
 
-    const { cardId } = await sportsManagerAuctionHouse.auction();
+    const { sportsManagerId } = await sportsManagerAuctionHouse.auction();
 
-    await sportsManagerAuctionHouse.connect(bidderA).createBid(cardId, {
+    await sportsManagerAuctionHouse.connect(bidderA).createBid(sportsManagerId, {
       value: RESERVE_PRICE,
     });
     const tx = sportsManagerAuctionHouse.connect(bidderA).settleCurrentAndCreateNewAuction();
@@ -222,9 +222,9 @@ describe('SportsManagerAuctionHouse', () => {
   it('should emit `AuctionSettled` and `AuctionCreated` events if all conditions are met', async () => {
     await (await sportsManagerAuctionHouse.unpause()).wait();
 
-    const { cardId } = await sportsManagerAuctionHouse.auction();
+    const { sportsManagerId } = await sportsManagerAuctionHouse.auction();
 
-    await sportsManagerAuctionHouse.connect(bidderA).createBid(cardId, {
+    await sportsManagerAuctionHouse.connect(bidderA).createBid(sportsManagerId, {
       value: RESERVE_PRICE,
     });
 
@@ -237,11 +237,11 @@ describe('SportsManagerAuctionHouse', () => {
     const settledEvent = receipt.events?.find(e => e.event === 'AuctionSettled');
     const createdEvent = receipt.events?.find(e => e.event === 'AuctionCreated');
 
-    expect(settledEvent?.args?.cardId).to.equal(cardId);
+    expect(settledEvent?.args?.sportsManagerId).to.equal(sportsManagerId);
     expect(settledEvent?.args?.winner).to.equal(bidderA.address);
     expect(settledEvent?.args?.amount).to.equal(RESERVE_PRICE);
 
-    expect(createdEvent?.args?.cardId).to.equal(cardId.add(1));
+    expect(createdEvent?.args?.sportsManagerId).to.equal(sportsManagerId.add(1));
     expect(createdEvent?.args?.startTime).to.equal(timestamp);
     expect(createdEvent?.args?.endTime).to.equal(timestamp + DURATION);
   });
@@ -253,17 +253,17 @@ describe('SportsManagerAuctionHouse', () => {
 
     await (await sportsManagerAuctionHouse.unpause()).wait();
 
-    const { cardId } = await sportsManagerAuctionHouse.auction();
+    const { sportsManagerId } = await sportsManagerAuctionHouse.auction();
 
-    expect(cardId).to.equal(1);
+    expect(sportsManagerId).to.equal(1);
   });
 
   it('should create a new auction if the auction house is paused and unpaused after an auction is settled', async () => {
     await (await sportsManagerAuctionHouse.unpause()).wait();
 
-    const { cardId } = await sportsManagerAuctionHouse.auction();
+    const { sportsManagerId } = await sportsManagerAuctionHouse.auction();
 
-    await sportsManagerAuctionHouse.connect(bidderA).createBid(cardId, {
+    await sportsManagerAuctionHouse.connect(bidderA).createBid(sportsManagerId, {
       value: RESERVE_PRICE,
     });
 
@@ -275,7 +275,7 @@ describe('SportsManagerAuctionHouse', () => {
 
     await expect(settleTx)
       .to.emit(sportsManagerAuctionHouse, 'AuctionSettled')
-      .withArgs(cardId, bidderA.address, RESERVE_PRICE);
+      .withArgs(sportsManagerId, bidderA.address, RESERVE_PRICE);
 
     const unpauseTx = await sportsManagerAuctionHouse.unpause();
     const receipt = await unpauseTx.wait();
@@ -283,7 +283,7 @@ describe('SportsManagerAuctionHouse', () => {
 
     const createdEvent = receipt.events?.find(e => e.event === 'AuctionCreated');
 
-    expect(createdEvent?.args?.cardId).to.equal(cardId.add(1));
+    expect(createdEvent?.args?.sportsManagerId).to.equal(sportsManagerId.add(1));
     expect(createdEvent?.args?.startTime).to.equal(timestamp);
     expect(createdEvent?.args?.endTime).to.equal(timestamp + DURATION);
   });
@@ -291,9 +291,9 @@ describe('SportsManagerAuctionHouse', () => {
   it('should settle the current auction and pause the contract if the minter is updated while the auction house is unpaused', async () => {
     await (await sportsManagerAuctionHouse.unpause()).wait();
 
-    const { cardId } = await sportsManagerAuctionHouse.auction();
+    const { sportsManagerId } = await sportsManagerAuctionHouse.auction();
 
-    await sportsManagerAuctionHouse.connect(bidderA).createBid(cardId, {
+    await sportsManagerAuctionHouse.connect(bidderA).createBid(sportsManagerId, {
       value: RESERVE_PRICE,
     });
 
@@ -305,17 +305,17 @@ describe('SportsManagerAuctionHouse', () => {
 
     await expect(settleTx)
       .to.emit(sportsManagerAuctionHouse, 'AuctionSettled')
-      .withArgs(cardId, bidderA.address, RESERVE_PRICE);
+      .withArgs(sportsManagerId, bidderA.address, RESERVE_PRICE);
 
     const paused = await sportsManagerAuctionHouse.paused();
 
     expect(paused).to.equal(true);
   });
 
-  it('should burn a Noun on auction settlement if no bids are received', async () => {
+  it('should burn a SportsManager on auction settlement if no bids are received', async () => {
     await (await sportsManagerAuctionHouse.unpause()).wait();
 
-    const { cardId } = await sportsManagerAuctionHouse.auction();
+    const { sportsManagerId } = await sportsManagerAuctionHouse.auction();
 
     await ethers.provider.send('evm_increaseTime', [60 * 60 * 25]); // Add 25 hours
 
@@ -323,6 +323,6 @@ describe('SportsManagerAuctionHouse', () => {
 
     await expect(tx)
       .to.emit(sportsManagerAuctionHouse, 'AuctionSettled')
-      .withArgs(cardId, '0x0000000000000000000000000000000000000000', 0);
+      .withArgs(sportsManagerId, '0x0000000000000000000000000000000000000000', 0);
   });
 });

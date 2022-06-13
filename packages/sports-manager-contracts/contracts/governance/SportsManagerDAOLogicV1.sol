@@ -16,24 +16,24 @@
  *********************************/
 
 // LICENSE
-// NounsDAOLogicV1.sol is a modified version of Compound Lab's GovernorBravoDelegate.sol:
+// SportsManagerDAOLogicV1.sol is a modified version of Compound Lab's GovernorBravoDelegate.sol:
 // https://github.com/compound-finance/compound-protocol/blob/b9b14038612d846b83f8a009a82c38974ff2dcfe/contracts/Governance/GovernorBravoDelegate.sol
 //
 // GovernorBravoDelegate.sol source code Copyright 2020 Compound Labs, Inc. licensed under the BSD-3-Clause license.
-// With modifications by Nounders DAO.
+// With modifications by SportsManagerders DAO.
 //
 // Additional conditions of BSD-3-Clause can be found here: https://opensource.org/licenses/BSD-3-Clause
 //
 // MODIFICATIONS
-// NounsDAOLogicV1 adds:
+// SportsManagerDAOLogicV1 adds:
 // - Proposal Threshold basis points instead of fixed number
-//   due to the Noun token's increasing supply
+//   due to the SportsManager token's increasing supply
 //
 // - Quorum Votes basis points instead of fixed number
-//   due to the Noun token's increasing supply
+//   due to the SportsManager token's increasing supply
 //
 // - Per proposal storing of fixed `proposalThreshold`
-//   and `quorumVotes` calculated using the Noun token's total supply
+//   and `quorumVotes` calculated using the SportsManager token's total supply
 //   at the block the proposal was created and the basis point parameters
 //
 // - `ProposalCreatedWithRequirements` event that emits `ProposalCreated` parameters with
@@ -48,7 +48,7 @@
 //   The `veto(uint proposalId)` logic is a modified version of `cancel(uint proposalId)`
 //   A `vetoed` flag was added to the `Proposal` struct to support this.
 //
-// NounsDAOLogicV1 removes:
+// SportsManagerDAOLogicV1 removes:
 // - `initialProposalId` and `_initiate()` due to this being the
 //   first instance of the governance contract unlike
 //   GovernorBravo which upgrades GovernorAlpha
@@ -186,27 +186,27 @@ contract SportsManagerDAOLogicV1 is SportsManagerDAOStorageV1, SportsManagerDAOE
 
         require(
             sportsManager.getPriorVotes(msg.sender, block.number - 1) > temp.proposalThreshold,
-            'NounsDAO::propose: proposer votes below proposal threshold'
+            'SportsManagerDAO::propose: proposer votes below proposal threshold'
         );
         require(
             targets.length == values.length &&
                 targets.length == signatures.length &&
                 targets.length == calldatas.length,
-            'NounsDAO::propose: proposal function information arity mismatch'
+            'SportsManagerDAO::propose: proposal function information arity mismatch'
         );
-        require(targets.length != 0, 'NounsDAO::propose: must provide actions');
-        require(targets.length <= proposalMaxOperations, 'NounsDAO::propose: too many actions');
+        require(targets.length != 0, 'SportsManagerDAO::propose: must provide actions');
+        require(targets.length <= proposalMaxOperations, 'SportsManagerDAO::propose: too many actions');
 
         temp.latestProposalId = latestProposalIds[msg.sender];
         if (temp.latestProposalId != 0) {
             ProposalState proposersLatestProposalState = state(temp.latestProposalId);
             require(
                 proposersLatestProposalState != ProposalState.Active,
-                'NounsDAO::propose: one live proposal per proposer, found an already active proposal'
+                'SportsManagerDAO::propose: one live proposal per proposer, found an already active proposal'
             );
             require(
                 proposersLatestProposalState != ProposalState.Pending,
-                'NounsDAO::propose: one live proposal per proposer, found an already pending proposal'
+                'SportsManagerDAO::propose: one live proposal per proposer, found an already pending proposal'
             );
         }
 
@@ -274,7 +274,7 @@ contract SportsManagerDAOLogicV1 is SportsManagerDAOStorageV1, SportsManagerDAOE
     function queue(uint256 proposalId) external {
         require(
             state(proposalId) == ProposalState.Succeeded,
-            'NounsDAO::queue: proposal can only be queued if it is succeeded'
+            'SportsManagerDAO::queue: proposal can only be queued if it is succeeded'
         );
         Proposal storage proposal = proposals[proposalId];
         uint256 eta = block.timestamp + timelock.delay();
@@ -300,7 +300,7 @@ contract SportsManagerDAOLogicV1 is SportsManagerDAOStorageV1, SportsManagerDAOE
     ) internal {
         require(
             !timelock.queuedTransactions(keccak256(abi.encode(target, value, signature, data, eta))),
-            'NounsDAO::queueOrRevertInternal: identical proposal action already queued at eta'
+            'SportsManagerDAO::queueOrRevertInternal: identical proposal action already queued at eta'
         );
         timelock.queueTransaction(target, value, signature, data, eta);
     }
@@ -312,7 +312,7 @@ contract SportsManagerDAOLogicV1 is SportsManagerDAOStorageV1, SportsManagerDAOE
     function execute(uint256 proposalId) external {
         require(
             state(proposalId) == ProposalState.Queued,
-            'NounsDAO::execute: proposal can only be executed if it is queued'
+            'SportsManagerDAO::execute: proposal can only be executed if it is queued'
         );
         Proposal storage proposal = proposals[proposalId];
         proposal.executed = true;
@@ -333,13 +333,13 @@ contract SportsManagerDAOLogicV1 is SportsManagerDAOStorageV1, SportsManagerDAOE
      * @param proposalId The id of the proposal to cancel
      */
     function cancel(uint256 proposalId) external {
-        require(state(proposalId) != ProposalState.Executed, 'NounsDAO::cancel: cannot cancel executed proposal');
+        require(state(proposalId) != ProposalState.Executed, 'SportsManagerDAO::cancel: cannot cancel executed proposal');
 
         Proposal storage proposal = proposals[proposalId];
         require(
             msg.sender == proposal.proposer ||
                 sportsManager.getPriorVotes(proposal.proposer, block.number - 1) < proposal.proposalThreshold,
-            'NounsDAO::cancel: proposer above threshold'
+            'SportsManagerDAO::cancel: proposer above threshold'
         );
 
         proposal.canceled = true;
@@ -361,9 +361,9 @@ contract SportsManagerDAOLogicV1 is SportsManagerDAOStorageV1, SportsManagerDAOE
      * @param proposalId The id of the proposal to veto
      */
     function veto(uint256 proposalId) external {
-        require(vetoer != address(0), 'NounsDAO::veto: veto power burned');
-        require(msg.sender == vetoer, 'NounsDAO::veto: only vetoer');
-        require(state(proposalId) != ProposalState.Executed, 'NounsDAO::veto: cannot veto executed proposal');
+        require(vetoer != address(0), 'SportsManagerDAO::veto: veto power burned');
+        require(msg.sender == vetoer, 'SportsManagerDAO::veto: only vetoer');
+        require(state(proposalId) != ProposalState.Executed, 'SportsManagerDAO::veto: cannot veto executed proposal');
 
         Proposal storage proposal = proposals[proposalId];
 
@@ -419,7 +419,7 @@ contract SportsManagerDAOLogicV1 is SportsManagerDAOStorageV1, SportsManagerDAOE
      * @return Proposal state
      */
     function state(uint256 proposalId) public view returns (ProposalState) {
-        require(proposalCount >= proposalId, 'NounsDAO::state: invalid proposal id');
+        require(proposalCount >= proposalId, 'SportsManagerDAO::state: invalid proposal id');
         Proposal storage proposal = proposals[proposalId];
         if (proposal.vetoed) {
             return ProposalState.Vetoed;
@@ -482,7 +482,7 @@ contract SportsManagerDAOLogicV1 is SportsManagerDAOStorageV1, SportsManagerDAOE
         bytes32 structHash = keccak256(abi.encode(BALLOT_TYPEHASH, proposalId, support));
         bytes32 digest = keccak256(abi.encodePacked('\x19\x01', domainSeparator, structHash));
         address signatory = ecrecover(digest, v, r, s);
-        require(signatory != address(0), 'NounsDAO::castVoteBySig: invalid signature');
+        require(signatory != address(0), 'SportsManagerDAO::castVoteBySig: invalid signature');
         emit VoteCast(signatory, proposalId, support, castVoteInternal(signatory, proposalId, support), '');
     }
 
@@ -498,11 +498,11 @@ contract SportsManagerDAOLogicV1 is SportsManagerDAOStorageV1, SportsManagerDAOE
         uint256 proposalId,
         uint8 support
     ) internal returns (uint96) {
-        require(state(proposalId) == ProposalState.Active, 'NounsDAO::castVoteInternal: voting is closed');
-        require(support <= 2, 'NounsDAO::castVoteInternal: invalid vote type');
+        require(state(proposalId) == ProposalState.Active, 'SportsManagerDAO::castVoteInternal: voting is closed');
+        require(support <= 2, 'SportsManagerDAO::castVoteInternal: invalid vote type');
         Proposal storage proposal = proposals[proposalId];
         Receipt storage receipt = proposal.receipts[voter];
-        require(receipt.hasVoted == false, 'NounsDAO::castVoteInternal: voter already voted');
+        require(receipt.hasVoted == false, 'SportsManagerDAO::castVoteInternal: voter already voted');
 
         /// @notice: Unlike GovernerBravo, votes are considered from the block the proposal was created in order to normalize quorumVotes and proposalThreshold metrics
         uint96 votes = sportsManager.getPriorVotes(voter, proposal.startBlock - votingDelay);
@@ -527,10 +527,10 @@ contract SportsManagerDAOLogicV1 is SportsManagerDAOStorageV1, SportsManagerDAOE
      * @param newVotingDelay new voting delay, in blocks
      */
     function _setVotingDelay(uint256 newVotingDelay) external {
-        require(msg.sender == admin, 'NounsDAO::_setVotingDelay: admin only');
+        require(msg.sender == admin, 'SportsManagerDAO::_setVotingDelay: admin only');
         require(
             newVotingDelay >= MIN_VOTING_DELAY && newVotingDelay <= MAX_VOTING_DELAY,
-            'NounsDAO::_setVotingDelay: invalid voting delay'
+            'SportsManagerDAO::_setVotingDelay: invalid voting delay'
         );
         uint256 oldVotingDelay = votingDelay;
         votingDelay = newVotingDelay;
@@ -543,10 +543,10 @@ contract SportsManagerDAOLogicV1 is SportsManagerDAOStorageV1, SportsManagerDAOE
      * @param newVotingPeriod new voting period, in blocks
      */
     function _setVotingPeriod(uint256 newVotingPeriod) external {
-        require(msg.sender == admin, 'NounsDAO::_setVotingPeriod: admin only');
+        require(msg.sender == admin, 'SportsManagerDAO::_setVotingPeriod: admin only');
         require(
             newVotingPeriod >= MIN_VOTING_PERIOD && newVotingPeriod <= MAX_VOTING_PERIOD,
-            'NounsDAO::_setVotingPeriod: invalid voting period'
+            'SportsManagerDAO::_setVotingPeriod: invalid voting period'
         );
         uint256 oldVotingPeriod = votingPeriod;
         votingPeriod = newVotingPeriod;
@@ -560,11 +560,11 @@ contract SportsManagerDAOLogicV1 is SportsManagerDAOStorageV1, SportsManagerDAOE
      * @param newProposalThresholdBPS new proposal threshold
      */
     function _setProposalThresholdBPS(uint256 newProposalThresholdBPS) external {
-        require(msg.sender == admin, 'NounsDAO::_setProposalThresholdBPS: admin only');
+        require(msg.sender == admin, 'SportsManagerDAO::_setProposalThresholdBPS: admin only');
         require(
             newProposalThresholdBPS >= MIN_PROPOSAL_THRESHOLD_BPS &&
                 newProposalThresholdBPS <= MAX_PROPOSAL_THRESHOLD_BPS,
-            'NounsDAO::_setProposalThreshold: invalid proposal threshold'
+            'SportsManagerDAO::_setProposalThreshold: invalid proposal threshold'
         );
         uint256 oldProposalThresholdBPS = proposalThresholdBPS;
         proposalThresholdBPS = newProposalThresholdBPS;
@@ -578,10 +578,10 @@ contract SportsManagerDAOLogicV1 is SportsManagerDAOStorageV1, SportsManagerDAOE
      * @param newQuorumVotesBPS new proposal threshold
      */
     function _setQuorumVotesBPS(uint256 newQuorumVotesBPS) external {
-        require(msg.sender == admin, 'NounsDAO::_setQuorumVotesBPS: admin only');
+        require(msg.sender == admin, 'SportsManagerDAO::_setQuorumVotesBPS: admin only');
         require(
             newQuorumVotesBPS >= MIN_QUORUM_VOTES_BPS && newQuorumVotesBPS <= MAX_QUORUM_VOTES_BPS,
-            'NounsDAO::_setProposalThreshold: invalid proposal threshold'
+            'SportsManagerDAO::_setProposalThreshold: invalid proposal threshold'
         );
         uint256 oldQuorumVotesBPS = quorumVotesBPS;
         quorumVotesBPS = newQuorumVotesBPS;
@@ -596,7 +596,7 @@ contract SportsManagerDAOLogicV1 is SportsManagerDAOStorageV1, SportsManagerDAOE
      */
     function _setPendingAdmin(address newPendingAdmin) external {
         // Check caller = admin
-        require(msg.sender == admin, 'NounsDAO::_setPendingAdmin: admin only');
+        require(msg.sender == admin, 'SportsManagerDAO::_setPendingAdmin: admin only');
 
         // Save current value, if any, for inclusion in log
         address oldPendingAdmin = pendingAdmin;
@@ -614,7 +614,7 @@ contract SportsManagerDAOLogicV1 is SportsManagerDAOStorageV1, SportsManagerDAOE
      */
     function _acceptAdmin() external {
         // Check caller is pendingAdmin and pendingAdmin ≠ address(0)
-        require(msg.sender == pendingAdmin && msg.sender != address(0), 'NounsDAO::_acceptAdmin: pending admin only');
+        require(msg.sender == pendingAdmin && msg.sender != address(0), 'SportsManagerDAO::_acceptAdmin: pending admin only');
 
         // Save current values for inclusion in log
         address oldAdmin = admin;
@@ -635,7 +635,7 @@ contract SportsManagerDAOLogicV1 is SportsManagerDAOStorageV1, SportsManagerDAOE
      * @dev Vetoer function for updating vetoer address
      */
     function _setVetoer(address newVetoer) public {
-        require(msg.sender == vetoer, 'NounsDAO::_setVetoer: vetoer only');
+        require(msg.sender == vetoer, 'SportsManagerDAO::_setVetoer: vetoer only');
 
         emit NewVetoer(vetoer, newVetoer);
 
@@ -648,13 +648,13 @@ contract SportsManagerDAOLogicV1 is SportsManagerDAOStorageV1, SportsManagerDAOE
      */
     function _burnVetoPower() public {
         // Check caller is pendingAdmin and pendingAdmin ≠ address(0)
-        require(msg.sender == vetoer, 'NounsDAO::_burnVetoPower: vetoer only');
+        require(msg.sender == vetoer, 'SportsManagerDAO::_burnVetoPower: vetoer only');
 
         _setVetoer(address(0));
     }
 
     /**
-     * @notice Current proposal threshold using Noun Total Supply
+     * @notice Current proposal threshold using SportsManager Total Supply
      * Differs from `GovernerBravo` which uses fixed amount
      */
     function proposalThreshold() public view returns (uint256) {
@@ -662,7 +662,7 @@ contract SportsManagerDAOLogicV1 is SportsManagerDAOStorageV1, SportsManagerDAOE
     }
 
     /**
-     * @notice Current quorum votes using Noun Total Supply
+     * @notice Current quorum votes using SportsManager Total Supply
      * Differs from `GovernerBravo` which uses fixed amount
      */
     function quorumVotes() public view returns (uint256) {

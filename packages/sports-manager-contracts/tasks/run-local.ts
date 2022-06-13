@@ -41,7 +41,7 @@ task(
 
   console.table(accounts);
   console.log(
-    `Noun contracts deployed to local node at http://localhost:8545 (Chain ID: ${chainId})`,
+    `SportsManager contracts deployed to local node at http://localhost:8545 (Chain ID: ${chainId})`,
   );
   console.log(`Auction House Proxy address: ${contracts.SportsManagerAuctionHouseProxy.instance.address}`);
   console.log(`SportsManager ERC721 address: ${contracts.SportsManagerToken.instance.address}`);

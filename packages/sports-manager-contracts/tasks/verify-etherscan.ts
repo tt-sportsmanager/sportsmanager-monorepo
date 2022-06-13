@@ -13,8 +13,8 @@ interface VerifyArgs {
 // These contracts require a fully qualified name to be passed because
 // they share bytecode with the underlying contract.
 const nameToFullyQualifiedName: Record<string, string> = {
-  NounsAuctionHouseProxy: 'contracts/proxies/NounsAuctionHouseProxy.sol:NounsAuctionHouseProxy',
-  NounsAuctionHouseProxyAdmin: 'contracts/proxies/NounsAuctionHouseProxyAdmin.sol:NounsAuctionHouseProxyAdmin',
+  SportsManagerAuctionHouseProxy: 'contracts/proxies/SportsManagerAuctionHouseProxy.sol:SportsManagerAuctionHouseProxy',
+  SportsManagerAuctionHouseProxyAdmin: 'contracts/proxies/SportsManagerAuctionHouseProxyAdmin.sol:SportsManagerAuctionHouseProxyAdmin',
 };
 
 task('verify-etherscan', 'Verify the Solidity contracts on Etherscan')
