@@ -3,14 +3,14 @@ import { StandaloneNounWithSeed } from '../StandaloneNoun';
 import AuctionActivity from '../AuctionActivity';
 import { Row, Container } from 'react-bootstrap';
 import { setStateBackgroundColor } from '../../state/slices/application';
-import { LoadingNoun } from '../SportsManager';
+import { LoadingSportsManager } from '../SportsManager';
 import { Auction as IAuction } from '../../wrappers/sportsManagerAuction';
 import classes from './Auction.module.css';
 import { INounSeed } from '../../wrappers/sportsManagerToken';
 import NounderNounContent from '../NounderNounContent';
 import { useHistory } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { isNounderNoun } from '../../utils/nounderNoun';
+import { isFounderSportsManager } from '../../utils/founderSportsManager';
 import {
   setNextOnDisplayAuctionNounId,
   setPrevOnDisplayAuctionNounId,
@@ -54,7 +54,7 @@ const Auction: React.FC<AuctionProps> = props => {
 
   const loadingNoun = (
     <div className={classes.nounWrapper}>
-      <LoadingNoun />
+      <LoadingSportsManager />
     </div>
   );
 
@@ -88,7 +88,7 @@ const Auction: React.FC<AuctionProps> = props => {
           </Col>
           <Col lg={{ span: 6 }} className={classes.auctionActivityCol}>
             {currentAuction &&
-              (isNounderNoun(currentAuction.sportsManagerId)
+              (isFounderSportsManager(currentAuction.sportsManagerId)
                 ? nounderNounContent
                 : currentAuctionActivityContent)}
           </Col>

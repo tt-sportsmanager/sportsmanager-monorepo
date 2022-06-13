@@ -4,7 +4,7 @@ import { Image } from 'react-bootstrap';
 import _LinkIcon from '../../assets/icons/Link.svg';
 import { auctionQuery } from '../../wrappers/subgraph';
 import _HeartIcon from '../../assets/icons/Heart.svg';
-import classes from './NounInfoRowHolder.module.css';
+import classes from './SportsManagerInfoRowHolder.module.css';
 
 import config from '../../config';
 import { buildEtherscanAddressLink } from '../../utils/etherscan';
@@ -13,11 +13,11 @@ import ShortAddress from '../ShortAddress';
 import { useAppSelector } from '../../hooks';
 import { Trans } from '@lingui/macro';
 
-interface NounInfoRowHolderProps {
+interface SportsManagerInfoRowHolderProps {
   sportsManagerId: number;
 }
 
-const NounInfoRowHolder: React.FC<NounInfoRowHolderProps> = props => {
+const SportsManagerInfoRowHolder: React.FC<SportsManagerInfoRowHolderProps> = props => {
   const { sportsManagerId } = props;
   const isCool = useAppSelector(state => state.application.isCoolBackground);
   const { loading, error, data } = useQuery(auctionQuery(sportsManagerId));
@@ -35,7 +35,7 @@ const NounInfoRowHolder: React.FC<NounInfoRowHolderProps> = props => {
   } else if (error) {
     return (
       <div>
-        <Trans>Failed to fetch Noun info</Trans>
+        <Trans>Failed to fetch SportsManager info</Trans>
       </div>
     );
   }
@@ -61,7 +61,7 @@ const NounInfoRowHolder: React.FC<NounInfoRowHolderProps> = props => {
           rel="noreferrer"
         >
           {winner.toLowerCase() === config.addresses.sportsManagerAuctionHouseProxy.toLowerCase() ? (
-            <Trans>Nouns Auction House</Trans>
+            <Trans>SportsManagers Auction House</Trans>
           ) : (
             shortAddressComponent
           )}
@@ -74,4 +74,4 @@ const NounInfoRowHolder: React.FC<NounInfoRowHolderProps> = props => {
   );
 };
 
-export default NounInfoRowHolder;
+export default SportsManagerInfoRowHolder;

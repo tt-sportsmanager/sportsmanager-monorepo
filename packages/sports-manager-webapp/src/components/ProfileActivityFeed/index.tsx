@@ -6,9 +6,9 @@ import classes from './ProfileActivityFeed.module.css';
 import { useQuery } from '@apollo/client';
 import { Proposal, ProposalState, useAllProposals } from '../../wrappers/sportsManagerDao';
 import { createTimestampAllProposals, nounVotingHistoryQuery } from '../../wrappers/subgraph';
-import NounProfileVoteRow from '../NounProfileVoteRow';
-import { LoadingNoun } from '../SportsManager';
-import { useNounCanVoteTimestamp } from '../../wrappers/sportsManagerAuction';
+import SportsManagerProfileVoteRow from '../SportsManagerProfileVoteRow';
+import { LoadingSportsManager } from '../SportsManager';
+import { useSportsManagerCanVoteTimestamp } from '../../wrappers/sportsManagerAuction';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
@@ -23,7 +23,7 @@ interface ProposalInfo {
   id: number;
 }
 
-export interface NounVoteHistory {
+export interface SportsManagerVoteHistory {
   proposal: ProposalInfo;
   support: boolean;
   supportDetailed: number;
@@ -43,7 +43,7 @@ const ProfileActivityFeed: React.FC<ProfileActivityFeedProps> = props => {
     data: proposalCreatedTimestamps,
   } = useQuery(createTimestampAllProposals());
 
-  const nounCanVoteTimestamp = useNounCanVoteTimestamp(sportsManagerId);
+  const nounCanVoteTimestamp = useSportsManagerCanVoteTimestamp(sportsManagerId);
 
   const { data: proposals } = useAllProposals();
 
@@ -52,14 +52,14 @@ const ProfileActivityFeed: React.FC<ProfileActivityFeedProps> = props => {
   } else if (error || proposalTimestampError) {
     return (
       <div>
-        <Trans>Failed to fetch Noun activity history</Trans>
+        <Trans>Failed to fetch SportsManager activity history</Trans>
       </div>
     );
   }
 
-  const nounVotes: { [key: string]: NounVoteHistory } = data.noun.votes
+  const nounVotes: { [key: string]: SportsManagerVoteHistory } = data.noun.votes
     .slice(0)
-    .reduce((acc: any, h: NounVoteHistory, i: number) => {
+    .reduce((acc: any, h: SportsManagerVoteHistory, i: number) => {
       acc[h.proposal.id] = h;
       return acc;
     }, {});
@@ -69,7 +69,7 @@ const ProfileActivityFeed: React.FC<ProfileActivityFeedProps> = props => {
       proposalCreatedTimestamps.proposals[id].createdTimestamp,
     );
 
-    // Filter props from before the Noun was born
+    // Filter props from before the SportsManager was born
     if (nounCanVoteTimestamp.gt(proposalCreationTimestamp)) {
       return false;
     }
@@ -102,10 +102,10 @@ const ProfileActivityFeed: React.FC<ProfileActivityFeedProps> = props => {
                     .slice(0, MAX_EVENTS_SHOW_ABOVE_FOLD)
                     .map((p: Proposal, i: number) => {
                       const vote = p.id ? nounVotes[p.id] : undefined;
-                      return <NounProfileVoteRow proposal={p} vote={vote} key={i} />;
+                      return <SportsManagerProfileVoteRow proposal={p} vote={vote} key={i} />;
                     })
                 ) : (
-                  <LoadingNoun />
+                  <LoadingSportsManager />
                 )}
               </tbody>
             </Table>
@@ -120,10 +120,10 @@ const ProfileActivityFeed: React.FC<ProfileActivityFeedProps> = props => {
                         .slice(MAX_EVENTS_SHOW_ABOVE_FOLD, filteredProposals.length)
                         .map((p: Proposal, i: number) => {
                           const vote = p.id ? nounVotes[p.id] : undefined;
-                          return <NounProfileVoteRow proposal={p} vote={vote} key={i} />;
+                          return <SportsManagerProfileVoteRow proposal={p} vote={vote} key={i} />;
                         })
                     ) : (
-                      <LoadingNoun />
+                      <LoadingSportsManager />
                     )}
                   </tbody>
                 </Table>
@@ -155,7 +155,7 @@ const ProfileActivityFeed: React.FC<ProfileActivityFeedProps> = props => {
           </>
         ) : (
           <div className={classes.nullStateCopy}>
-            <Trans>This Noun has no activity, since it was just created. Check back soon!</Trans>
+            <Trans>This SportsManager has no activity, since it was just created. Check back soon!</Trans>
           </div>
         )}
       </Col>

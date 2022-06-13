@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
 import { isMobileScreen } from '../../utils/isMobile';
 import { Proposal } from '../../wrappers/sportsManagerDao';
-import NounImageVoteTable from '../NounImageVoteTable';
+import NounImageVoteTable from '../SportsManagerImageVoteTable';
 import VoteProgressBar from '../VoteProgressBar';
 import classes from './VoteCard.module.css';
 import { Trans } from '@lingui/macro';

@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import React from 'react';
-import { isNounderNoun } from '../../utils/nounderNoun';
+import { isFounderSportsManager } from '../../utils/founderSportsManager';
 
 import classes from './NounInfoRowBirthday.module.css';
 import _BirthdayIcon from '../../assets/icons/Birthday.svg';
@@ -21,7 +21,7 @@ const NounInfoRowBirthday: React.FC<NounInfoRowBirthdayProps> = props => {
   // If the noun is a nounder noun, use the next noun to get the mint date.
   // We do this because we use the auction start time to get the mint date and
   // nounder nouns do not have an auction start time.
-  const sportsManagerIdForQuery = isNounderNoun(BigNumber.from(sportsManagerId)) ? sportsManagerId + 1 : sportsManagerId;
+  const sportsManagerIdForQuery = isFounderSportsManager(BigNumber.from(sportsManagerId)) ? sportsManagerId + 1 : sportsManagerId;
 
   const pastAuctions = useAppSelector(state => state.pastAuctions.pastAuctions);
   if (!pastAuctions || !pastAuctions.length) {

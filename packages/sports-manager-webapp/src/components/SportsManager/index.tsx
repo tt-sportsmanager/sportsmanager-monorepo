@@ -1,12 +1,12 @@
 import classes from './SportsManager.module.css';
 import React from 'react';
-import loadingNoun from '../../assets/loading-skull-noun.gif';
+import loadingSportsManager from '../../assets/loading-skull-noun.gif';
 import Image from 'react-bootstrap/Image';
 
-export const LoadingNoun = () => {
+export const LoadingSportsManager = () => {
   return (
     <div className={classes.imgWrapper}>
-      <Image className={classes.img} src={loadingNoun} alt={'loading noun'} fluid />
+      <Image className={classes.img} src={loadingSportsManager} alt={'loading noun'} fluid />
     </div>
   );
 };
@@ -22,7 +22,7 @@ const SportsManager: React.FC<{
     <div className={`${classes.imgWrapper} ${wrapperClassName}`}>
       <Image
         className={`${classes.img} ${className}`}
-        src={imgPath ? imgPath : loadingNoun}
+        src={imgPath ? imgPath : loadingSportsManager}
         alt={alt}
         fluid
       />

@@ -1,10 +1,10 @@
-import { StandaloneNounCircular } from '../../components/StandaloneNoun';
+import { StandaloneNounCircular } from '../StandaloneNoun';
 import { BigNumber as EthersBN } from 'ethers';
-import classes from './NounImageVoteTable.module.css';
+import classes from './SportsManagerImageVoteTable.module.css';
 import { GrayCircle } from '../GrayCircle';
 import { pseudoRandomPredictableShuffle } from '../../utils/pseudoRandomPredictableShuffle';
 
-interface NounImageVoteTableProps {
+interface SportsManagerImageVoteTableProps {
   sportsManagerIdArray: string[];
   propId: number;
 }
@@ -12,11 +12,11 @@ const NOUNS_PER_VOTE_CARD_DESKTOP = 15;
 
 const isXLScreen = window.innerWidth > 1200;
 
-const NounImageVoteTable: React.FC<NounImageVoteTableProps> = props => {
+const SportsManagerImageVoteTable: React.FC<SportsManagerImageVoteTableProps> = props => {
   const { sportsManagerIdArray, propId } = props;
 
-  const shuffledNounIds = pseudoRandomPredictableShuffle(sportsManagerIdArray, propId);
-  const paddedNounIds = shuffledNounIds
+  const shuffledSportsManagerIds = pseudoRandomPredictableShuffle(sportsManagerIdArray, propId);
+  const paddedSportsManagerIds = shuffledSportsManagerIds
     .map((sportsManagerId: string) => {
       return <StandaloneNounCircular sportsManagerId={EthersBN.from(sportsManagerId)} />;
     })
@@ -34,7 +34,7 @@ const NounImageVoteTable: React.FC<NounImageVoteTableProps> = props => {
           {Array(rowLength)
             .fill(0)
             .map((_, j) => (
-              <td key={j}>{paddedNounIds[i * rowLength + j]}</td>
+              <td key={j}>{paddedSportsManagerIds[i * rowLength + j]}</td>
             ))}
         </tr>
       ));
@@ -47,4 +47,4 @@ const NounImageVoteTable: React.FC<NounImageVoteTableProps> = props => {
   );
 };
 
-export default NounImageVoteTable;
+export default SportsManagerImageVoteTable;

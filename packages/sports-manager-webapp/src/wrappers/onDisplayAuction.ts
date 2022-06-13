@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { useAppSelector } from '../hooks';
-import { generateEmptyNounderAuction, isNounderNoun } from '../utils/nounderNoun';
+import { generateEmptyFounderAuction, isFounderSportsManager } from '../utils/founderSportsManager';
 import { Bid, BidEvent } from '../utils/types';
 import { Auction } from './sportsManagerAuction';
 
@@ -55,8 +55,8 @@ const useOnDisplayAuction = (): Auction | undefined => {
   }
 
   // nounder auction
-  if (isNounderNoun(BigNumber.from(onDisplayAuctionNounId))) {
-    const emptyNounderAuction = generateEmptyNounderAuction(
+  if (isFounderSportsManager(BigNumber.from(onDisplayAuctionNounId))) {
+    const emptyNounderAuction = generateEmptyFounderAuction(
       BigNumber.from(onDisplayAuctionNounId),
       pastAuctions,
     );

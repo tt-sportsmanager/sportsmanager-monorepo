@@ -6,24 +6,24 @@ import _AbsentVoteIcon from '../../assets/icons/AbsentVote.svg';
 import _AbstainVoteIcon from '../../assets/icons/Abstain.svg';
 import { ProposalState } from '../../wrappers/sportsManagerDao';
 
-import classes from './NounProfileVoteRow.module.css';
+import classes from './SportsManagerProfileVoteRow.module.css';
 
 import { useHistory } from 'react-router-dom';
 import VoteStatusPill from '../VoteStatusPill';
 
 import _PendingVoteIcon from '../../assets/icons/PendingVote.svg';
 import { Vote } from '../../utils/vote';
-import { NounVoteHistory } from '../ProfileActivityFeed';
+import { SportsManagerVoteHistory } from '../ProfileActivityFeed';
 import { Trans } from '@lingui/macro';
 import { useActiveLocale } from '../../hooks/useActivateLocale';
 import responsiveUiUtilsClasses from '../../utils/ResponsiveUIUtils.module.css';
 
-interface NounProfileVoteRowProps {
+interface SportsManagerProfileVoteRowProps {
   proposal: Proposal;
-  vote?: NounVoteHistory;
+  vote?: SportsManagerVoteHistory;
 }
 
-const selectIconForNounVoteActivityRow = (proposal: Proposal, vote?: NounVoteHistory) => {
+const selectIconForSportsManagerVoteActivityRow = (proposal: Proposal, vote?: SportsManagerVoteHistory) => {
   if (!vote) {
     if (proposal.status === ProposalState.PENDING || proposal.status === ProposalState.ACTIVE) {
       return <Image src={_PendingVoteIcon} className={classes.voteIcon} />;
@@ -42,7 +42,7 @@ const selectIconForNounVoteActivityRow = (proposal: Proposal, vote?: NounVoteHis
   }
 };
 
-const selectVotingInfoText = (proposal: Proposal, vote?: NounVoteHistory) => {
+const selectVotingInfoText = (proposal: Proposal, vote?: SportsManagerVoteHistory) => {
   if (!vote) {
     if (proposal.status === ProposalState.PENDING || proposal.status === ProposalState.ACTIVE) {
       return <Trans>Waiting for</Trans>;
@@ -106,7 +106,7 @@ const selectProposalText = (proposal: Proposal) => {
   }
 };
 
-const NounProfileVoteRow: React.FC<NounProfileVoteRowProps> = props => {
+const SportsManagerProfileVoteRow: React.FC<SportsManagerProfileVoteRowProps> = props => {
   const { proposal, vote } = props;
 
   const history = useHistory();
@@ -115,7 +115,7 @@ const NounProfileVoteRow: React.FC<NounProfileVoteRowProps> = props => {
 
   return (
     <tr onClick={proposalOnClickHandler} className={classes.voteInfoRow}>
-      <td className={classes.voteIcon}>{selectIconForNounVoteActivityRow(proposal, vote)}</td>
+      <td className={classes.voteIcon}>{selectIconForSportsManagerVoteActivityRow(proposal, vote)}</td>
       <td className={classes.voteInfoTableCell}>
         <div className={classes.voteInfoContainer}>
           {selectVotingInfoText(proposal, vote)}
@@ -131,4 +131,4 @@ const NounProfileVoteRow: React.FC<NounProfileVoteRowProps> = props => {
   );
 };
 
-export default NounProfileVoteRow;
+export default SportsManagerProfileVoteRow;

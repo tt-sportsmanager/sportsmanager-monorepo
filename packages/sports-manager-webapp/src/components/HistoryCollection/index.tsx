@@ -3,7 +3,7 @@ import Section from '../../layout/Section';
 import classes from './HistoryCollection.module.css';
 import clsx from 'clsx';
 import StandaloneNoun from '../StandaloneNoun';
-import { LoadingNoun } from '../SportsManager';
+import { LoadingSportsManager } from '../SportsManager';
 import config from '../../config';
 import { Container, Row } from 'react-bootstrap';
 
@@ -32,7 +32,7 @@ const HistoryCollection: React.FC<HistoryCollectionProps> = (props: HistoryColle
   });
 
   const nounsContent = sportsManagerIdArray.map((sportsManagerId, i) => {
-    return !sportsManagerId ? <LoadingNoun key={i} /> : <StandaloneNoun key={i} sportsManagerId={sportsManagerId} />;
+    return !sportsManagerId ? <LoadingSportsManager key={i} /> : <StandaloneNoun key={i} sportsManagerId={sportsManagerId} />;
   });
 
   return (
