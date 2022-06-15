@@ -12,16 +12,16 @@
     "sportsManagerDAOLogicV1": "0xa43aFE317985726E4e194eb061Af77fbCb43F944"
   },
   "4": {
-    "sportsManagerToken": "0x632f34c3aee991b10D4b421Bc05413a03d7a37eB",
-    "sportsManagerSeeder": "0xA98A1b1Cc4f5746A753167BAf8e0C26AcBe42F2E",
-    "sportsManagerDescriptor": "0x53cB482c73655D2287AE3282AD1395F82e6a402F",
-    "nftDescriptor": "0x1F28f148ef5f9BD182cCEfeAD4240A505C54dc9B",
-    "sportsManagerAuctionHouse": "0xfAB74e535409A3ad1F7C2858dd2E5Da1eAAc6cE7",
-    "sportsManagerAuctionHouseProxy": "0x7cb0384b923280269b3BD85f0a7fEaB776588382",
-    "sportsManagerAuctionHouseProxyAdmin": "0x04d0e5a8ADB5076C098f49F39B01A774c313597d",
-    "sportsManagerDaoExecutor": "0x6F3940820288855418B7ef8E33a2eC23d9DeD59B",
-    "sportsManagerDAOProxy": "0xd1C753D9A23eb5c57e0d023e993B9bd4F5086b04",
-    "sportsManagerDAOLogicV1": "0xdF05F2D3276F3F3fA00296702e4cf7190B78F6F9"
+    "sportsManagerToken": "0x37273E6e56B6f6860540252C92024bd1Cb51744F",
+    "sportsManagerSeeder": "0x9539DE90F52e09E388C77A0ce9E090214EeE692b",
+    "sportsManagerDescriptor": "0x9CbF82926BEa680a8f155AE72A4735D123E109A2",
+    "nftDescriptor": "0xB6F8BaAA6b57858B78cae7c880fE3591bB96c789",
+    "sportsManagerAuctionHouse": "0x0b98a256B5ac075fA280176bC651D6eBC7903803",
+    "sportsManagerAuctionHouseProxy": "0xda36eAe812d46B6d89484A8f30A8f8E94Ac8C48f",
+    "sportsManagerAuctionHouseProxyAdmin": "0xc01aA64e8F9708a7346Ca6ad663d8f7Ce3A65326",
+    "sportsManagerDaoExecutor": "0x8f33C22D52Cd582ff69A47A1854F4eddDc024018",
+    "sportsManagerDAOProxy": "0xBEdA65F0CD6ebad4Be8F7943Bc3629a88BccDE23",
+    "sportsManagerDAOLogicV1": "0x8c823670b6d83E10eA13BC09665AE15aDDc204d2"
   },
   "31337": {
     "sportsManagerToken": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
