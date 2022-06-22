@@ -1,43 +1,43 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface OnDisplayAuctionState {
-  lastAuctionNounId: number | undefined;
-  onDisplayAuctionNounId: number | undefined;
+  lastAuctionSportsManagerId: number | undefined;
+  onDisplayAuctionSportsManagerId: number | undefined;
 }
 
 const initialState: OnDisplayAuctionState = {
-  lastAuctionNounId: undefined,
-  onDisplayAuctionNounId: undefined,
+  lastAuctionSportsManagerId: undefined,
+  onDisplayAuctionSportsManagerId: undefined,
 };
 
 const onDisplayAuction = createSlice({
   name: 'onDisplayAuction',
   initialState: initialState,
   reducers: {
-    setLastAuctionNounId: (state, action: PayloadAction<number>) => {
-      state.lastAuctionNounId = action.payload;
+    setLastAuctionSportsManagerId: (state, action: PayloadAction<number>) => {
+      state.lastAuctionSportsManagerId = action.payload;
     },
-    setOnDisplayAuctionNounId: (state, action: PayloadAction<number>) => {
-      state.onDisplayAuctionNounId = action.payload;
+    setOnDisplayAuctionSportsManagerId: (state, action: PayloadAction<number>) => {
+      state.onDisplayAuctionSportsManagerId = action.payload;
     },
-    setPrevOnDisplayAuctionNounId: state => {
-      if (!state.onDisplayAuctionNounId) return;
-      if (state.onDisplayAuctionNounId === 0) return;
-      state.onDisplayAuctionNounId = state.onDisplayAuctionNounId - 1;
+    setPrevOnDisplayAuctionSportsManagerId: state => {
+      if (!state.onDisplayAuctionSportsManagerId) return;
+      if (state.onDisplayAuctionSportsManagerId === 0) return;
+      state.onDisplayAuctionSportsManagerId = state.onDisplayAuctionSportsManagerId - 1;
     },
-    setNextOnDisplayAuctionNounId: state => {
-      if (state.onDisplayAuctionNounId === undefined) return;
-      if (state.lastAuctionNounId === state.onDisplayAuctionNounId) return;
-      state.onDisplayAuctionNounId = state.onDisplayAuctionNounId + 1;
+    setNextOnDisplayAuctionSportsManagerId: state => {
+      if (state.onDisplayAuctionSportsManagerId === undefined) return;
+      if (state.lastAuctionSportsManagerId === state.onDisplayAuctionSportsManagerId) return;
+      state.onDisplayAuctionSportsManagerId = state.onDisplayAuctionSportsManagerId + 1;
     },
   },
 });
 
 export const {
-  setLastAuctionNounId,
-  setOnDisplayAuctionNounId,
-  setPrevOnDisplayAuctionNounId,
-  setNextOnDisplayAuctionNounId,
+  setLastAuctionSportsManagerId,
+  setOnDisplayAuctionSportsManagerId,
+  setPrevOnDisplayAuctionSportsManagerId,
+  setNextOnDisplayAuctionSportsManagerId,
 } = onDisplayAuction.actions;
 
 export default onDisplayAuction.reducer;

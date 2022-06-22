@@ -34,58 +34,58 @@ const deserializeBids = (reduxSafeBids: BidEvent[]): Bid[] => {
 };
 
 const useOnDisplayAuction = (): Auction | undefined => {
-  const lastAuctionNounId = useAppSelector(state => state.auction.activeAuction?.sportsManagerId);
-  const onDisplayAuctionNounId = useAppSelector(
-    state => state.onDisplayAuction.onDisplayAuctionNounId,
+  const lastAuctionSportsManagerId = useAppSelector(state => state.auction.activeAuction?.sportsManagerId);
+  const onDisplayAuctionSportsManagerId = useAppSelector(
+    state => state.onDisplayAuction.onDisplayAuctionSportsManagerId,
   );
   const currentAuction = useAppSelector(state => state.auction.activeAuction);
   const pastAuctions = useAppSelector(state => state.pastAuctions.pastAuctions);
 
   if (
-    onDisplayAuctionNounId === undefined ||
-    lastAuctionNounId === undefined ||
+    onDisplayAuctionSportsManagerId === undefined ||
+    lastAuctionSportsManagerId === undefined ||
     currentAuction === undefined ||
     !pastAuctions
   )
     return undefined;
 
   // current auction
-  if (BigNumber.from(onDisplayAuctionNounId).eq(lastAuctionNounId)) {
+  if (BigNumber.from(onDisplayAuctionSportsManagerId).eq(lastAuctionSportsManagerId)) {
     return deserializeAuction(currentAuction);
   }
 
   // nounder auction
-  if (isFounderSportsManager(BigNumber.from(onDisplayAuctionNounId))) {
-    const emptyNounderAuction = generateEmptyFounderAuction(
-      BigNumber.from(onDisplayAuctionNounId),
+  if (isFounderSportsManager(BigNumber.from(onDisplayAuctionSportsManagerId))) {
+    const emptySportsManagerderAuction = generateEmptyFounderAuction(
+      BigNumber.from(onDisplayAuctionSportsManagerId),
       pastAuctions,
     );
 
-    return deserializeAuction(emptyNounderAuction);
+    return deserializeAuction(emptySportsManagerderAuction);
   }
 
   // past auction
   const reduxSafeAuction: Auction | undefined = pastAuctions.find(auction => {
     const sportsManagerId = auction.activeAuction && BigNumber.from(auction.activeAuction.sportsManagerId);
-    return sportsManagerId && sportsManagerId.toNumber() === onDisplayAuctionNounId;
+    return sportsManagerId && sportsManagerId.toNumber() === onDisplayAuctionSportsManagerId;
   })?.activeAuction;
 
   return reduxSafeAuction ? deserializeAuction(reduxSafeAuction) : undefined;
 };
 
-export const useAuctionBids = (auctionNounId: BigNumber): Bid[] | undefined => {
-  const lastAuctionNounId = useAppSelector(state => state.onDisplayAuction.lastAuctionNounId);
+export const useAuctionBids = (auctionSportsManagerId: BigNumber): Bid[] | undefined => {
+  const lastAuctionSportsManagerId = useAppSelector(state => state.onDisplayAuction.lastAuctionSportsManagerId);
   const lastAuctionBids = useAppSelector(state => state.auction.bids);
   const pastAuctions = useAppSelector(state => state.pastAuctions.pastAuctions);
 
   // auction requested is active auction
-  if (lastAuctionNounId === auctionNounId.toNumber()) {
+  if (lastAuctionSportsManagerId === auctionSportsManagerId.toNumber()) {
     return deserializeBids(lastAuctionBids);
   } else {
     // find bids for past auction requested
     const bidEvents: BidEvent[] | undefined = pastAuctions.find(auction => {
       const sportsManagerId = auction.activeAuction && BigNumber.from(auction.activeAuction.sportsManagerId);
-      return sportsManagerId && sportsManagerId.eq(auctionNounId);
+      return sportsManagerId && sportsManagerId.eq(auctionSportsManagerId);
     })?.bids;
 
     return bidEvents && deserializeBids(bidEvents);

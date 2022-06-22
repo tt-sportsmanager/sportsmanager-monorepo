@@ -1,17 +1,17 @@
-.noundersPage h1,
-.noundersPage h2,
-.noundersPage h3 {
+.sportsManagerFoundersPage h1,
+.sportsManagerFoundersPage h2,
+.sportsManagerFoundersPage h3 {
   font-family: 'Londrina Solid';
 }
 
-.noundersPage h2 {
+.sportsManagerFoundersPage h2 {
   margin-bottom: 2rem;
 }
 
-.noundersPage a {
+.sportsManagerFoundersPage a {
   color: var(--brand-black);
 }
-.noundersPage a:hover {
+.sportsManagerFoundersPage a:hover {
   color: var(--brand-dark-red);
 }
 
@@ -23,7 +23,7 @@
   font-size: 1rem;
 }
 
-.noundersPage img {
+.sportsManagerFoundersPage img {
   border-radius: 50%;
   width: 50%;
 }

@@ -9,25 +9,25 @@
   width: 25rem;
 }
 
-.displayNounFooter {
+.displaySportsManagerFooter {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.displayNounFooter span {
+.displaySportsManagerFooter span {
   color: white;
   font-weight: bold;
   margin-bottom: 1rem;
 }
-.displayNounFooter button {
+.displaySportsManagerFooter button {
   width: 50%;
   background: rgba(255, 255, 255, 0.3);
   border: none;
 }
 
-.displayNounFooter button:hover,
-.displayNounFooter button:active,
-.displayNounFooter button:focus {
+.displaySportsManagerFooter button:hover,
+.displaySportsManagerFooter button:active,
+.displaySportsManagerFooter button:focus {
   background: rgba(255, 255, 255, 0.4) !important;
   box-shadow: none !important;
 }

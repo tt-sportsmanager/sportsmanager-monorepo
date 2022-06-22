@@ -6,13 +6,13 @@ import { useQuery } from '@apollo/client';
 import { seedsQuery } from './subgraph';
 import { useEffect } from 'react';
 
-interface NounToken {
+interface SportsManagerToken {
   name: string;
   description: string;
   image: string;
 }
 
-export interface INounSeed {
+export interface ISportsManagerSeed {
   accessory: number;
   background: number;
   body: number;
@@ -30,7 +30,7 @@ const isSeedValid = (seed: Record<string, any> | undefined) => {
   return hasExpectedKeys && hasValidValues;
 };
 
-export const useNounToken = (nounId: EthersBN) => {
+export const useSportsManagerToken = (nounId: EthersBN) => {
   const [noun] =
     useContractCall<[string]>({
       abi,
@@ -44,13 +44,13 @@ export const useNounToken = (nounId: EthersBN) => {
   }
 
   const nounImgData = noun.split(';base64,').pop() as string;
-  const json: NounToken = JSON.parse(atob(nounImgData));
+  const json: SportsManagerToken = JSON.parse(atob(nounImgData));
 
   return json;
 };
 
-const seedArrayToObject = (seeds: (INounSeed & { id: string })[]) => {
-  return seeds.reduce<Record<string, INounSeed>>((acc, seed) => {
+const seedArrayToObject = (seeds: (ISportsManagerSeed & { id: string })[]) => {
+  return seeds.reduce<Record<string, ISportsManagerSeed>>((acc, seed) => {
     acc[seed.id] = {
       background: Number(seed.background),
       body: Number(seed.body),
@@ -62,7 +62,7 @@ const seedArrayToObject = (seeds: (INounSeed & { id: string })[]) => {
   }, {});
 };
 
-const useNounSeeds = () => {
+const useSportsManagerSeeds = () => {
   const cache = localStorage.getItem(seedCacheKey);
   const cachedSeeds = cache ? JSON.parse(cache) : undefined;
   const { data } = useQuery(seedsQuery(), {
@@ -78,8 +78,8 @@ const useNounSeeds = () => {
   return cachedSeeds;
 };
 
-export const useNounSeed = (nounId: EthersBN) => {
-  const seeds = useNounSeeds();
+export const useSportsManagerSeed = (nounId: EthersBN) => {
+  const seeds = useSportsManagerSeeds();
   const seed = seeds?.[nounId.toString()];
   // prettier-ignore
   const request = seed ? false : {
@@ -88,7 +88,7 @@ export const useNounSeed = (nounId: EthersBN) => {
     method: 'seeds',
     args: [nounId],
   };
-  const response = useContractCall<INounSeed>(request);
+  const response = useContractCall<ISportsManagerSeed>(request);
   if (response) {
     const seedCache = localStorage.getItem(seedCacheKey);
     if (seedCache && isSeedValid(response)) {

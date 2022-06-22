@@ -1,11 +1,8 @@
 {
     "references": [
-        { "path": "packages/sports-manager-api" },
         { "path": "packages/sports-manager-assets" },
-        { "path": "packages/sports-manager-bots" },
         { "path": "packages/sports-manager-contracts" },
         { "path": "packages/sports-manager-sdk" },
-        { "path": "packages/sports-manager-subgraph" },
         { "path": "packages/sports-manager-webapp" },
     ]
 }

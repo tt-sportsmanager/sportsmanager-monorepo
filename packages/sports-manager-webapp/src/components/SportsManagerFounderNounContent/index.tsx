@@ -2,11 +2,11 @@ import { Col, Row } from 'react-bootstrap';
 import { BigNumber } from 'ethers';
 import AuctionActivityWrapper from '../AuctionActivityWrapper';
 import AuctionNavigation from '../AuctionNavigation';
-import AuctionActivityNounTitle from '../AuctionActivityNounTitle';
+import AuctionActivitySportsManagerTitle from '../AuctionActivitySportsManagerTitle';
 import AuctionActivityDateHeadline from '../AuctionActivityDateHeadline';
 import AuctionTitleAndNavWrapper from '../AuctionTitleAndNavWrapper';
 import { Link } from 'react-router-dom';
-import nounContentClasses from './NounderNounContent.module.css';
+import sportsManagerContentClasses from './SportsManagerFounderNounContent.module.css';
 import auctionBidClasses from '../AuctionActivity/BidHistory.module.css';
 import bidBtnClasses from '../BidHistoryBtn/BidHistoryBtn.module.css';
 import auctionActivityClasses from '../AuctionActivity/AuctionActivity.module.css';
@@ -16,7 +16,7 @@ import { Trans } from '@lingui/macro';
 
 import { useAppSelector } from '../../hooks';
 
-const NounderNounContent: React.FC<{
+const SportsManagerFounderNounContent: React.FC<{
   mintTimestamp: BigNumber;
   sportsManagerId: BigNumber;
   isFirstAuction: boolean;
@@ -49,7 +49,7 @@ const NounderNounContent: React.FC<{
             <AuctionActivityDateHeadline startTime={mintTimestamp} />
           </AuctionTitleAndNavWrapper>
           <Col lg={12}>
-            <AuctionActivityNounTitle sportsManagerId={sportsManagerId} />
+            <AuctionActivitySportsManagerTitle sportsManagerId={sportsManagerId} />
           </Col>
         </Row>
         <Row className={auctionActivityClasses.activityRow}>
@@ -58,10 +58,10 @@ const NounderNounContent: React.FC<{
           </Col>
           <Col
             lg={5}
-            className={`${auctionActivityClasses.currentBidCol} ${nounContentClasses.currentBidCol} ${auctionActivityClasses.auctionTimerCol}`}
+            className={`${auctionActivityClasses.currentBidCol} ${sportsManagerContentClasses.currentBidCol} ${auctionActivityClasses.auctionTimerCol}`}
           >
             <div className={auctionActivityClasses.section}>
-              <Winner winner={''} isNounders={true} />
+              <Winner winner={''} isSportsManagerFounder={true} />
             </div>
           </Col>
         </Row>
@@ -72,19 +72,19 @@ const NounderNounContent: React.FC<{
             <li
               className={
                 (isCool ? `${auctionBidClasses.bidRowCool}` : `${auctionBidClasses.bidRowWarm}`) +
-                ` ${nounContentClasses.bidRow}`
+                ` ${sportsManagerContentClasses.bidRow}`
               }
             >
               <Trans>All Sports Manager auction proceeds are sent to the</Trans>{' '}
-              <Link to="/vote" className={nounContentClasses.link}>
+              <Link to="/vote" className={sportsManagerContentClasses.link}>
                 <Trans>SportsManager DAO</Trans>
               </Link>
               .{' '}
               <Trans>
-                For this reason, we, the project's founders (‘Nounders’) have chosen to compensate
-                ourselves with Nouns. Every 10th Noun for the first 5 years of the project will be
+                For this reason, we, the project's founders (‘Founders’) have chosen to compensate
+                ourselves with SportsManager. Every 10th SportsManager for the first 5 years of the project will be
                 sent to our multisig (5/10), where it will be vested and distributed to individual
-                Nounders.
+                SportsManagerFounders.
               </Trans>
             </li>
           </ul>
@@ -105,4 +105,4 @@ const NounderNounContent: React.FC<{
     </AuctionActivityWrapper>
   );
 };
-export default NounderNounContent;
+export default SportsManagerFounderNounContent;

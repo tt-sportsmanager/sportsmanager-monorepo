@@ -9,11 +9,11 @@ import { useActiveLocale } from '../../hooks/useActivateLocale';
 
 interface WinnerProps {
   winner: string;
-  isNounders?: boolean;
+  isSportsManagerFounder?: boolean;
 }
 
 const Winner: React.FC<WinnerProps> = props => {
-  const { winner, isNounders } = props;
+  const { winner, isSportsManagerFounder } = props;
   const activeAccount = useAppSelector(state => state.account.activeAccount);
 
   const isCool = useAppSelector(state => state.application.isCoolBackground);
@@ -24,7 +24,7 @@ const Winner: React.FC<WinnerProps> = props => {
 
   const activeLocale = useActiveLocale();
 
-  const nonNounderNounContent = isWinnerYou ? (
+  const nonFounderSportsManagerContent = isWinnerYou ? (
     <Row className={classes.youSection}>
       <Col lg={activeLocale === 'ja-JP' ? 8 : 4} className={classes.youCopy}>
         <h2
@@ -55,7 +55,7 @@ const Winner: React.FC<WinnerProps> = props => {
     <ShortAddress size={40} address={winner} avatar={true} />
   );
 
-  const nounderNounContent = 'nounders.eth';
+  const founderSportsManagerContent = 'sportsManagerFounders.eth';
 
   return (
     <>
@@ -77,7 +77,7 @@ const Winner: React.FC<WinnerProps> = props => {
               color: isCool ? 'var(--brand-cool-dark-text)' : 'var(--brand-warm-dark-text)',
             }}
           >
-            {isNounders ? nounderNounContent : nonNounderNounContent}
+            {isSportsManagerFounder ? founderSportsManagerContent : nonFounderSportsManagerContent}
           </h2>
         </Col>
       </Row>

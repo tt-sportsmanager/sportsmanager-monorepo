@@ -1,8 +1,8 @@
 import { BigNumber } from 'ethers';
-import classes from './AuctionActivityNounTitle.module.css';
+import classes from './AuctionActivitySportsManagerTitle.module.css';
 import { Trans } from '@lingui/macro';
 
-const AuctionActivityNounTitle: React.FC<{ sportsManagerId: BigNumber; isCool?: boolean }> = props => {
+const AuctionActivitySportsManagerTitle: React.FC<{ sportsManagerId: BigNumber; isCool?: boolean }> = props => {
   const { sportsManagerId, isCool } = props;
   return (
     <div className={classes.wrapper}>
@@ -12,4 +12,4 @@ const AuctionActivityNounTitle: React.FC<{ sportsManagerId: BigNumber; isCool?: 
     </div>
   );
 };
-export default AuctionActivityNounTitle;
+export default AuctionActivitySportsManagerTitle;

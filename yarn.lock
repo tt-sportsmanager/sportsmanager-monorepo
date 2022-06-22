@@ -4294,6 +4294,14 @@
   dependencies:
     antlr4ts "^0.5.0-alpha.4"
 
+"@sports-manager/sdk@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@sports-manager/sdk/-/sdk-0.0.1.tgz#6c6d8d3bce43a8cff764f34dd843efb4bd9be0c0"
+  integrity sha512-JaeTiVlgkP8grFVG+Va247g6biJecObwaQ4W7E1CiTbHUCym/3Ay2ZFagDaxE2/IzAcfHiDVEDRJVQZrPeFTNQ==
+  dependencies:
+    "@sports-manager/contracts" "^0.0.1"
+    ethers "^5.6.8"
+
 "@surma/rollup-plugin-off-main-thread@^1.1.1":
   version "1.4.2"
   resolved "https://registry.yarnpkg.com/@surma/rollup-plugin-off-main-thread/-/rollup-plugin-off-main-thread-1.4.2.tgz#e6786b6af5799f82f7ab3a82e53f6182d2b91a58"

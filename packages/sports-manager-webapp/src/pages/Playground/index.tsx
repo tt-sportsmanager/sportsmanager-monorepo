@@ -12,11 +12,11 @@ import {
 import classes from './Playground.module.css';
 import React, { ChangeEvent, ReactNode, useEffect, useRef, useState } from 'react';
 import Link from '../../components/Link';
-import { ImageData, getNounData, getRandomNounSeed } from '@sports-manager/assets';
+import { ImageData, getSportsManagerData, getRandomSportsManagerSeed } from '@sports-manager/assets';
 import { buildSVG, EncodedImage, PNGCollectionEncoder } from '@sports-manager/sdk';
 import InfoIcon from '../../assets/icons/Info.svg';
-import Noun from '../../components/SportsManager';
-import NounModal from './NounModal';
+import SportsManager from '../../components/SportsManager';
+import SportsManagerModal from './SportsManagerModal';
 import { PNG } from 'pngjs';
 import { Trans } from '@lingui/macro';
 import { i18n } from '@lingui/core';
@@ -34,8 +34,8 @@ interface PendingCustomTrait {
 
 const nounsProtocolLink = (
   <Link
-    text={<Trans>Nouns Protocol</Trans>}
-    url="https://www.notion.so/Noun-Protocol-32e4f0bf74fe433e927e2ea35e52a507"
+    text={<Trans>Sports Manager Protocol</Trans>}
+    url="https://www.notion.so/SportsManager-Protocol-32e4f0bf74fe433e927e2ea35e52a507"
     leavesPage={true}
   />
 );
@@ -85,25 +85,25 @@ const traitKeyToLocalizedTraitKeyFirstLetterCapitalized = (s: string): ReactNode
 };
 
 const Playground: React.FC = () => {
-  const [nounSvgs, setNounSvgs] = useState<string[]>();
+  const [nounSvgs, setSportsManagerSvgs] = useState<string[]>();
   const [traits, setTraits] = useState<Trait[]>();
   const [modSeed, setModSeed] = useState<{ [key: string]: number }>();
   const [initLoad, setInitLoad] = useState<boolean>(true);
-  const [displayNoun, setDisplayNoun] = useState<boolean>(false);
-  const [indexOfNounToDisplay, setIndexOfNounToDisplay] = useState<number>();
+  const [displaySportsManager, setDisplaySportsManager] = useState<boolean>(false);
+  const [indexOfSportsManagerToDisplay, setIndexOfSportsManagerToDisplay] = useState<number>();
   const [selectIndexes, setSelectIndexes] = useState<Record<string, number>>({});
   const [pendingTrait, setPendingTrait] = useState<PendingCustomTrait>();
   const [isPendingTraitValid, setPendingTraitValid] = useState<boolean>();
 
   const customTraitFileRef = useRef<HTMLInputElement>(null);
 
-  const generateNounSvg = React.useCallback(
+  const generateSportsManagerSvg = React.useCallback(
     (amount: number = 1) => {
       for (let i = 0; i < amount; i++) {
-        const seed = { ...getRandomNounSeed(), ...modSeed };
-        const { parts, background } = getNounData(seed);
+        const seed = { ...getRandomSportsManagerSeed(), ...modSeed };
+        const { parts, background } = getSportsManagerData(seed);
         const svg = buildSVG(parts, encoder.data.palette, background);
-        setNounSvgs(prev => {
+        setSportsManagerSvgs(prev => {
           return prev ? [svg, ...prev] : [svg];
         });
       }
@@ -130,10 +130,10 @@ const Playground: React.FC = () => {
     );
 
     if (initLoad) {
-      generateNounSvg(8);
+      generateSportsManagerSvg(8);
       setInitLoad(false);
     }
-  }, [generateNounSvg, initLoad]);
+  }, [generateSportsManagerSvg, initLoad]);
 
   const traitOptions = (trait: Trait) => {
     return Array.from(Array(trait.traitNames.length + 1)).map((_, index) => {
@@ -250,12 +250,12 @@ const Playground: React.FC = () => {
 
   return (
     <>
-      {displayNoun && indexOfNounToDisplay !== undefined && nounSvgs && (
-        <NounModal
+      {displaySportsManager && indexOfSportsManagerToDisplay !== undefined && nounSvgs && (
+        <SportsManagerModal
           onDismiss={() => {
-            setDisplayNoun(false);
+            setDisplaySportsManager(false);
           }}
-          svg={nounSvgs[indexOfNounToDisplay]}
+          svg={nounSvgs[indexOfSportsManagerToDisplay]}
         />
       )}
 
@@ -270,8 +270,8 @@ const Playground: React.FC = () => {
             </h1>
             <p>
               <Trans>
-                The playground was built using the {nounsProtocolLink}. Noun's traits are determined
-                by the Noun Seed. The seed was generated using {nounsAssetsLink} and rendered using
+                The playground was built using the {nounsProtocolLink}. SportsManager's traits are determined
+                by the SportsManager Seed. The seed was generated using {nounsAssetsLink} and rendered using
                 the {nounsSDKLink}.
               </Trans>
             </p>
@@ -282,11 +282,11 @@ const Playground: React.FC = () => {
             <Col lg={12}>
               <Button
                 onClick={() => {
-                  generateNounSvg();
+                  generateSportsManagerSvg();
                 }}
                 className={classes.primaryBtn}
               >
-                <Trans>Generate Nouns</Trans>
+                <Trans>Generate Sports Manager</Trans>
               </Button>
             </Col>
             <Row>
@@ -376,7 +376,7 @@ const Playground: React.FC = () => {
               <Trans>
                 You've generated{' '}
                 {i18n.number(parseInt(nounSvgs ? (nounSvgs.length / 365).toFixed(2) : '0'))} years
-                worth of Nouns
+                worth of Sports Manager
               </Trans>
             </p>
           </Col>
@@ -388,11 +388,11 @@ const Playground: React.FC = () => {
                     <Col xs={4} lg={3} key={i}>
                       <div
                         onClick={() => {
-                          setIndexOfNounToDisplay(i);
-                          setDisplayNoun(true);
+                          setIndexOfSportsManagerToDisplay(i);
+                          setDisplaySportsManager(true);
                         }}
                       >
-                        <Noun
+                        <SportsManager
                           imgPath={`data:image/svg+xml;base64,${btoa(svg)}`}
                           alt="noun"
                           className={classes.nounImg}

@@ -1,21 +1,21 @@
 import { Col } from 'react-bootstrap';
-import { StandaloneNounWithSeed } from '../StandaloneNoun';
+import { StandaloneSportsManagerWithSeed } from '../StandaloneSportsManager';
 import AuctionActivity from '../AuctionActivity';
 import { Row, Container } from 'react-bootstrap';
 import { setStateBackgroundColor } from '../../state/slices/application';
 import { LoadingSportsManager } from '../SportsManager';
 import { Auction as IAuction } from '../../wrappers/sportsManagerAuction';
 import classes from './Auction.module.css';
-import { INounSeed } from '../../wrappers/sportsManagerToken';
-import NounderNounContent from '../NounderNounContent';
+import { ISportsManagerSeed } from '../../wrappers/sportsManagerToken';
+import SportsManagerFounderNounContent from '../SportsManagerFounderNounContent';
 import { useHistory } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { isFounderSportsManager } from '../../utils/founderSportsManager';
 import {
-  setNextOnDisplayAuctionNounId,
-  setPrevOnDisplayAuctionNounId,
+  setNextOnDisplayAuctionSportsManagerId,
+  setPrevOnDisplayAuctionSportsManagerId,
 } from '../../state/slices/onDisplayAuction';
-import { beige, grey } from '../../utils/nounBgColors';
+import { beige, grey } from '../../utils/sportsManagerBgColors';
 
 interface AuctionProps {
   auction?: IAuction;
@@ -27,53 +27,53 @@ const Auction: React.FC<AuctionProps> = props => {
   const history = useHistory();
   const dispatch = useAppDispatch();
   let stateBgColor = useAppSelector(state => state.application.stateBackgroundColor);
-  const lastNounId = useAppSelector(state => state.onDisplayAuction.lastAuctionNounId);
+  const lastSportsManagerId = useAppSelector(state => state.onDisplayAuction.lastAuctionSportsManagerId);
 
-  const loadedNounHandler = (seed: INounSeed) => {
+  const loadedSportsManagerHandler = (seed: ISportsManagerSeed) => {
     dispatch(setStateBackgroundColor(seed.background === 0 ? grey : beige));
   };
 
   const prevAuctionHandler = () => {
-    dispatch(setPrevOnDisplayAuctionNounId());
+    dispatch(setPrevOnDisplayAuctionSportsManagerId());
     currentAuction && history.push(`/noun/${currentAuction.sportsManagerId.toNumber() - 1}`);
   };
   const nextAuctionHandler = () => {
-    dispatch(setNextOnDisplayAuctionNounId());
+    dispatch(setNextOnDisplayAuctionSportsManagerId());
     currentAuction && history.push(`/noun/${currentAuction.sportsManagerId.toNumber() + 1}`);
   };
 
   const nounContent = currentAuction && (
     <div className={classes.nounWrapper}>
-      <StandaloneNounWithSeed
+      <StandaloneSportsManagerWithSeed
         sportsManagerId={currentAuction.sportsManagerId}
-        onLoadSeed={loadedNounHandler}
+        onLoadSeed={loadedSportsManagerHandler}
         shouldLinkToProfile={false}
       />
     </div>
   );
 
-  const loadingNoun = (
+  const loadingSportsManager = (
     <div className={classes.nounWrapper}>
       <LoadingSportsManager />
     </div>
   );
 
-  const currentAuctionActivityContent = currentAuction && lastNounId && (
+  const currentAuctionActivityContent = currentAuction && lastSportsManagerId && (
     <AuctionActivity
       auction={currentAuction}
       isFirstAuction={currentAuction.sportsManagerId.eq(0)}
-      isLastAuction={currentAuction.sportsManagerId.eq(lastNounId)}
+      isLastAuction={currentAuction.sportsManagerId.eq(lastSportsManagerId)}
       onPrevAuctionClick={prevAuctionHandler}
       onNextAuctionClick={nextAuctionHandler}
       displayGraphDepComps={true}
     />
   );
-  const nounderNounContent = currentAuction && lastNounId && (
-    <NounderNounContent
+  const nounderSportsManagerContent = currentAuction && lastSportsManagerId && (
+    <SportsManagerFounderNounContent
       mintTimestamp={currentAuction.startTime}
       sportsManagerId={currentAuction.sportsManagerId}
       isFirstAuction={currentAuction.sportsManagerId.eq(0)}
-      isLastAuction={currentAuction.sportsManagerId.eq(lastNounId)}
+      isLastAuction={currentAuction.sportsManagerId.eq(lastSportsManagerId)}
       onPrevAuctionClick={prevAuctionHandler}
       onNextAuctionClick={nextAuctionHandler}
     />
@@ -84,12 +84,12 @@ const Auction: React.FC<AuctionProps> = props => {
       <Container fluid="xl">
         <Row>
           <Col lg={{ span: 6 }} className={classes.nounContentCol}>
-            {currentAuction ? nounContent : loadingNoun}
+            {currentAuction ? nounContent : loadingSportsManager}
           </Col>
           <Col lg={{ span: 6 }} className={classes.auctionActivityCol}>
             {currentAuction &&
               (isFounderSportsManager(currentAuction.sportsManagerId)
-                ? nounderNounContent
+                ? nounderSportsManagerContent
                 : currentAuctionActivityContent)}
           </Col>
         </Row>

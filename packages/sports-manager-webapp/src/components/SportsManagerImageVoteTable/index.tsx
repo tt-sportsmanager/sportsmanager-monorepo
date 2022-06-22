@@ -1,4 +1,4 @@
-import { StandaloneNounCircular } from '../StandaloneNoun';
+import { StandaloneSportsManagerCircular } from '../StandaloneSportsManager';
 import { BigNumber as EthersBN } from 'ethers';
 import classes from './SportsManagerImageVoteTable.module.css';
 import { GrayCircle } from '../GrayCircle';
@@ -18,7 +18,7 @@ const SportsManagerImageVoteTable: React.FC<SportsManagerImageVoteTableProps> = 
   const shuffledSportsManagerIds = pseudoRandomPredictableShuffle(sportsManagerIdArray, propId);
   const paddedSportsManagerIds = shuffledSportsManagerIds
     .map((sportsManagerId: string) => {
-      return <StandaloneNounCircular sportsManagerId={EthersBN.from(sportsManagerId)} />;
+      return <StandaloneSportsManagerCircular sportsManagerId={EthersBN.from(sportsManagerId)} />;
     })
     .concat(Array(NOUNS_PER_VOTE_CARD_DESKTOP).fill(<GrayCircle />))
     .slice(0, NOUNS_PER_VOTE_CARD_DESKTOP);

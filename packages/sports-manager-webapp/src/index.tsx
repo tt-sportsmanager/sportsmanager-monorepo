@@ -19,8 +19,8 @@ import auction, {
   setFullAuction,
 } from './state/slices/auction';
 import onDisplayAuction, {
-  setLastAuctionNounId,
-  setOnDisplayAuctionNounId,
+  setLastAuctionSportsManagerId,
+  setOnDisplayAuctionSportsManagerId,
 } from './state/slices/onDisplayAuction';
 import { ApolloProvider, useQuery } from '@apollo/client';
 import { clientFactory, latestAuctionsQuery } from './wrappers/subgraph';
@@ -142,8 +142,8 @@ const ChainSubscriber: React.FC = () => {
       );
       const sportsManagerIdNumber = BigNumber.from(sportsManagerId).toNumber();
       dispatch(push(nounPath(sportsManagerIdNumber)));
-      dispatch(setOnDisplayAuctionNounId(sportsManagerIdNumber));
-      dispatch(setLastAuctionNounId(sportsManagerIdNumber));
+      dispatch(setOnDisplayAuctionSportsManagerId(sportsManagerIdNumber));
+      dispatch(setLastAuctionSportsManagerId(sportsManagerIdNumber));
     };
     const processAuctionExtended = (sportsManagerId: BigNumberish, endTime: BigNumberish) => {
       dispatch(setAuctionExtended({ sportsManagerId, endTime }));
@@ -155,7 +155,7 @@ const ChainSubscriber: React.FC = () => {
     // Fetch the current auction
     const currentAuction = await sportsManagerAuctionHouseContract.auction();
     dispatch(setFullAuction(reduxSafeAuction(currentAuction)));
-    dispatch(setLastAuctionNounId(currentAuction.sportsManagerId.toNumber()));
+    dispatch(setLastAuctionSportsManagerId(currentAuction.sportsManagerId.toNumber()));
 
     // Fetch the previous 24hours of  bids
     const previousBids = await sportsManagerAuctionHouseContract.queryFilter(bidFilter, 0 - BLOCKS_PER_DAY);
@@ -183,7 +183,7 @@ const ChainSubscriber: React.FC = () => {
 };
 
 const PastAuctions: React.FC = () => {
-  const latestAuctionId = useAppSelector(state => state.onDisplayAuction.lastAuctionNounId);
+  const latestAuctionId = useAppSelector(state => state.onDisplayAuction.lastAuctionSportsManagerId);
   const { data } = useQuery(latestAuctionsQuery());
   const dispatch = useAppDispatch();
 

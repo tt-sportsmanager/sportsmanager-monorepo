@@ -57,16 +57,16 @@
   font-size: 15px;
   color: #8c8d92;
 }
-.nounYearsFooter {
+.sportsManagerYearsFooter {
   font-style: italic;
 }
-.nounImg {
+.sportsManagerImg {
   border-radius: 16px;
 }
-.nounImg:hover {
+.sportsManagerImg:hover {
   cursor: pointer;
   transform: scale(1.01);
 }
-.nounWrapper {
+.sportsManagerWrapper {
   margin-bottom: 1rem;
 }

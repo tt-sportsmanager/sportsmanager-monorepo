@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import { XIcon } from '@heroicons/react/solid';
 import { Auction } from '../../wrappers/sportsManagerAuction';
-import { StandaloneNounRoundedCorners } from '../StandaloneNoun';
+import { StandaloneSportsManagerRoundedCorners } from '../StandaloneSportsManager';
 import { useAuctionBids } from '../../wrappers/onDisplayAuction';
 import { Bid } from '../../utils/types';
 import BidHistoryModalRow from '../BidHistoryModalRow';
@@ -33,7 +33,7 @@ const BidHistoryModalOverlay: React.FC<{
         <div className={classes.content}>
           <div className={classes.header}>
             <div className={classes.nounWrapper}>
-              <StandaloneNounRoundedCorners sportsManagerId={auction && auction.sportsManagerId} />
+              <StandaloneSportsManagerRoundedCorners sportsManagerId={auction && auction.sportsManagerId} />
             </div>
 
             <div className={classes.title}>

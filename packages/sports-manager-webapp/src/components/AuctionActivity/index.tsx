@@ -12,7 +12,7 @@ import BidHistory from '../BidHistory';
 import AuctionNavigation from '../AuctionNavigation';
 import AuctionActivityWrapper from '../AuctionActivityWrapper';
 import AuctionTitleAndNavWrapper from '../AuctionTitleAndNavWrapper';
-import AuctionActivityNounTitle from '../AuctionActivityNounTitle';
+import AuctionActivityNounTitle from '../AuctionActivitySportsManagerTitle';
 import AuctionActivityDateHeadline from '../AuctionActivityDateHeadline';
 import BidHistoryBtn from '../BidHistoryBtn';
 import config from '../../config';

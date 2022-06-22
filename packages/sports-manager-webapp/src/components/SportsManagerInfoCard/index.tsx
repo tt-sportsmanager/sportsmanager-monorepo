@@ -6,9 +6,9 @@ import classes from './SportsManagerInfoCard.module.css';
 import _AddressIcon from '../../assets/icons/Address.svg';
 import _BidsIcon from '../../assets/icons/Bids.svg';
 
-import NounInfoRowBirthday from '../NounInfoRowBirthday';
-import NounInfoRowHolder from '../SportsManagerInfoRowHolder';
-import NounInfoRowButton from '../NounInfoRowButton';
+import SportsManagerInfoRowBirthday from '../SportsManagerInfoRowBirthday';
+import SportsManagerInfoRowHolder from '../SportsManagerInfoRowHolder';
+import SportsManagerInfoRowButton from '../SportsManagerInfoRowButton';
 import { useAppSelector } from '../../hooks';
 
 import config from '../../config';
@@ -27,23 +27,23 @@ const SportsManagerInfoCard: React.FC<SportsManagerInfoCardProps> = props => {
 
   const etherscanButtonClickHandler = () => window.open(`${etherscanBaseURL}/${sportsManagerId}`, '_blank');
 
-  const lastAuctionSportsManagerId = useAppSelector(state => state.onDisplayAuction.lastAuctionNounId);
+  const lastAuctionSportsManagerId = useAppSelector(state => state.onDisplayAuction.lastAuctionSportsManagerId);
 
   return (
     <>
       <Col lg={12} className={classes.sportsManagerInfoRow}>
-        <NounInfoRowBirthday sportsManagerId={sportsManagerId} />
+        <SportsManagerInfoRowBirthday sportsManagerId={sportsManagerId} />
       </Col>
       <Col lg={12} className={classes.sportsManagerInfoRow}>
-        <NounInfoRowHolder sportsManagerId={sportsManagerId} />
+        <SportsManagerInfoRowHolder sportsManagerId={sportsManagerId} />
       </Col>
       <Col lg={12} className={classes.sportsManagerInfoRow}>
-        <NounInfoRowButton
+        <SportsManagerInfoRowButton
           iconImgSource={_BidsIcon}
           btnText={lastAuctionSportsManagerId === sportsManagerId ? <Trans>Bids</Trans> : <Trans>Bid history</Trans>}
           onClickHandler={bidHistoryOnClickHandler}
         />
-        <NounInfoRowButton
+        <SportsManagerInfoRowButton
           iconImgSource={_AddressIcon}
           btnText={<Trans>Etherscan</Trans>}
           onClickHandler={etherscanButtonClickHandler}

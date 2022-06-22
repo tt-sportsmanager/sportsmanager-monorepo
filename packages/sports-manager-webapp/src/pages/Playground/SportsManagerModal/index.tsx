@@ -1,19 +1,19 @@
 import { Button } from 'react-bootstrap';
-import classes from './NounModal.module.css';
+import classes from './SportsManagerModal.module.css';
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-import Noun from '../../../components/SportsManager';
+import SportsManager from '../../../components/SportsManager';
 import { svg2png } from '../../../utils/svg2png';
 import { Backdrop } from '../../../components/Modal';
 
-const downloadNounPNG = (png: string) => {
+const downloadSportsManagerPNG = (png: string) => {
   const downloadEl = document.createElement('a');
   downloadEl.href = png;
-  downloadEl.download = 'noun.png';
+  downloadEl.download = 'sportsManager.png';
   downloadEl.click();
 };
 
-const NounModal: React.FC<{ onDismiss: () => void; svg: string }> = props => {
+const SportsManagerModal: React.FC<{ onDismiss: () => void; svg: string }> = props => {
   const { onDismiss, svg } = props;
 
   const [width, setWidth] = useState<number>(window.innerWidth);
@@ -51,19 +51,19 @@ const NounModal: React.FC<{ onDismiss: () => void; svg: string }> = props => {
       {ReactDOM.createPortal(
         <div className={classes.modal}>
           {png && (
-            <Noun
+            <SportsManager
               imgPath={png}
-              alt="noun"
-              className={classes.nounImg}
-              wrapperClassName={classes.nounWrapper}
+              alt="sportsManager"
+              className={classes.sportsManagerImg}
+              wrapperClassName={classes.sportsManagerWrapper}
             />
           )}
-          <div className={classes.displayNounFooter}>
-            <span>Use this Noun as your profile picture!</span>
+          <div className={classes.displaySportsManagerFooter}>
+            <span>Use this SportsManager as your profile picture!</span>
             {!isMobile && png && (
               <Button
                 onClick={() => {
-                  downloadNounPNG(png);
+                  downloadSportsManagerPNG(png);
                 }}
               >
                 Download
@@ -76,4 +76,4 @@ const NounModal: React.FC<{ onDismiss: () => void; svg: string }> = props => {
     </>
   );
 };
-export default NounModal;
+export default SportsManagerModal;
