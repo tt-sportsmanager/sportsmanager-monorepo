@@ -3,6 +3,7 @@
         { "path": "packages/sports-manager-assets" },
         { "path": "packages/sports-manager-contracts" },
         { "path": "packages/sports-manager-sdk" },
+        { "path": "packages/sports-manager-moneypipe" },
         { "path": "packages/sports-manager-webapp" },
     ]
 }
