@@ -33,11 +33,13 @@ task('deploy-and-configure', 'Deploy and configure all contracts')
       contracts,
     });
 
+    console.log('RUNNING POPULATE DESCRIPTOR');
     // Populate the on-chain art
     await run('populate-descriptor', {
       nftDescriptor: contracts.NFTDescriptor.address,
-      nounsDescriptor: contracts.SportsManagerDescriptor.address,
+      sportsManagerDescriptor: contracts.SportsManagerDescriptor.address,
     });
+    console.log('POPUPLATE DESCRIPTOR FINISHED');
 
     // Transfer ownership of all contract except for the auction house.
     // We must maintain ownership of the auction house to kick off the first auction.
