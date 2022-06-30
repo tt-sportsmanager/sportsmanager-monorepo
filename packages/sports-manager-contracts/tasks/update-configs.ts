@@ -36,6 +36,7 @@ task('update-configs', 'Write the deployed addresses to the SDK and subgraph con
       }
       console.log('Addresses written to the SportsManager SDK.');
 
+      /*
       // Generate subgraph config
       const configName = `${network}-fork`;
       const subgraphConfigPath = join(__dirname, `../../sports-manager-subgraph/config/${configName}.json`);
@@ -56,5 +57,6 @@ task('update-configs', 'Write the deployed addresses to the SDK and subgraph con
       };
       writeFileSync(subgraphConfigPath, JSON.stringify(subgraphConfig, null, 2));
       console.log('Subgraph config has been generated.');
+      */
     },
   );
