@@ -7,7 +7,8 @@
     "./test",
     "./typechain",
     "./abi/**/*.json",
-    "./files/*.json"
+    "./files/*.json",
+    "./artifacts/contracts/**/*.json"
   ],
   "files": ["./hardhat.config.ts"],
   "references": [
