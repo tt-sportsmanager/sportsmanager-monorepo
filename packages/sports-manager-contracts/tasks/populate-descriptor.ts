@@ -27,20 +27,34 @@ task('populate-descriptor', 'Populates the descriptor with color palettes and Sp
     const { bodies, accessories, heads, glasses } = images;
 
     // Chunk head and accessory population due to high gas usage
+    console.log('addManyBackgrounds');
     await descriptorContract.addManyBackgrounds(bgcolors);
+    console.log('addManyColorsToPalette');
     await descriptorContract.addManyColorsToPalette(0, palette);
+    console.log('addManyBodies');
     await descriptorContract.addManyBodies(bodies.map(({ data }) => data));
 
+    await new Promise(resolve => setTimeout(resolve, 5000));
+
+    console.log('addManyAccessories');
     const accessoryChunk = chunkArray(accessories, 10);
     for (const chunk of accessoryChunk) {
+      console.log({ chunk })
       await descriptorContract.addManyAccessories(chunk.map(({ data }) => data));
     }
 
+    await new Promise(resolve => setTimeout(resolve, 5000));
+
+    console.log('addManyHeads');
     const headChunk = chunkArray(heads, 10);
     for (const chunk of headChunk) {
+      console.log({ chunk })
       await descriptorContract.addManyHeads(chunk.map(({ data }) => data));
     }
 
+    await new Promise(resolve => setTimeout(resolve, 5000));
+
+    console.log('addManyGlasses');
     await descriptorContract.addManyGlasses(glasses.map(({ data }) => data));
 
     console.log('Descriptor populated with palettes and parts.');

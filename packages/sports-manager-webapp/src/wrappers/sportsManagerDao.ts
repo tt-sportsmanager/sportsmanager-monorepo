@@ -116,6 +116,8 @@ export interface ProposalTransaction {
   calldata: string;
 }
 
+console.log({ 'config.addresses.sportsManagerDAOProxy': config.addresses.sportsManagerDAOProxy }); 
+
 const abi = new utils.Interface(SportsManagerDAOABI.abi);
 const sportsManagerDaoContract = new SportsManagerDaoLogicV1Factory().attach(config.addresses.sportsManagerDAOProxy);
 

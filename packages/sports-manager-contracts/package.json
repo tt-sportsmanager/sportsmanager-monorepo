@@ -1,6 +1,6 @@
 {
   "name": "@sports-manager/contracts",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "SportsManager solidity contracts & artifacts",
   "author": "SportsManagers",
   "homepage": "https://www.sportsmanager.wtf/",

@@ -82,6 +82,12 @@ task('deploy', 'Deploys NFTDescriptor, SportsManagerDescriptor, SportsManagerSee
     1_000 /* 10% */,
     types.int,
   )
+  .addOptionalParam(
+    'minimumWithdrawBalance',
+    'Minimum balance before funds can be withdrawn from SportsManagerDAOExecutor',
+    '1000000000000000', // 0,001 ETH. Estimated withdraw gas fee 0,000047647 ETH
+    types.string,
+  )
   .setAction(async (args, { ethers }) => {
     const network = await ethers.provider.getNetwork();
     const [deployer] = await ethers.getSigners();
@@ -154,7 +160,7 @@ task('deploy', 'Deploys NFTDescriptor, SportsManagerDescriptor, SportsManagerSee
             ]),
         ],
         waitForConfirmation: true,
-        validateDeployment: () => {
+        validateDeployment: async () => {
           const expected = expectedAuctionHouseProxyAddress.toLowerCase();
           const actual = deployment.SportsManagerAuctionHouseProxy.address.toLowerCase();
           if (expected !== actual) {
@@ -177,13 +183,15 @@ task('deploy', 'Deploys NFTDescriptor, SportsManagerDescriptor, SportsManagerSee
           args.sportsManagerdao,
           () => deployment.SportsManagerDAOExecutor.address,
           () => deployment.SportsManagerDAOLogicV1.address,
+          deployer.address,
           args.votingPeriod,
           args.votingDelay,
           args.proposalThresholdBps,
           args.quorumVotesBps,
+          args.minimumWithdrawBalance
         ],
         waitForConfirmation: true,
-        validateDeployment: () => {
+        validateDeployment: async () => {
           const expected = expectedSportsManagerDAOProxyAddress.toLowerCase();
           const actual = deployment.SportsManagerDAOProxy.address.toLowerCase();
           if (expected !== actual) {
@@ -260,7 +268,6 @@ task('deploy', 'Deploys NFTDescriptor, SportsManagerDescriptor, SportsManagerSee
         }
       }
       console.log(`Deploying ${name}...`);
-
       const deployedContract = await factory.deploy(
         ...(contract.args?.map(a => (typeof a === 'function' ? a() : a)) ?? []),
         {

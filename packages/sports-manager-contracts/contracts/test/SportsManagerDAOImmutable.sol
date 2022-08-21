@@ -10,13 +10,15 @@ contract SportsManagerDAOImmutable is SportsManagerDAOLogicV1 {
         address sportsManager_,
         address admin_,
         address vetoer_,
+        address rewardDistributor_,
         uint256 votingPeriod_,
         uint256 votingDelay_,
         uint256 proposalThresholdBPS_,
-        uint256 quorumVotesBPS_
+        uint256 quorumVotesBPS_,
+        uint256 minimumWithdrawBalance_
     ) {
         admin = msg.sender;
-        initialize(timelock_, sportsManager_, vetoer_, votingPeriod_, votingDelay_, proposalThresholdBPS_, quorumVotesBPS_);
+        initialize(timelock_, sportsManager_, vetoer_, rewardDistributor_, votingPeriod_, votingDelay_, proposalThresholdBPS_, quorumVotesBPS_, minimumWithdrawBalance_);
 
         admin = admin_;
     }
@@ -25,10 +27,12 @@ contract SportsManagerDAOImmutable is SportsManagerDAOLogicV1 {
         address timelock_,
         address sportsManager_,
         address vetoer_,
+        address rewardDistributor_,
         uint256 votingPeriod_,
         uint256 votingDelay_,
         uint256 proposalThresholdBPS_,
-        uint256 quorumVotesBPS_
+        uint256 quorumVotesBPS_,
+        uint256 minimumWithdrawBalance_
     ) public override {
         require(msg.sender == admin, 'SportsManagerDAO::initialize: admin only');
         require(address(timelock) == address(0), 'SportsManagerDAO::initialize: can only initialize once');

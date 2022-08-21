@@ -33,6 +33,15 @@ task('deploy-and-configure', 'Deploy and configure all contracts')
       contracts,
     });
 
+    // Optionally write the deployed addresses to the SDK and subgraph configs.
+    if (args.updateConfigs) {
+      await run('update-configs', {
+        contracts,
+      });
+    }
+
+    await new Promise(resolve => setTimeout(resolve, 5000));
+
     console.log('RUNNING POPULATE DESCRIPTOR');
     // Populate the on-chain art
     await run('populate-descriptor', {
@@ -64,13 +73,6 @@ task('deploy-and-configure', 'Deploy and configure all contracts')
       console.log(
         'Started the first auction and transferred ownership of the auction house to the executor.',
       );
-    }
-
-    // Optionally write the deployed addresses to the SDK and subgraph configs.
-    if (args.updateConfigs) {
-      await run('update-configs', {
-        contracts,
-      });
     }
 
     console.table(

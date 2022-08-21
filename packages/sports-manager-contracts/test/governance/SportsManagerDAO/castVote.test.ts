@@ -31,6 +31,7 @@ const { expect } = chai;
 async function deployGovernor(
   deployer: SignerWithAddress,
   tokenAddress: string,
+  rewardDistributor: SignerWithAddress,
 ): Promise<SportsManagerDAOLogicV1Harness> {
   const { address: govDelegateAddress } = await new SportsManagerDaoLogicV1HarnessFactory(
     deployer,
@@ -41,10 +42,12 @@ async function deployGovernor(
     deployer.address,
     address(0),
     govDelegateAddress,
+    rewardDistributor.address,
     17280,
     1,
     1,
     1,
+    1
   ];
 
   const { address: _govDelegatorAddress } = await (
@@ -61,6 +64,7 @@ let deployer: SignerWithAddress;
 let account0: SignerWithAddress;
 let account1: SignerWithAddress;
 let account2: SignerWithAddress;
+let rewardDistributor: SignerWithAddress;
 let signers: TestSigners;
 
 let gov: SportsManagerDAOLogicV1Harness;
@@ -84,7 +88,7 @@ async function reset() {
 
   await setTotalSupply(token, 10);
 
-  gov = await deployGovernor(deployer, token.address);
+  gov = await deployGovernor(deployer, token.address, rewardDistributor);
   snapshotId = await ethers.provider.send('evm_snapshot', []);
 }
 
@@ -105,6 +109,7 @@ describe('SportsManagerDAO#castVote/2', () => {
     account0 = signers.account0;
     account1 = signers.account1;
     account2 = signers.account2;
+    rewardDistributor = signers.account3;
   });
 
   describe('We must revert if:', () => {

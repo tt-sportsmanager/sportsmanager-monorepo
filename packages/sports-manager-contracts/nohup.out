@@ -1,0 +1,32 @@
+yarn run v1.22.18
+$ npx hardhat deploy-and-configure --network goerli --update-configs --start-auction --auto-deploy
+SportsManager DAO address not provided. Setting to deployer (0xB23d3c297E98dD641F999A4ad5e3b57d66a40f1c)...
+Estimated cost to deploy NFTDescriptor: 0.001533581013802229 ETH
+Deploying NFTDescriptor...
+NFTDescriptor contract deployed to 0x35093845f4F9618E150B28a605baC3b486F688b9
+Estimated cost to deploy SportsManagerDescriptor: 0.002514492022630428 ETH
+Deploying SportsManagerDescriptor...
+SportsManagerDescriptor contract deployed to 0x1AAB4148113d78C167792D1f275F27261851911B
+Estimated cost to deploy SportsManagerSeeder: 0.000350398003153582 ETH
+Deploying SportsManagerSeeder...
+SportsManagerSeeder contract deployed to 0x032e41c35dC5A70961F2ab42B3ffB9b2F3f17599
+Estimated cost to deploy SportsManagerToken: 0.004054854036493686 ETH
+Deploying SportsManagerToken...
+SportsManagerToken contract deployed to 0x5BB07EBC686ecEC28ab21AC3D70E11954416D5e3
+Estimated cost to deploy SportsManagerAuctionHouse: 0.001921351017292159 ETH
+Deploying SportsManagerAuctionHouse...
+SportsManagerAuctionHouse contract deployed to 0xF3a7Fbf298C4dD38DF47A36EEdF8C7Cc5a8d10a0
+Estimated cost to deploy SportsManagerAuctionHouseProxyAdmin: 0.000642227005780043 ETH
+Deploying SportsManagerAuctionHouseProxyAdmin...
+SportsManagerAuctionHouseProxyAdmin contract deployed to 0x2a17321FB30DB1ece6C704C7dc45e440aDE9B213
+Estimated cost to deploy SportsManagerAuctionHouseProxy: 0.000937634008438706 ETH
+Deploying SportsManagerAuctionHouseProxy...
+An unexpected error occurred:
+
+Error: Unexpected auction house proxy address. Expected: 0xaed636660b17ffa720f435fd4a118f35154b04f9. Actual: 0x5627f8c6e481231f97d0544e9400ea80065a8f3b.
+    at Object.validateDeployment (/Users/kevin/work/sports-manager/nouns-monorepo/packages/sports-manager-contracts/tasks/deploy.ts:167:19)
+    at /Users/kevin/work/sports-manager/nouns-monorepo/packages/sports-manager-contracts/tasks/deploy.ts:291:34
+    at Generator.next (<anonymous>)
+    at fulfilled (/Users/kevin/work/sports-manager/nouns-monorepo/packages/sports-manager-contracts/tasks/deploy.ts:5:58)
+error Command failed with exit code 1.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.

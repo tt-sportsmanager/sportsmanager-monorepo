@@ -101,6 +101,15 @@ contract SportsManagerDAOEvents {
 
     /// @notice Emitted when vetoer is changed
     event NewVetoer(address oldVetoer, address newVetoer);
+
+    /// @notice Emitted when balance is withdrawn by rewardDistributor
+    event FundsWithdrawn(uint256 timestamp, uint256 amount);
+
+    /// @notice Emitted rewardDistributor is changed
+    event NewRewardDistributor(address oldRewardDistributor, address newAddressDistributor);
+
+    /// @notice Emitted when minimumWithdrawBalance is changed
+    event NewMinimumWithdrawBalance(uint256 oldBalance, uint256 newBalance);
 }
 
 contract SportsManagerDAOProxyStorage {
@@ -123,6 +132,12 @@ contract SportsManagerDAOProxyStorage {
 contract SportsManagerDAOStorageV1 is SportsManagerDAOProxyStorage {
     /// @notice Vetoer who has the ability to veto any proposal
     address public vetoer;
+
+    /// @notice Reward distributor wallet address. has the ability to withdraw funds from timelock contract
+    address public rewardDistributor;
+
+    /// @notice Minimum balance that should be available in timelock contract before it can be withdrawn 
+    uint256 public minimumWithdrawBalance;
 
     /// @notice The delay before voting on a proposal may take place, once proposed, in blocks
     uint256 public votingDelay;
@@ -246,6 +261,11 @@ interface ISportsManagerDAOExecutor {
         bytes calldata data,
         uint256 eta
     ) external payable returns (bytes memory);
+
+    function withdraw(
+        address receiver,
+        uint256 value
+    ) external returns (bytes memory);
 }
 
 interface SportsManagerTokenLike {

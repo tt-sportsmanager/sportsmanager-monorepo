@@ -15,6 +15,7 @@ import {
   SportsManagerDAOLogicV1__factory as SportsManagerDaoLogicV1Factory,
   SportsManagerDAOExecutor,
   SportsManagerDAOExecutor__factory as SportsManagerDaoExecutorFactory,
+  SportsManagerDAOProxy,
 } from '../typechain';
 
 import {
@@ -44,6 +45,8 @@ let deployer: SignerWithAddress;
 let wethDeployer: SignerWithAddress;
 let bidderA: SignerWithAddress;
 let noundersDAO: SignerWithAddress;
+let rewardDistributor: SignerWithAddress;
+let newRewardDistributor: SignerWithAddress;
 
 // Governance Config
 const TIME_LOCK_DELAY = 172_800; // 2 days
@@ -51,6 +54,7 @@ const PROPOSAL_THRESHOLD_BPS = 500; // 5%
 const QUORUM_VOTES_BPS = 1_000; // 10%
 const VOTING_PERIOD = 5_760; // About 24 hours with 15s blocks
 const VOTING_DELAY = 1; // 1 block
+const MINIMUM_WITHDRAW_BALANCE = 1;
 
 // Proposal Config
 const targets: string[] = [];
@@ -66,8 +70,10 @@ const RESERVE_PRICE = 2;
 const MIN_INCREMENT_BID_PERCENTAGE = 5;
 const DURATION = 60 * 60 * 24;
 
+let sportsManagerDAOProxy: SportsManagerDAOProxy;
+
 async function deploy() {
-  [deployer, bidderA, wethDeployer, noundersDAO] = await ethers.getSigners();
+  [deployer, bidderA, wethDeployer, noundersDAO, rewardDistributor, newRewardDistributor] = await ethers.getSigners();
 
   // Deployed by another account to simulate real network
 
@@ -129,16 +135,18 @@ async function deploy() {
   const govDelegate = await new SportsManagerDaoLogicV1Factory(deployer).deploy();
 
   // 7a. DEPLOY Delegator
-  const sportsManagerDAOProxy = await new SportsManagerDaoProxyFactory(deployer).deploy(
+  sportsManagerDAOProxy = await new SportsManagerDaoProxyFactory(deployer).deploy(
     timelock.address,
     sportsManagerToken.address,
     noundersDAO.address, // SportsManagerdersDAO is vetoer
     timelock.address,
     govDelegate.address,
+    rewardDistributor.address,
     VOTING_PERIOD,
     VOTING_DELAY,
     PROPOSAL_THRESHOLD_BPS,
     QUORUM_VOTES_BPS,
+    MINIMUM_WITHDRAW_BALANCE
   );
 
   expect(calculatedGovDelegatorAddress).to.equal(sportsManagerDAOProxy.address);
@@ -175,6 +183,8 @@ describe('End to End test with deployment, auction, proposing, voting, executing
 
     expect(await gov.vetoer()).to.equal(noundersDAO.address);
 
+    expect(await gov.rewardDistributor()).to.equal(rewardDistributor.address);
+
     expect(await sportsManagerToken.totalSupply()).to.equal(EthersBN.from('2'));
 
     expect(await sportsManagerToken.ownerOf(0)).to.equal(noundersDAO.address);
@@ -190,6 +200,42 @@ describe('End to End test with deployment, auction, proposing, voting, executing
 
     expect(await sportsManagerToken.ownerOf(1)).to.equal(bidderA.address);
     expect(await ethers.provider.getBalance(timelock.address)).to.equal(RESERVE_PRICE);
+  });
+
+  it('allows rewardDistributor address to withdraw funds from timelock', async () => {
+    const rewardDistributorBalanceBeforeWithdraw = await ethers.provider.getBalance(rewardDistributor.address);
+
+    expect(await ethers.provider.getBalance(timelock.address)).to.equal(RESERVE_PRICE);
+
+    const tx = await gov.connect(rewardDistributor).withdraw();
+    const receipt = await tx.wait();
+    const gasUsed = receipt.gasUsed;
+    const gasUsedInWei = gasUsed.mul("1000000000");
+
+    console.log({ gasUsedInWei });
+
+    const rewardDistributorBalanceMinusGas = rewardDistributorBalanceBeforeWithdraw.sub(gasUsedInWei);
+    const expectedBalance = rewardDistributorBalanceMinusGas.add(RESERVE_PRICE);
+
+    const rewardDistributorBalanceAfterWithdraw = await ethers.provider.getBalance(rewardDistributor.address);
+
+    expect(rewardDistributorBalanceAfterWithdraw).to.equal(expectedBalance);
+  });
+
+  it('allows rewardDistributor address to be changed', async () => {
+    await gov.connect(rewardDistributor)._setRewardDistributor(newRewardDistributor.address);
+    const rewardDistributorAddr = await gov.rewardDistributor();
+    expect(rewardDistributorAddr).to.equal(newRewardDistributor.address);
+  });
+
+  it('allows minimumWithdrawBalance to be changed', async () => {
+    try {
+      await gov.connect(newRewardDistributor)._setMinimumWithdrawBalance('10000');
+      const minimumWithdrawBalance = await gov.minimumWithdrawBalance();
+      expect(minimumWithdrawBalance).to.equal('10000');
+    } catch (err) {
+      console.log(err)
+    }
   });
 
   it('allows proposing, voting, queuing', async () => {
@@ -226,6 +272,11 @@ describe('End to End test with deployment, auction, proposing, voting, executing
   });
 
   it('executes proposal transactions correctly', async () => {
+    // Create another bid and settles it
+    await sportsManagerAuctionHouse.connect(bidderA).createBid(2, { value: RESERVE_PRICE });
+    await setNextBlockTimestamp(Number(await blockTimestamp('latest')) + DURATION);
+    await sportsManagerAuctionHouse.settleCurrentAndCreateNewAuction();
+
     const { eta } = await gov.proposals(proposalId);
     await setNextBlockTimestamp(eta.toNumber(), false);
     await gov.execute(proposalId);

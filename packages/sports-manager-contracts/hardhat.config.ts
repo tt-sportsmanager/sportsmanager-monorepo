@@ -12,7 +12,7 @@ import './tasks';
 
 dotenv.config();
 
-const config: HardhatUserConfig = {
+const config: HardhatUserConfig | any = {
   solidity: {
     version: '0.8.6',
     settings: {
@@ -34,7 +34,9 @@ const config: HardhatUserConfig = {
         : [process.env.WALLET_PRIVATE_KEY!].filter(Boolean),
     },
     goerli: {
-      url: `https://goerli.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
+      //url: `https://goerli.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
+      //url: `https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161`,
+      url: `https://patient-clean-dust.ethereum-goerli.discover.quiknode.pro/f332f155d79a962383d0b41351408de714243858/`,
       accounts: process.env.MNEMONIC
         ? { mnemonic: process.env.MNEMONIC }
         : [process.env.WALLET_PRIVATE_KEY!].filter(Boolean),

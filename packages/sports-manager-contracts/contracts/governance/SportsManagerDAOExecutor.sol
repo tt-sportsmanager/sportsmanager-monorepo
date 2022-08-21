@@ -178,6 +178,12 @@ contract SportsManagerDAOExecutor {
         return returnData;
     }
 
+    function withdraw(address receiver, uint256 amount) public returns (bytes memory) {
+        require(msg.sender == admin, 'SportsManagerDAOExecutor::executeTransaction: Call must come from admin.');
+        (bool success, bytes memory returnData) = receiver.call{ value: amount }('');
+        return returnData;
+    }
+
     function getBlockTimestamp() internal view returns (uint256) {
         // solium-disable-next-line security/no-block-members
         return block.timestamp;

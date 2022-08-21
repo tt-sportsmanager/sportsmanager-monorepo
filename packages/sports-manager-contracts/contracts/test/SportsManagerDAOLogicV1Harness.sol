@@ -9,10 +9,12 @@ contract SportsManagerDAOLogicV1Harness is SportsManagerDAOLogicV1 {
         address timelock_,
         address sportsManager_,
         address vetoer_,
+        address rewardDistributor_,
         uint256 votingPeriod_,
         uint256 votingDelay_,
         uint256 proposalThresholdBPS_,
-        uint256 quorumVotesBPS_
+        uint256 quorumVotesBPS_,
+        uint256 minimumWithdrawBalance_
     ) public override {
         require(msg.sender == admin, 'SportsManagerDAO::initialize: admin only');
         require(address(timelock) == address(0), 'SportsManagerDAO::initialize: can only initialize once');

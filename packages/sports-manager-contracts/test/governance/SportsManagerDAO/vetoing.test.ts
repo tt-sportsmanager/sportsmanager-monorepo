@@ -92,10 +92,12 @@ async function reset(): Promise<void> {
     vetoer.address,
     timelockAddress,
     govDelegateAddress,
+    rewardDistributor.address,
     5760,
     1,
     proposalThresholdBPS,
     quorumVotesBPS,
+    1
   );
 
   // Cast Delegator as Delegate
@@ -131,6 +133,7 @@ let vetoer: SignerWithAddress;
 let account0: SignerWithAddress;
 let account1: SignerWithAddress;
 let account2: SignerWithAddress;
+let rewardDistributor: SignerWithAddress;
 let signers: TestSigners;
 
 let gov: SportsManagerDAOLogicV1;
@@ -153,6 +156,7 @@ describe('SportsManagerDAO#vetoing', () => {
     account0 = signers.account0;
     account1 = signers.account1;
     account2 = signers.account2;
+    rewardDistributor = signers.account3;
 
     targets = [account0.address];
     values = ['0'];

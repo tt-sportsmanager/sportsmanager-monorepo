@@ -114,10 +114,12 @@ contract SportsManagerDAOLogicV1 is SportsManagerDAOStorageV1, SportsManagerDAOE
         address timelock_,
         address sportsManager_,
         address vetoer_,
+        address rewardDistributor_,
         uint256 votingPeriod_,
         uint256 votingDelay_,
         uint256 proposalThresholdBPS_,
-        uint256 quorumVotesBPS_
+        uint256 quorumVotesBPS_,
+        uint256 minimumWithdrawBalance_
     ) public virtual {
         require(address(timelock) == address(0), 'SportsManagerDAO::initialize: can only initialize once');
         require(msg.sender == admin, 'SportsManagerDAO::initialize: admin only');
@@ -148,6 +150,8 @@ contract SportsManagerDAOLogicV1 is SportsManagerDAOStorageV1, SportsManagerDAOE
         timelock = ISportsManagerDAOExecutor(timelock_);
         sportsManager = SportsManagerTokenLike(sportsManager_);
         vetoer = vetoer_;
+        rewardDistributor = rewardDistributor_;
+        minimumWithdrawBalance = minimumWithdrawBalance_;
         votingPeriod = votingPeriod_;
         votingDelay = votingDelay_;
         proposalThresholdBPS = proposalThresholdBPS_;
@@ -679,5 +683,42 @@ contract SportsManagerDAOLogicV1 is SportsManagerDAOStorageV1, SportsManagerDAOE
             chainId := chainid()
         }
         return chainId;
+    }
+
+    /**
+     * @notice Can only be called by rewardDistributor address
+     * The funds withdrawn will be distributed to SportsManager Treasury, and reward pools
+     */
+    function withdraw() external {
+        require(msg.sender == rewardDistributor, 'SportsManagerDAO::withdraw: rewardDistributor only');
+        uint funds = address(timelock).balance;
+        require(funds >= minimumWithdrawBalance, 'SportsManagerDAO::withdraw: less than minimum withdraw balance');
+        timelock.withdraw(rewardDistributor, funds);
+
+        emit FundsWithdrawn(block.timestamp, funds);
+    }
+
+    /**
+     * @notice Can only be called by rewardDistributor address
+     * Set new rewardDistributor
+     */
+    function _setRewardDistributor(address newRewardDistributor) public {
+        require(msg.sender == rewardDistributor, 'SportsManagerDAO::withdraw: rewardDistributor only');
+
+        emit NewRewardDistributor(rewardDistributor, newRewardDistributor);
+
+        rewardDistributor = newRewardDistributor;
+    }
+
+    /**
+     * @notice Can only be called by rewardDistributor address
+     * Set new minimumWithdrawBalance
+     */
+    function _setMinimumWithdrawBalance(uint256 newMinimumWithdrawBalance) public {
+        require(msg.sender == rewardDistributor, 'SportsManagerDAO::withdraw: rewardDistributor only');
+
+        emit NewMinimumWithdrawBalance(minimumWithdrawBalance, newMinimumWithdrawBalance);
+
+        minimumWithdrawBalance = newMinimumWithdrawBalance;
     }
 }

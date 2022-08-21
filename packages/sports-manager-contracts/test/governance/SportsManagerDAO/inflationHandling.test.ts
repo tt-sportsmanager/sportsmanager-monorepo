@@ -62,10 +62,12 @@ async function reset(): Promise<void> {
     address(0),
     timelockAddress,
     govDelegateAddress,
+    rewardDistributor.address,
     5760,
     1,
     proposalThresholdBPS,
     quorumVotesBPS,
+    minimumWithdrawBalance
   );
 
   // Cast Delegator as Delegate
@@ -89,6 +91,7 @@ let deployer: SignerWithAddress;
 let account0: SignerWithAddress;
 let account1: SignerWithAddress;
 let account2: SignerWithAddress;
+let rewardDistributor: SignerWithAddress;
 let signers: TestSigners;
 
 let gov: SportsManagerDAOLogicV1;
@@ -96,6 +99,7 @@ const timelockDelay = 172800; // 2 days
 
 const proposalThresholdBPS = 678; // 6.78%
 const quorumVotesBPS = 1100; // 11%
+const minimumWithdrawBalance = 1;
 
 let targets: string[];
 let values: string[];
@@ -110,6 +114,7 @@ describe('SportsManagerDAO#inflationHandling', () => {
     account0 = signers.account0;
     account1 = signers.account1;
     account2 = signers.account2;
+    rewardDistributor = signers.account3;
 
     targets = [account0.address];
     values = ['0'];

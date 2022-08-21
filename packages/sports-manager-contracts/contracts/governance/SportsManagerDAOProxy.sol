@@ -44,10 +44,12 @@ contract SportsManagerDAOProxy is SportsManagerDAOProxyStorage, SportsManagerDAO
         address vetoer_,
         address admin_,
         address implementation_,
+        address rewardDistributor_,
         uint256 votingPeriod_,
         uint256 votingDelay_,
         uint256 proposalThresholdBPS_,
-        uint256 quorumVotesBPS_
+        uint256 quorumVotesBPS_,
+        uint256 minimumWithdrawBalance
     ) {
         // Admin set to msg.sender for initialization
         admin = msg.sender;
@@ -55,14 +57,16 @@ contract SportsManagerDAOProxy is SportsManagerDAOProxyStorage, SportsManagerDAO
         delegateTo(
             implementation_,
             abi.encodeWithSignature(
-                'initialize(address,address,address,uint256,uint256,uint256,uint256)',
+                'initialize(address,address,address,address,uint256,uint256,uint256,uint256,uint256)',
                 timelock_,
                 sportsManager_,
                 vetoer_,
+                rewardDistributor_,
                 votingPeriod_,
                 votingDelay_,
                 proposalThresholdBPS_,
-                quorumVotesBPS_
+                quorumVotesBPS_,
+                minimumWithdrawBalance
             )
         );
 

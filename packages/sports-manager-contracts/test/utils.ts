@@ -19,15 +19,17 @@ export type TestSigners = {
   account0: SignerWithAddress;
   account1: SignerWithAddress;
   account2: SignerWithAddress;
+  account3: SignerWithAddress;
 };
 
 export const getSigners = async (): Promise<TestSigners> => {
-  const [deployer, account0, account1, account2] = await ethers.getSigners();
+  const [deployer, account0, account1, account2, account3] = await ethers.getSigners();
   return {
     deployer,
     account0,
     account1,
     account2,
+    account3,
   };
 };
 

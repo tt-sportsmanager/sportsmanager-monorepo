@@ -52,6 +52,7 @@ let token: SportsManagerToken;
 let deployer: SignerWithAddress;
 let account0: SignerWithAddress;
 let account1: SignerWithAddress;
+let rewardDistributor: SignerWithAddress;
 let signers: TestSigners;
 
 let gov: SportsManagerDAOImmutable;
@@ -89,10 +90,12 @@ async function makeProposal(
     token.address,
     address(0),
     deployer.address,
+    rewardDistributor.address,
     1728,
     1,
     proposalThresholdBPS,
     1,
+    1 // minimumWithdrawBalance
   );
 
   await timelock.harnessSetAdmin(gov.address);
@@ -118,6 +121,7 @@ describe('SportsManagerDAO#state/1', () => {
     deployer = signers.deployer;
     account0 = signers.account0;
     account1 = signers.account1;
+    rewardDistributor = signers.account3;
 
     token = await deploySportsManagerToken(signers.deployer);
 

@@ -17,7 +17,7 @@ interface AppConfig {
   enableHistory: boolean;
 }
 
-type SupportedChains = ChainId.Rinkeby | ChainId.Mainnet | ChainId.Hardhat;
+type SupportedChains = ChainId.Rinkeby | ChainId.Mainnet | ChainId.Hardhat | ChainId.Goerli;
 
 interface CacheBucket {
   name: string;
@@ -70,6 +70,12 @@ const app: Record<SupportedChains, AppConfig> = {
     subgraphApiUri: '',
     enableHistory: false,
   },
+  [ChainId.Goerli]: {
+    jsonRpcUri: createNetworkHttpUrl('goerli'),
+    wsRpcUri: createNetworkWsUrl('goerli'),
+    subgraphApiUri: '',
+    enableHistory: false,
+  }
 };
 
 const externalAddresses: Record<SupportedChains, ExternalContractAddresses> = {
@@ -82,6 +88,9 @@ const externalAddresses: Record<SupportedChains, ExternalContractAddresses> = {
   [ChainId.Hardhat]: {
     lidoToken: undefined,
   },
+  [ChainId.Goerli]: {
+    lidoToken: undefined,
+  }
 };
 
 const getAddresses = (): ContractAddresses => {
