@@ -1,54 +1,45 @@
-{
-  "_format": "hh-sol-artifact-1",
-  "contractName": "SportsManagerStreamTest",
-  "sourceName": "contracts/stream/SportsManagerStreamTest.sol",
-  "abi": [
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "addr",
-          "type": "address"
-        }
-      ],
-      "name": "withdrawFail1",
-      "outputs": [],
-      "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "addr",
-          "type": "address"
-        }
-      ],
-      "name": "withdrawFail2",
-      "outputs": [],
-      "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "addr",
-          "type": "address"
-        }
-      ],
-      "name": "withdrawSuccess",
-      "outputs": [],
-      "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "stateMutability": "payable",
-      "type": "receive"
-    }
-  ],
-  "bytecode": "0x608060405234801561001057600080fd5b50610245806100206000396000f3fe6080604052600436106100385760003560e01c80630f6acc6914610044578063c43b103614610059578063f6bc2f771461006c57600080fd5b3661003f57005b600080fd5b6100576100523660046101d2565b61007f565b005b6100576100673660046101d2565b6100f0565b61005761007a3660046101d2565b610190565b60008173ffffffffffffffffffffffffffffffffffffffff164760405160006040518083038185875af1925050503d80600081146100d9576040519150601f19603f3d011682016040523d82523d6000602084013e6100de565b606091505b50509050806100ec57600080fd5b5050565b60405160009073ffffffffffffffffffffffffffffffffffffffff8316904780156108fc029184818181858888f193505050509050806100ec576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152600e60248201527f72616e206f7574206f6620676173000000000000000000000000000000000000604482015260640160405180910390fd5b60405173ffffffffffffffffffffffffffffffffffffffff8216904780156108fc02916000818181858888f193505050501580156100ec573d6000803e3d6000fd5b6000602082840312156101e457600080fd5b813573ffffffffffffffffffffffffffffffffffffffff8116811461020857600080fd5b939250505056fea2646970667358221220010c482bddae2c512129d953e6c4d8b496dd2fb1c985acb781febd84046357d464736f6c63430008060033",
-  "deployedBytecode": "0x6080604052600436106100385760003560e01c80630f6acc6914610044578063c43b103614610059578063f6bc2f771461006c57600080fd5b3661003f57005b600080fd5b6100576100523660046101d2565b61007f565b005b6100576100673660046101d2565b6100f0565b61005761007a3660046101d2565b610190565b60008173ffffffffffffffffffffffffffffffffffffffff164760405160006040518083038185875af1925050503d80600081146100d9576040519150601f19603f3d011682016040523d82523d6000602084013e6100de565b606091505b50509050806100ec57600080fd5b5050565b60405160009073ffffffffffffffffffffffffffffffffffffffff8316904780156108fc029184818181858888f193505050509050806100ec576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152600e60248201527f72616e206f7574206f6620676173000000000000000000000000000000000000604482015260640160405180910390fd5b60405173ffffffffffffffffffffffffffffffffffffffff8216904780156108fc02916000818181858888f193505050501580156100ec573d6000803e3d6000fd5b6000602082840312156101e457600080fd5b813573ffffffffffffffffffffffffffffffffffffffff8116811461020857600080fd5b939250505056fea2646970667358221220010c482bddae2c512129d953e6c4d8b496dd2fb1c985acb781febd84046357d464736f6c63430008060033",
-  "linkReferences": {},
-  "deployedLinkReferences": {}
-}
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "addr",
+        "type": "address"
+      }
+    ],
+    "name": "withdrawFail1",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "addr",
+        "type": "address"
+      }
+    ],
+    "name": "withdrawFail2",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "addr",
+        "type": "address"
+      }
+    ],
+    "name": "withdrawSuccess",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "stateMutability": "payable",
+    "type": "receive"
+  }
+]

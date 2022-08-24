@@ -78,7 +78,7 @@ task('deploy-local', 'Deploy contracts to hardhat')
           () => contracts.SportsManagerAuctionHouse.instance?.address,
           () => contracts.SportsManagerAuctionHouseProxyAdmin.instance?.address,
           () =>
-            new Interface(SportsManagerAuctionHouseABI.abi).encodeFunctionData('initialize', [
+            new Interface(SportsManagerAuctionHouseABI).encodeFunctionData('initialize', [
               contracts.SportsManagerToken.instance?.address,
               contracts.WETH.instance?.address,
               args.auctionTimeBuffer,

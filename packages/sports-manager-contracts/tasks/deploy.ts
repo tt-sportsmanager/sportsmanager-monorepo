@@ -150,7 +150,7 @@ task('deploy', 'Deploys NFTDescriptor, SportsManagerDescriptor, SportsManagerSee
           () => deployment.SportsManagerAuctionHouse.address,
           () => deployment.SportsManagerAuctionHouseProxyAdmin.address,
           () =>
-            new Interface(SportsManagerAuctionHouseABI.abi).encodeFunctionData('initialize', [
+            new Interface(SportsManagerAuctionHouseABI).encodeFunctionData('initialize', [
               deployment.SportsManagerToken.address,
               args.weth,
               args.auctionTimeBuffer,

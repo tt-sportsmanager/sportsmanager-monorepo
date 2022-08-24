@@ -1,9 +1,11 @@
 const ccxt = require("ccxt");
 const hre = require("hardhat");
 const { ethers } = require("ethers");
-const { swapOnExchange } = require("./swapOnExchange");
-const { createClient } = require("@supabase/supabase-js");
-const { abi } = require("./abi/SaeFtmStakingV1.sol/SaeFtmStakingV1.json");
+const { SportsManagerDaoLogicV1Factory } = require("@sports-manager/contracts");
+const {
+  ContractAddresses,
+  getContractAddressesForChainOrThrow,
+} = require("@sports-manager/sdk");
 
 require("dotenv").config();
 
@@ -22,10 +24,34 @@ async function main(
   if (process.env.hasOwnProperty("ENVIRONMENT_TYPE") && process.env.ENVIRONMENT_TYPE == "development") { // eslint-disable-line
     _ethers = hre.ethers;
     [signer] = await _ethers.getSigners();
+    const { chainId } = await _ethers.provider.getNetwork();
+
+    try {
+      sportsManagerAddresses = getContractAddressesForChainOrThrow(chainId);
+
+      const proxyAddress = sportsManagerAddresses['sportsManagerDAOProxy'];
+      const timelockAddress = sportsManagerAddresses['sportsManagerDaoExecutor'];
+
+      let sportsManagerDaoContract = new SportsManagerDaoLogicV1Factory().attach(proxyAddress);
+      sportsManagerDaoContract = sportsManagerDaoContract.connect(signer);
+      console.log({ sportsManagerDaoContract });
+
+      const minimumWithdrawBalance = await sportsManagerDaoContract.minimumWithdrawBalance();
+      console.log({ minimumWithdrawBalance: minimumWithdrawBalance.toString() });
+
+      const timelockBalance = await _ethers.provider.getBalance(timelockAddress);
+      console.log({ timelockBalance: timelockBalance.toString() });
+
+      const tx = await sportsManagerDaoContract.withdraw();
+      const receipt = await tx.wait();
+      console.log({ receipt });
+
+    } catch(err) {
+      console.log({ err });
+    }
   }
 
-  
-  // Insert logic here
+  // TODO: Insert logic here to run on deployed autotask
 }
 
 module.exports = {

@@ -4070,12 +4070,27 @@
   dependencies:
     ethers "^5.6.8"
 
+"@sports-manager/contracts@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@sports-manager/contracts/-/contracts-0.0.2.tgz#31eddaaae5c5bf77bc637c57b21e5d0c7074376d"
+  integrity sha512-ZRlgkfbOaSlxIUTpIciA3z+yzPr26kfZQk0gzAMVSgi9pI+ljDSoxvnaUD/LzPqeKzaJFniT198ZrYdF97jTEw==
+  dependencies:
+    ethers "^5.6.8"
+
 "@sports-manager/sdk@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@sports-manager/sdk/-/sdk-0.0.1.tgz#6c6d8d3bce43a8cff764f34dd843efb4bd9be0c0"
   integrity sha512-JaeTiVlgkP8grFVG+Va247g6biJecObwaQ4W7E1CiTbHUCym/3Ay2ZFagDaxE2/IzAcfHiDVEDRJVQZrPeFTNQ==
   dependencies:
     "@sports-manager/contracts" "^0.0.1"
+    ethers "^5.6.8"
+
+"@sports-manager/sdk@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@sports-manager/sdk/-/sdk-0.0.3.tgz#853c5953507980f9c79eb625db6756f4b5422796"
+  integrity sha512-+aB13Z8M+WL/XbRYNYGGS3YV/Vr94oWqt6kx2VF1vhc+u5Hc0QSR0QQ6x47KWPUK52E2QZ0hQng469TbIYaxKQ==
+  dependencies:
+    "@sports-manager/contracts" "^0.0.2"
     ethers "^5.6.8"
 
 "@supabase/functions-js@^1.3.4":

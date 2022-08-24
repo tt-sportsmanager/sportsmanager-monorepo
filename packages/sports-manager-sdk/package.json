@@ -1,6 +1,6 @@
 {
   "name": "@sports-manager/sdk",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Useful tooling for interacting with the SportsManager protocol",
   "author": "SportsManagers",
   "homepage": "https://www.sportsmanager.wtf/",
@@ -14,7 +14,7 @@
     "test": "mocha -r ts-node/register \"test/**/*.test.ts\""
   },
   "dependencies": {
-    "@sports-manager/contracts": "^0.0.2",
+    "@sports-manager/contracts": "^0.0.3",
     "ethers": "^5.6.8"
   },
   "devDependencies": {
