@@ -1,6 +1,9 @@
 {
-  "packages": ["packages/*"],
-  "npmclient": "yarn",
+  "packages": [
+    "packages/*",
+    "packages/sports-manager-sportsclubdao/*"
+  ],
+  "npmClient": "yarn",
   "version": "0.0.0",
   "useWorkspaces": true
 }

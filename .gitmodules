@@ -1,0 +1,12 @@
+[submodule "packages/sports-manager-sportsclubdao/sportsclubdao-subgraph"]
+	path = packages/sports-manager-sportsclubdao/sportsclubdao-subgraph
+	url = git@github.com:tt-sportsmanager/sportsclubdao-subgraph.git
+[submodule "packages/sports-manager-sportsclubdao/sportsclubdao-ui"]
+	path = packages/sports-manager-sportsclubdao/sportsclubdao-ui
+	url = git@github.com:tt-sportsmanager/sportsclubdao-ui.git
+[submodule "packages/sports-manager-sportsclubdao/sportsclubdao-contracts"]
+	path = packages/sports-manager-sportsclubdao/sportsclubdao-contracts
+	url = git@github.com:tt-sportsmanager/sportsclubdao-contracts.git
+[submodule "packages/sports-manager-sportsclubdao/multi-sig"]
+	path = packages/sports-manager-sportsclubdao/multi-sig
+	url = git@github.com:tt-sportsmanager/multi-sig.git
