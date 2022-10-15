@@ -1,7 +1,6 @@
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
-import typescript from '@rollup/plugin-typescript';
 import builtins from 'builtin-modules';
 
 export default {
@@ -14,7 +13,6 @@ export default {
         resolve({ preferBuiltins: true }),
         commonjs(),
         json({ compact: true }),
-        typescript(),
     ],
     external: [
         ...builtins,

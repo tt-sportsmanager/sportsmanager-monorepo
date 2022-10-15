@@ -1,4 +1,3 @@
-const ccxt = require("ccxt");
 const hre = require("hardhat");
 const { ethers } = require("ethers");
 const { SportsManagerDaoLogicV1Factory } = require("@sports-manager/contracts");

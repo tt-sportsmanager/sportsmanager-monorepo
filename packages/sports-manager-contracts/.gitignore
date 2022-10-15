@@ -18,6 +18,7 @@ abi/@openzeppelin
 abi/contracts/base
 abi/contracts/external
 abi/contracts/governance
+!abi/contracts/governance/SportsManagerDAOLogicV1.sol/SportsManagerDAOLogicV1.json
 abi/contracts/interfaces
 abi/contracts/proxies
 abi/contracts/test

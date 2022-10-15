@@ -3,7 +3,6 @@ import { readFileSync } from 'fs';
 import { task } from 'hardhat/config';
 import {
   default as SportsManagerDAOLogicV1ABI
-//} from '../artifacts/contracts/governance/SportsManagerDAOLogicV1.sol/SportsManagerDAOLogicV1.json';
 } from '../abi/contracts/governance/SportsManagerDAOLogicV1.sol/SportsManagerDAOLogicV1.json';
 
 task('withdraw', 'Withdraw eth from SportsManagerDAOExecutor contract')
