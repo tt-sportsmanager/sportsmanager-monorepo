@@ -20,14 +20,16 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install build-essential
+      - name: Install Toolkit and Remove Lockfile
         run: |
-          sudo apt-get install -y build-essential
+          sudo apt-get install -y make build-essential libudev-dev
           rm yarn.lock
-      - name: Install Yarn
-        run: npm install -g yarn
-      - run: yarn 
-      - run: yarn build
+      - name: Install Yarn and Packages
+        run: |
+          npm install -g yarn
+          yarn install
+      - name: Build Monorepo
+        run: yarn build:ci
       - name: Uninstall Yarn
         if: always()
         run: npm uninstall -g yarn

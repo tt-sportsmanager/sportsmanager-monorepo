@@ -9,9 +9,11 @@
   "types": "dist/src/index.d.ts",
   "scripts": {
     "clean": "rimraf dist tsconfig.build.tsbuildinfo",
+    "clean:sol": "rimraf abi/contracts",
+    "copy:sol": "cp -r artifacts/contracts abi/contracts",
     "build": "yarn build:sol --force && yarn build:ts && yarn build:declarations",
     "build:ts": "tsc -p tsconfig.build.json",
-    "build:sol": "npx hardhat --config hardhat.config.build.ts compile",
+    "build:sol": "yarn clean:sol && npx hardhat --config hardhat.config.build.ts compile && yarn copy:sol",
     "build:declarations": "shx cp typechain/*.d.ts dist/typechain",
     "hardhat": "npx hardhat",
     "task:accounts": "npx hardhat accounts",

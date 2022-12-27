@@ -20,22 +20,20 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 14.x
-      - name: Install build-essential
+      - name: Install Toolkit and Remove Lockfile
         run: |
-          sudo apt-get install -y build-essential
+          sudo apt-get install -y make build-essential libudev-dev
           rm yarn.lock
-      - name: Install Yarn
-        run: npm install -g yarn
-      - run: yarn 
-      - run: yarn build
-      - name: Run contract tests
+      - name: Install Yarn and Packages
         run: |
-          cd packages/sports-manager-contracts
-          yarn test
-      - name: Run contract coverage
-        run: |
-          cd packages/sports-manager-contracts
-          yarn coverage
+          npm install -g yarn
+          yarn install
+      - name: Build Monorepo
+        run: yarn build:ci
+      - name: Run Contract Tests
+        run: yarn contracts test
+      - name: Run Contract Coverage
+        run: yarn contracts coverage
       - name: Uninstall Yarn
         if: always()
         run: npm uninstall -g yarn
