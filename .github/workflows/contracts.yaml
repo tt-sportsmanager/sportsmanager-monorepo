@@ -7,14 +7,13 @@ on:
   pull_request:
     paths:
       - "packages/sports-manager-contracts/**"
-      - "packages/sports-manager-subgraph/**"
     branches:
       - "**"
 
 jobs:
   build_and_test:
     name: Build and Test
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 14.x
