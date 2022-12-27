@@ -32,8 +32,6 @@ jobs:
         run: yarn build:ci
       - name: Run Contract Tests
         run: yarn contracts test
-      - name: Run Contract Coverage
-        run: yarn contracts coverage
       - name: Uninstall Yarn
         if: always()
         run: npm uninstall -g yarn
