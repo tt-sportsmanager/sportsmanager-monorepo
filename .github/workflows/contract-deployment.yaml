@@ -8,45 +8,53 @@ on:
 jobs:
   build_and_test:
     name: Build and Test
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 14.x
         uses: actions/setup-node@v1
         with:
           node-version: 14.x
-      - name: Install Yarn
-        run: npm install -g yarn
-      - run: yarn 
-      - run: yarn build
-      - name: Run contract tests
+      - name: Install Toolkit and Remove Lockfile
         run: |
-          cd packages/sports-manager-contracts
-          yarn test
+          sudo apt-get install -y make build-essential libudev-dev
+          rm yarn.lock
+      - name: Install Yarn and Packages
+        run: |
+          npm install -g yarn
+          yarn install
+      - name: Build Monorepo
+        run: yarn build:all
+      - name: Run Contract Tests
+        run: yarn contracts test
       - name: Uninstall Yarn
         if: always()
         run: npm uninstall -g yarn
   build_and_deploy:
     name: Build and Deploy
     needs: build_and_test
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 14.x
         uses: actions/setup-node@v1
         with:
           node-version: 14.x
-      - name: Install Yarn
-        run: npm install -g yarn
-      - run: yarn 
-      - run: yarn build
+      - name: Install Toolkit and Remove Lockfile
+        run: |
+          sudo apt-get install -y make build-essential libudev-dev
+          rm yarn.lock
+      - name: Install Yarn and Packages
+        run: |
+          npm install -g yarn
+          yarn install
+      - name: Build Monorepo
+        run: yarn build:all
       - name: Deploy contract to Rinkeby
         env:
           INFURA_PROJECT_ID: ${{ secrets.INFURA_PROJECT_ID }}
           MNEMONIC: ${{ secrets.MNEMONIC }}
-        run: |
-          cd packages/sports-manager-contracts
-          npx hardhat deploy-ci --network rinkeby
+        run: yarn contracts hardhat deploy-ci --network rinkeby
       - name: Verify contract on Etherscan
         env:
           INFURA_PROJECT_ID: ${{ secrets.INFURA_PROJECT_ID }}

@@ -7,32 +7,31 @@ on:
   pull_request:
     paths:
       - "packages/sports-manager-contracts/**"
-      - "packages/sports-manager-subgraph/**"
     branches:
       - "**"
 
 jobs:
   build_and_test:
     name: Build and Test
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 14.x
         uses: actions/setup-node@v1
         with:
           node-version: 14.x
-      - name: Install Yarn
-        run: npm install -g yarn
-      - run: yarn 
-      - run: yarn build
-      - name: Run contract tests
+      - name: Install Toolkit and Remove Lockfile
         run: |
-          cd packages/sports-manager-contracts
-          yarn test
-      - name: Run contract coverage
+          sudo apt-get install -y make build-essential libudev-dev
+          rm yarn.lock
+      - name: Install Yarn and Packages
         run: |
-          cd packages/sports-manager-contracts
-          yarn coverage
+          npm install -g yarn
+          yarn install
+      - name: Build Monorepo
+        run: yarn build:ci
+      - name: Run Contract Tests
+        run: yarn contracts test
       - name: Uninstall Yarn
         if: always()
         run: npm uninstall -g yarn
